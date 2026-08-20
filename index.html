@@ -1,1 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rekh</title>
+  <link rel="stylesheet" href="style.css">
+</head>
 
+<body>
+
+  <!-- LOADING SCREEN -->
+  <section id="loading" class="screen active">
+    <img src="assets/images/Rekh Logo.png" class="logo">
+    <h1>Rekh</h1>
+    <p>Discovering heritage through spatial narratives.</p>
+
+    <div class="loading-line"></div>
+    <span>INITIALIZING ENVIRONMENT</span>
+  </section>
+
+
+  <!-- WELCOME SCREEN -->
+  <section id="welcome" class="screen">
+    <img src="assets/images/Rekh Logo.png" class="logo">
+
+    <h1>Rekh</h1>
+
+    <div class="welcome-card">
+      <h2>Welcome to</h2>
+      <p>Raja Dinkar Kelkar Museum's AR Experience</p>
+      <div class="small-line"></div>
+    </div>
+
+    <button onclick="showScreen('howRekh')">
+      Continue on Web →
+    </button>
+
+    <button class="secondary">
+      Install App
+    </button>
+  </section>
+
+
+  <!-- HOW REKH WORKS -->
+  <section id="howRekh" class="screen">
+
+    <div class="story-image">
+      <img id="storyFrame"
+           src="assets/images/Rekh_How_It_Works_Frame_1_HD.png">
+    </div>
+
+    <h1>How Rekh Works</h1>
+
+    <p>
+      Discover the stories hidden within the walls.
+      Let the stories guide your journey through time.
+    </p>
+
+    <button onclick="showScreen('howWorks')">
+      Set Up Experience →
+    </button>
+
+    <button class="text-button" onclick="showScreen('howWorks')">
+      ⓘ How it works
+    </button>
+
+  </section>
+
+
+  <!-- HOW IT WORKS POPUP -->
+  <section id="howWorks" class="screen">
+
+    <div class="how-card">
+
+      <button class="close" onclick="showScreen('howRekh')">×</button>
+
+      <h1>ⓘ How it works</h1>
+
+      <div class="instruction">
+        <b>① Look</b>
+        <p>Point your phone at the artifact and see it come alive.</p>
+      </div>
+
+      <div class="instruction">
+        <b>② Choose</b>
+        <p>Tap a glowing point to open a short story.</p>
+      </div>
+
+      <div class="instruction">
+        <b>③ Interact</b>
+        <p>Drag to turn the artifact and view every side.</p>
+      </div>
+
+      <div class="instruction">
+        <b>④ Story</b>
+        <p>Listen or read at your own pace. Nothing is timed.</p>
+      </div>
+
+      <button onclick="showScreen('howRekh')">
+        Got it
+      </button>
+
+    </div>
+
+  </section>
+
+
+  <script src="script.js"></script>
+
+</body>
+</html>
