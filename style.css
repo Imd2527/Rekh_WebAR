@@ -306,14 +306,63 @@ button:active {
   font-size: 16px;
 }
 
-.how-card > button:last-child {
+
+/* STORY CAROUSEL */
+
+.story-carousel {
   width: 100%;
-  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-/* ---------- PHONE PORTRAIT ---------- */
+.story-image {
+  width: min(500px, 80vw);
+  height: min(300px, 42vh);
+  border-radius: 28px;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.15);
+  background: #211b16;
+}
+
+.story-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.story-dots {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  margin-top: 18px;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  min-height: 8px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: #777;
+  cursor: pointer;
+}
+
+.dot.active {
+  width: 24px;
+  height: 8px;
+  border-radius: 10px;
+  background: #f4eadb;
+}
+
+
+/* PHONE PORTRAIT */
 
 @media (max-width: 600px) {
+
   .screen {
     padding: 25px 20px;
   }
@@ -333,75 +382,31 @@ button:active {
   .story-image {
     width: 88vw;
     height: 30vh;
-    margin-bottom: 25px;
   }
 
   .how-card {
     padding: 40px 25px 25px;
     max-height: 88vh;
   }
+
 }
 
-/* ---------- LANDSCAPE PHONE ---------- */
+
+/* LANDSCAPE PHONE */
 
 @media (orientation: landscape) and (max-height: 600px) {
+
   .screen {
     justify-content: center;
     padding: 20px 40px;
   }
 
-  #welcome {
-    display: grid;
-    grid-template-columns: 120px 1fr;
-    grid-template-rows: auto auto auto;
-    column-gap: 25px;
-    align-content: center;
-  }
-
-  #welcome .logo {
+  .story-carousel {
     grid-row: 1 / 4;
-    grid-column: 1;
-    width: 90px;
-    justify-self: center;
-  }
-
-  #welcome h1 {
-    grid-column: 2;
-    margin: 0 0 10px;
-  }
-
-  .welcome-card {
-    grid-column: 2;
-    width: min(520px, 65vw);
-    padding: 18px 25px;
-    margin: 0 0 10px;
-  }
-
-  .welcome-card h2 {
-    margin-bottom: 5px;
-  }
-
-  .small-line {
-    margin-top: 8px;
-  }
-
-  #welcome button {
-    grid-column: 2;
-    width: fit-content;
-    margin-right: 10px;
-  }
-
-  #howRekh {
-    display: grid;
-    grid-template-columns: 45% 55%;
-    grid-template-rows: auto auto auto;
-    gap: 10px 25px;
-    text-align: left;
-    align-content: center;
+    width: 100%;
   }
 
   .story-image {
-    grid-row: 1 / 4;
     width: 100%;
     height: 75vh;
     margin: 0;
@@ -428,51 +433,7 @@ button:active {
   }
 
   .instruction {
-
-  .story-carousel {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.story-image {
-  width: 100%;
-  height: 320px;
-  border-radius: 28px;
-  overflow: hidden;
-  border: 1px solid rgba(255,255,255,0.15);
-}
-
-.story-image img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-
-.story-dots {
-  display: flex;
-  justify-content: center;
-  gap: 8px;
-  margin-top: 18px;
-}
-
-.dot {
-  width: 8px;
-  height: 8px;
-  padding: 0;
-  border: none;
-  border-radius: 50%;
-  background: #777;
-  cursor: pointer;
-}
-
-.dot.active {
-  width: 24px;
-  border-radius: 10px;
-  background: #f4eadb;
-}
     margin-bottom: 15px;
   }
+
 }
