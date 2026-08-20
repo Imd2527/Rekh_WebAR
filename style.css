@@ -1,8 +1,13 @@
+/* =====================================================
+   RESET
+===================================================== */
+
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
+
 
 html,
 body {
@@ -11,25 +16,38 @@ body {
   overflow: hidden;
 }
 
+
 body {
   font-family: Arial, Helvetica, sans-serif;
+
   background: #17130f;
+
   color: #fff4e8;
 }
 
 
-/* =========================================================
+button {
+  border: none;
+  cursor: pointer;
+  font: inherit;
+}
+
+
+/* =====================================================
    SCREEN SYSTEM
-========================================================= */
+===================================================== */
 
 .screen {
+
   display: none;
 
   width: 100%;
-  height: 100vh;
-  min-height: 100dvh;
+  height: 100dvh;
+
+  min-height: 100vh;
 
   position: relative;
+
   overflow: hidden;
 
   background:
@@ -46,94 +64,78 @@ body {
     );
 }
 
+
 .screen.active {
+
   display: flex;
+
   flex-direction: column;
+
   align-items: center;
+
   justify-content: center;
+
 }
 
 
-/* =========================================================
-   LOGO
-========================================================= */
-
-.logo {
-  width: clamp(55px, 8vw, 95px);
-  height: auto;
-  object-fit: contain;
-  margin-bottom: 18px;
-}
-
-
-/* =========================================================
+/* =====================================================
    TYPOGRAPHY
-========================================================= */
+===================================================== */
 
 h1 {
+
   font-size: clamp(34px, 5vw, 64px);
+
   font-weight: 600;
+
   letter-spacing: -1.5px;
+
 }
+
 
 p {
+
   line-height: 1.5;
+
 }
 
 
-/* =========================================================
-   BUTTONS
-========================================================= */
+/* =====================================================
+   LOGO
+===================================================== */
 
-button {
-  border: none;
-  cursor: pointer;
-  font: inherit;
+.logo {
 
-  min-height: 52px;
-  padding: 14px 30px;
+  width: clamp(55px, 8vw, 95px);
 
-  border-radius: 30px;
+  height: auto;
 
-  background: #f4e9dc;
-  color: #35271c;
+  object-fit: contain;
 
-  font-weight: 600;
-  font-size: 16px;
+  margin-bottom: 18px;
 
-  transition:
-    transform 0.2s ease,
-    opacity 0.2s ease;
-}
-
-button:hover {
-  transform: scale(1.03);
-}
-
-button:active {
-  transform: scale(0.98);
 }
 
 
-/* =========================================================
-   LOADING SCREEN
-========================================================= */
-
-#loading h1 {
-  margin-bottom: 16px;
-}
+/* =====================================================
+   LOADING
+===================================================== */
 
 #loading > p {
+
   color: #d8c9b9;
 
-  font-size: clamp(14px, 1.8vw, 20px);
+  font-size: 16px;
 
   text-align: center;
 
-  margin-bottom: 55px;
+  margin-bottom: 40px;
+
 }
 
+
 .loading-line {
+
   width: min(320px, 55vw);
 
   height: 4px;
@@ -144,36 +146,40 @@ button:active {
 
   overflow: hidden;
 
-  position: relative;
-
   margin-bottom: 14px;
+
 }
 
+
 .loading-line::after {
+
   content: "";
 
-  position: absolute;
-
-  left: 0;
-  top: 0;
+  display: block;
 
   height: 100%;
-  width: 35%;
+
+  width: 0;
 
   background: #e4a84c;
 
   border-radius: 10px;
 
   animation: loading 2.5s ease-in-out forwards;
+
 }
 
+
 #loading > span {
+
   font-size: 11px;
 
   letter-spacing: 4px;
 
   color: #c8b8a5;
+
 }
+
 
 @keyframes loading {
 
@@ -188,23 +194,26 @@ button:active {
 }
 
 
-/* =========================================================
-   WELCOME SCREEN
-========================================================= */
+/* =====================================================
+   WELCOME
+===================================================== */
 
 #welcome {
+
   gap: 12px;
+
 }
 
-#welcome .logo {
-  margin-bottom: 4px;
-}
 
 #welcome h1 {
+
   margin-bottom: 35px;
+
 }
 
+
 .welcome-card {
+
   width: min(520px, 82vw);
 
   padding: 35px 30px;
@@ -218,29 +227,43 @@ button:active {
       rgba(80, 57, 38, 0.9)
     );
 
-  border: 1px solid rgba(255, 222, 180, 0.15);
+  border:
+    1px solid rgba(
+      255,
+      222,
+      180,
+      0.15
+    );
 
   text-align: center;
 
   margin-bottom: 25px;
+
 }
 
+
 .welcome-card h2 {
-  font-size: clamp(20px, 3vw, 32px);
+
+  font-size: 25px;
 
   font-weight: 500;
 
   margin-bottom: 15px;
+
 }
+
 
 .welcome-card p {
-  font-size: clamp(15px, 2vw, 21px);
 
-  color: #fff4e8;
+  font-size: 17px;
+
 }
 
+
 .small-line {
+
   width: 55px;
+
   height: 3px;
 
   background: #e5bd42;
@@ -248,28 +271,47 @@ button:active {
   margin: 20px auto 0;
 
   border-radius: 5px;
-}
 
-#welcome .secondary {
-  background: transparent;
-
-  border: 1px solid rgba(244, 233, 220, 0.35);
-
-  color: #f4e9dc;
 }
 
 
-/* =========================================================
-   HOW REKH WORKS
-========================================================= */
+#welcome > button,
+#howRekh > button {
+
+  min-height: 52px;
+
+  padding: 14px 30px;
+
+  border-radius: 30px;
+
+  background: #f4e9dc;
+
+  color: #35271c;
+
+  font-weight: 600;
+
+  font-size: 16px;
+
+}
+
+
+/* =====================================================
+   HOW REKH
+===================================================== */
 
 #howRekh {
+
   text-align: center;
 
   padding: 35px;
+
+  gap: 20px;
+
 }
 
+
 .story-carousel {
+
   width: 100%;
 
   display: flex;
@@ -277,9 +319,12 @@ button:active {
   flex-direction: column;
 
   align-items: center;
+
 }
 
+
 .story-image {
+
   width: min(500px, 80vw);
 
   height: min(300px, 42vh);
@@ -288,183 +333,103 @@ button:active {
 
   overflow: hidden;
 
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  border:
+    1px solid rgba(
+      255,
+      255,
+      255,
+      0.15
+    );
 
   background: #211b16;
 
-  margin-bottom: 18px;
 }
 
+
 .story-image img {
+
   width: 100%;
+
   height: 100%;
 
   object-fit: cover;
 
   display: block;
+
 }
 
+
+#howRekh h1 {
+
+  font-size: clamp(
+    30px,
+    4vw,
+    52px
+  );
+
+}
+
+
+#howRekh > p {
+
+  width: min(600px, 80vw);
+
+  color: #d4c5b5;
+
+  font-size: 18px;
+
+}
+
+
 .story-dots {
+
   display: flex;
-
-  justify-content: center;
-
-  align-items: center;
 
   gap: 8px;
 
-  margin-top: 0;
+  margin-top: 18px;
 
-  margin-bottom: 28px;
 }
 
+
 .dot {
+
   width: 8px;
+
   height: 8px;
 
   min-height: 8px;
 
   padding: 0;
 
-  border: none;
-
   border-radius: 50%;
 
   background: #777;
 
-  cursor: pointer;
 }
 
+
 .dot.active {
+
   width: 24px;
-  height: 8px;
 
   border-radius: 10px;
 
   background: #f4eadb;
-}
 
-#howRekh h1 {
-  font-size: clamp(30px, 4vw, 52px);
-
-  margin-bottom: 15px;
-}
-
-#howRekh > p {
-  width: min(600px, 80vw);
-
-  color: #d4c5b5;
-
-  font-size: clamp(15px, 1.8vw, 20px);
-
-  margin-bottom: 30px;
-}
-
-.text-button {
-  margin-top: 12px;
-
-  background: transparent;
-
-  color: #eee1d4;
-
-  font-size: 14px;
 }
 
 
-/* =========================================================
-   HOW IT WORKS
-========================================================= */
+/* =====================================================
+   SETUP
+===================================================== */
 
-#howWorks {
-  padding: 25px;
+.setup-screen {
 
-  background: rgba(10, 8, 6, 0.96);
-}
-
-.how-card {
-  position: relative;
-
-  width: min(600px, 90vw);
-
-  max-height: 90vh;
-
-  overflow-y: auto;
-
-  padding: 45px 40px 35px;
-
-  border-radius: 28px;
-
-  background:
-    linear-gradient(
-      145deg,
-      #62503e,
-      #392d22
-    );
-
-  border: 1px solid rgba(255, 238, 216, 0.15);
-
-  box-shadow:
-    0 20px 80px rgba(0, 0, 0, 0.45);
-}
-
-.how-card h1 {
-  font-size: clamp(25px, 3vw, 38px);
-
-  margin-bottom: 35px;
-}
-
-.close {
-  position: absolute;
-
-  top: 18px;
-  right: 20px;
-
-  width: 42px;
-  height: 42px;
-
-  min-height: 42px;
-
-  padding: 0;
-
-  border-radius: 50%;
-
-  background: rgba(255, 255, 255, 0.08);
-
-  color: #fff4e8;
-
-  font-size: 25px;
-}
-
-.instruction {
-  margin-bottom: 27px;
-
-  padding-left: 5px;
-}
-
-.instruction b {
-  display: block;
-
-  font-size: 20px;
-
-  margin-bottom: 7px;
-}
-
-.instruction p {
-  color: #d8cabc;
-
-  font-size: 16px;
-}
-
-
-/* =========================================================
-   SET UP EXPERIENCE
-========================================================= */
-
-#setup {
   background:
     radial-gradient(
       circle at 50% 20%,
-      rgba(100, 70, 35, 0.18),
+      rgba(100, 65, 30, 0.22),
       transparent 40%
     ),
     linear-gradient(
@@ -474,877 +439,87 @@ button:active {
       #1b1007 100%
     );
 
-  padding: 25px;
-
-  text-align: center;
 }
 
 
-/* ---------- SETUP CONTENT ---------- */
-
 .setup-content {
-  width: 100%;
-
-  max-width: 500px;
 
   display: flex;
 
   flex-direction: column;
 
   align-items: center;
+
+  text-align: center;
+
 }
 
 
-/* ---------- BACK BUTTON ---------- */
+.setup-content h1 {
 
-.setup-back {
-  position: absolute;
-
-  top: 24px;
-  left: 20px;
-
-  width: 40px;
-  height: 40px;
-
-  min-height: 40px;
-
-  padding: 0;
-
-  border-radius: 50%;
-
-  background: #5a3d20;
-
-  color: #f4e9dc;
-
-  font-size: 24px;
-
-  display: flex;
-
-  align-items: center;
-
-  justify-content: center;
-}
-
-
-/* ---------- HEADING ---------- */
-
-#setup .setup-content h1 {
-  font-size: clamp(32px, 8vw, 48px);
-
-  line-height: 1.1;
+  font-size: clamp(
+    34px,
+    5vw,
+    58px
+  );
 
   margin-bottom: 8px;
 
-  font-weight: 600;
 }
 
-
-/* ---------- SUBTEXT ---------- */
-
-#setup .setup-content > p {
-  color: #d8c9b9;
-
-  font-size: 18px;
-
-  line-height: 1.5;
-
-  margin-bottom: 55px;
-}
-
-
-/* =========================================================
-   ACCESSIBILITY BUTTON
-========================================================= */
-
-.accessibility-button {
-  width: min(343px, 88vw);
-
-  height: 72px;
-
-  min-height: 72px;
-
-  padding: 0 28px;
-
-  border-radius: 40px;
-
-  display: flex;
-
-  align-items: center;
-
-  justify-content: flex-start;
-
-  gap: 15px;
-
-  background: #5b4023;
-
-  border: 1px solid rgba(231, 177, 91, 0.45);
-
-  color: #fff4e8;
-
-  font-size: 23px;
-
-  font-weight: 500;
-
-  text-align: left;
-}
-
-
-/* ---------- ICON INSIDE BUTTON ---------- */
-
-.setup-icon {
-  width: 40px;
-  height: 40px;
-
-  min-width: 40px;
-
-  border-radius: 8px;
-
-  background: #2c190a;
-
-  display: flex;
-
-  align-items: center;
-
-  justify-content: center;
-}
-
-.setup-icon img {
-  width: 25px;
-  height: 25px;
-
-  object-fit: contain;
-
-  display: block;
-}
-
-
-/* =========================================================
-   CONTINUE BUTTON
-========================================================= */
-
-/*
-   Hidden initially.
-   JS adds .show after accessibility is closed.
-*/
-
-.setup-continue {
-  display: none;
-
-  width: 204px;
-
-  height: 64px;
-
-  min-height: 64px;
-
-  margin-top: 32px;
-
-  background: #f7dcc2;
-
-  color: #2d1b0d;
-
-  font-size: 24px;
-
-  font-weight: 500;
-}
-
-.setup-continue.show {
-  display: flex;
-
-  align-items: center;
-
-  justify-content: center;
-}
-
-
-/* =========================================================
-   ACCESSIBILITY POPUP OVERLAY
-========================================================= */
-
-.accessibility-overlay {
-  position: fixed;
-
-  inset: 0;
-
-  z-index: 9999;
-
-  display: none;
-
-  align-items: flex-end;
-
-  justify-content: center;
-
-  background: rgba(10, 6, 3, 0.25);
-}
-
-.accessibility-overlay.open {
-  display: flex;
-}
-
-
-/* =========================================================
-   ACCESSIBILITY CARD
-========================================================= */
-
-.accessibility-card {
-  width: min(430px, 100vw);
-
-  max-height: 92vh;
-
-  overflow-y: auto;
-
-  padding: 18px 28px 28px;
-
-  border-radius: 28px 28px 0 0;
-
-  background: #634722;
-
-  border: 1px solid rgba(235, 184, 104, 0.45);
-
-  box-shadow:
-    0 -10px 50px rgba(0, 0, 0, 0.35);
-}
-
-
-/* ---------- HANDLE ---------- */
-
-.accessibility-card::before {
-  content: "";
-
-  display: block;
-
-  width: 48px;
-  height: 5px;
-
-  border-radius: 10px;
-
-  background: #39220e;
-
-  margin: 0 auto 18px;
-}
-
-
-/* =========================================================
-   ACCESSIBILITY HEADER
-========================================================= */
-
-.accessibility-header {
-  display: flex;
-
-  align-items: center;
-
-  justify-content: space-between;
-
-  padding-bottom: 20px;
-
-  border-bottom: 1px solid rgba(255, 239, 215, 0.18);
-}
-
-.accessibility-title {
-  display: flex;
-
-  align-items: center;
-
-  gap: 16px;
-}
-
-.accessibility-title > img {
-  width: 40px;
-  height: 40px;
-
-  object-fit: contain;
-
-  padding: 8px;
-
-  border-radius: 9px;
-
-  background: #2c190a;
-}
-
-.accessibility-title h1 {
-  margin: 0 0 5px;
-
-  font-size: 18px;
-
-  font-weight: 500;
-}
-
-.accessibility-title p {
-  margin: 0;
-
-  color: #e0cfbc;
-
-  font-size: 16px;
-}
-
-
-/* =========================================================
-   ACCESSIBILITY CLOSE BUTTON
-========================================================= */
-
-.accessibility-header .close {
-  position: static;
-
-  width: 42px;
-  height: 42px;
-
-  min-height: 42px;
-
-  padding: 0;
-
-  flex-shrink: 0;
-
-  border-radius: 50%;
-
-  background: #2c190a;
-
-  color: #f4e9dc;
-
-  font-size: 25px;
-}
-
-
-/* =========================================================
-   ACCESSIBILITY ROWS
-========================================================= */
-
-.accessibility-row {
-  display: grid;
-
-  grid-template-columns: 40px 1fr auto;
-
-  align-items: center;
-
-  gap: 14px;
-
-  min-height: 90px;
-
-  padding: 16px 0;
-
-  border-bottom: 1px solid rgba(255, 239, 215, 0.15);
-}
-
-.accessibility-row:last-child {
-  border-bottom: none;
-}
-
-
-/* ---------- ICON ---------- */
-
-.accessibility-icon {
-  width: 40px;
-  height: 40px;
-
-  padding: 9px;
-
-  border-radius: 50%;
-
-  background: #44290f;
-
-  object-fit: contain;
-
-  display: block;
-}
-
-
-/* =========================================================
-   ACCESSIBILITY TEXT
-========================================================= */
-
-.accessibility-label {
-  min-width: 0;
-}
-
-.accessibility-label h2 {
-  margin: 0 0 5px;
-
-  font-size: 16px;
-
-  font-weight: 400;
-
-  color: #fff3e5;
-}
-
-.accessibility-label p {
-  margin: 0;
-
-  color: #e0cfbc;
-
-  font-family: monospace;
-
-  font-size: 15px;
-
-  line-height: 1.4;
-}
-
-
-/* =========================================================
-   LANGUAGE SELECTOR
-========================================================= */
-
-.language-selector {
-  min-height: 44px;
-
-  padding: 8px 12px;
-
-  border-radius: 25px;
-
-  background: #4a2c10;
-
-  color: #f4e9dc;
-
-  display: flex;
-
-  align-items: center;
-
-  justify-content: center;
-
-  gap: 8px;
-
-  font-size: 15px;
-
-  font-weight: 400;
-}
-
-.language-selector img {
-  width: 20px;
-  height: 20px;
-
-  object-fit: contain;
-}
-
-
-/* =========================================================
-   TEXT SIZE
-========================================================= */
-
-.text-size-selector {
-  display: flex;
-
-  align-items: center;
-
-  min-height: 44px;
-
-  padding: 4px;
-
-  border-radius: 25px;
-
-  background: #4a2c10;
-}
-
-.text-size-selector button {
-  width: 36px;
-  height: 36px;
-
-  min-height: 36px;
-
-  padding: 0;
-
-  border-radius: 50%;
-
-  background: transparent;
-
-  color: #d9c5ad;
-
-  font-size: 16px;
-
-  font-weight: 400;
-}
-
-.text-size-selector button.selected {
-  background: #ffe0c1;
-
-  color: #392412;
-}
-
-.text-size-selector button:hover {
-  transform: none;
-}
-
-
-/* =========================================================
-   TOGGLE
-========================================================= */
-
-.toggle {
-  position: relative;
-
-  width: 52px;
-  height: 30px;
-
-  min-height: 30px;
-
-  padding: 0;
-
-  border-radius: 20px;
-
-  background: #33200e;
-}
-
-.toggle span {
-  position: absolute;
-
-  top: 4px;
-  left: 4px;
-
-  width: 22px;
-  height: 22px;
-
-  border-radius: 50%;
-
-  background: #d9d1c8;
-
-  transition: transform 0.2s ease;
-}
-
-.toggle.active {
-  background: #f4dcc5;
-}
-
-.toggle.active span {
-  transform: translateX(22px);
-
-  background: #5b3b20;
-}
-
-.toggle:hover {
-  transform: none;
-}
-
-
-/* =========================================================
-   PHONE PORTRAIT
-========================================================= */
-
-@media (max-width: 600px) {
-
-  .screen {
-    padding: 25px 20px;
-  }
-
-
-  /* ---------- LOADING ---------- */
-
-  #loading > p {
-    width: 80vw;
-  }
-
-
-  /* ---------- WELCOME ---------- */
-
-  .welcome-card {
-    padding: 28px 20px;
-  }
-
-  #welcome h1 {
-    margin-bottom: 25px;
-  }
-
-
-  /* ---------- STORY ---------- */
-
-  .story-image {
-    width: 88vw;
-
-    height: 30vh;
-  }
-
-
-  /* ---------- HOW IT WORKS ---------- */
-
-  .how-card {
-    padding: 40px 25px 25px;
-
-    max-height: 88vh;
-  }
-
-
-  /* ---------- SETUP ---------- */
-
-  #setup {
-    padding: 25px 16px;
-  }
-
-  #setup .setup-content h1 {
-    font-size: 36px;
-  }
-
-  #setup .setup-content > p {
-    font-size: 18px;
-
-    margin-bottom: 55px;
-
-    max-width: 350px;
-  }
-
-  .accessibility-button {
-    width: calc(100vw - 60px);
-
-    max-width: 343px;
-
-    height: 72px;
-
-    min-height: 72px;
-
-    font-size: 23px;
-  }
-
-  .setup-continue {
-    width: 204px;
-
-    height: 64px;
-
-    min-height: 64px;
-  }
-
-
-  /* ---------- ACCESSIBILITY ---------- */
-
-  .accessibility-card {
-    width: calc(100vw - 40px);
-
-    max-height: 88vh;
-
-    padding: 18px 20px 25px;
-  }
-
-  .accessibility-header {
-    padding-bottom: 18px;
-  }
-
-  .accessibility-title {
-    gap: 14px;
-  }
-
-  .accessibility-title > img {
-    width: 40px;
-    height: 40px;
-
-    padding: 8px;
-  }
-
-  .accessibility-title h1 {
-    font-size: 18px;
-  }
-
-  .accessibility-title p {
-    font-size: 14px;
-  }
-
-  .accessibility-header .close {
-    width: 40px;
-    height: 40px;
-
-    min-height: 40px;
-
-    font-size: 24px;
-  }
-
-  .accessibility-row {
-    grid-template-columns: 40px 1fr auto;
-
-    gap: 12px;
-
-    min-height: 82px;
-
-    padding: 14px 0;
-  }
-
-  .accessibility-icon {
-    width: 40px;
-    height: 40px;
-
-    padding: 9px;
-  }
-
-  .accessibility-label h2 {
-    font-size: 16px;
-  }
-
-  .accessibility-label p {
-    font-size: 13px;
-  }
-
-  .language-selector {
-    min-height: 42px;
-
-    padding: 8px 11px;
-
-    font-size: 14px;
-  }
-
-  .text-size-selector {
-    min-height: 42px;
-  }
-
-  .text-size-selector button {
-    width: 34px;
-    height: 34px;
-
-    min-height: 34px;
-  }
-
-  .toggle {
-    width: 52px;
-    height: 30px;
-
-    min-height: 30px;
-  }
-
-  .toggle span {
-    width: 22px;
-    height: 22px;
-
-    top: 4px;
-    left: 4px;
-  }
-
-  .toggle.active span {
-    transform: translateX(22px);
-  }
-
-}
-
-
-/* =========================================================
-   VERY SMALL PHONES
-========================================================= */
-
-@media (max-width: 380px) {
-
-  .accessibility-card {
-    padding: 18px 16px;
-  }
-
-  .accessibility-row {
-    grid-template-columns: 40px 1fr auto;
-
-    gap: 9px;
-  }
-
-  .accessibility-label h2 {
-    font-size: 15px;
-  }
-
-  .accessibility-label p {
-    font-size: 12px;
-  }
-
-  .language-selector {
-    padding: 8px 10px;
-  }
-
-  .text-size-selector button {
-    width: 32px;
-  }
-
-}
-
-
-/* =========================================================
-   LANDSCAPE PHONE
-========================================================= */
-
-@media (orientation: landscape) and (max-height: 600px) {
-
-  .screen {
-    justify-content: center;
-
-    padding: 20px 40px;
-  }
-
-  .story-carousel {
-    width: 100%;
-  }
-
-  .story-image {
-    width: 100%;
-
-    height: 75vh;
-  }
-
-  #howRekh h1 {
-    align-self: end;
-
-    margin: 0;
-  }
-
-  #howRekh > p {
-    width: 90%;
-
-    margin: 0;
-  }
-
-  .how-card {
-    width: min(700px, 85vw);
-
-    max-height: 90vh;
-
-    padding: 30px 35px;
-  }
-
-  .instruction {
-    margin-bottom: 15px;
-  }
-
-}
-/* =====================================================
-   SETUP EXPERIENCE
-===================================================== */
-
-.setup-screen {
-  position: relative;
-  padding: 30px;
-}
-
-.setup-content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-}
-
-.setup-content h1 {
-  margin-bottom: 10px;
-}
 
 .setup-content > p {
+
   color: #d8c9b9;
+
   font-size: 18px;
-  line-height: 1.5;
-  margin-bottom: 42px;
+
+  margin-bottom: 62px;
+
 }
 
 
-/* BACK BUTTON */
+/* =====================================================
+   BACK BUTTON
+===================================================== */
 
-.setup-back {
+.top-back {
+
   position: absolute;
 
   top: 24px;
+
   left: 24px;
 
-  width: 42px;
-  height: 42px;
+  width: 44px;
 
-  min-height: 42px;
-
-  padding: 0;
+  height: 44px;
 
   border-radius: 50%;
 
-  background: #604421;
-  color: #f8eadc;
+  background: #5b3a1a;
 
-  font-size: 25px;
+  color: #fff4e8;
+
+  font-size: 27px;
+
+  z-index: 10;
+
 }
 
 
-/* ACCESSIBILITY BUTTON */
+/* =====================================================
+   ACCESSIBILITY BUTTON
+===================================================== */
 
 .accessibility-button {
-  width: min(500px, 82vw);
 
-  min-height: 72px;
+  width: min(
+    370px,
+    82vw
+  );
+
+  height: 78px;
 
   display: flex;
 
@@ -1352,76 +527,83 @@ button:active {
 
   justify-content: flex-start;
 
-  gap: 16px;
+  gap: 18px;
 
   padding: 10px 28px;
 
-  border-radius: 40px;
+  border-radius: 45px;
 
   background: #604421;
 
-  border: 1px solid rgba(255, 220, 170, 0.3);
+  border:
+    1px solid rgba(
+      255,
+      220,
+      170,
+      0.35
+    );
 
   color: #fff4e8;
 
-  font-size: 24px;
+  font-size: 22px;
 
   font-weight: 500;
+
 }
 
 
-.setup-accessibility-icon {
-  width: 42px;
-  height: 42px;
+.button-icon {
+
+  width: 48px;
+
+  height: 48px;
 
   display: flex;
 
   align-items: center;
+
   justify-content: center;
 
-  border-radius: 9px;
+  border-radius: 10px;
 
-  background: #35200e;
+  background: #261608;
 
-  flex-shrink: 0;
 }
 
 
-.setup-accessibility-icon img {
-  width: 25px;
-  height: 25px;
+.button-icon img {
+
+  width: 30px;
+
+  height: 30px;
 
   object-fit: contain;
 
-  display: block;
 }
 
 
-/* CONTINUE */
+/* =====================================================
+   CONTINUE
+===================================================== */
 
 .setup-continue {
-  margin-top: 32px;
 
-  width: 205px;
+  margin-top: 28px;
 
-  opacity: 0;
+  width: 220px;
 
-  pointer-events: none;
+  height: 68px;
 
-  transform: translateY(8px);
+  border-radius: 35px;
 
-  transition:
-    opacity 0.25s ease,
-    transform 0.25s ease;
-}
+  background: #f4e9dc;
 
+  color: #35271c;
 
-.setup-continue.show {
-  opacity: 1;
+  font-size: 20px;
 
-  pointer-events: auto;
+  font-weight: 500;
 
-  transform: translateY(0);
 }
 
 
@@ -1435,7 +617,7 @@ button:active {
 
   inset: 0;
 
-  z-index: 5000;
+  z-index: 1000;
 
   display: flex;
 
@@ -1443,17 +625,26 @@ button:active {
 
   justify-content: center;
 
-  padding: 20px;
+  padding: 25px;
 
-  background: rgba(12, 8, 5, 0.78);
-
-  backdrop-filter: blur(2px);
+  background:
+    rgba(
+      0,
+      0,
+      0,
+      0.55
+    );
 
   opacity: 0;
 
+  visibility: hidden;
+
   pointer-events: none;
 
-  transition: opacity 0.25s ease;
+  transition:
+    opacity 0.2s ease,
+    visibility 0.2s ease;
+
 }
 
 
@@ -1461,30 +652,407 @@ button:active {
 
   opacity: 1;
 
+  visibility: visible;
+
   pointer-events: auto;
+
 }
 
 
-/* CARD */
+/* =====================================================
+   ACCESSIBILITY CARD
+===================================================== */
 
-.accessibility-overlay .accessibility-card {
+.accessibility-card {
 
-  width: min(620px, 92vw);
+  width: min(
+    540px,
+    90vw
+  );
 
-  max-height: 90vh;
+  max-height: 88vh;
 
   overflow-y: auto;
 
-  padding: 28px 32px;
+  padding: 22px 36px 10px;
 
   border-radius: 28px;
 
   background: #604421;
 
-  border: 1px solid rgba(255, 220, 170, 0.25);
+  border:
+    1px solid rgba(
+      255,
+      220,
+      170,
+      0.35
+    );
 
   box-shadow:
-    0 20px 70px rgba(0, 0, 0, 0.5);
+    0 20px 80px
+    rgba(
+      0,
+      0,
+      0,
+      0.5
+    );
+
+}
+
+
+/* =====================================================
+   HANDLE
+===================================================== */
+
+.drag-handle {
+
+  width: 60px;
+
+  height: 6px;
+
+  margin: 0 auto 22px;
+
+  border-radius: 10px;
+
+  background: #3e2917;
+
+}
+
+
+/* =====================================================
+   ACCESSIBILITY HEADER
+===================================================== */
+
+.accessibility-header {
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  padding-bottom: 24px;
+
+  border-bottom:
+    1px solid
+    rgba(
+      255,
+      240,
+      220,
+      0.18
+    );
+
+}
+
+
+.accessibility-title {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 18px;
+
+}
+
+
+.accessibility-main-icon {
+
+  width: 50px;
+
+  height: 50px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  border-radius: 12px;
+
+  background: #261608;
+
+}
+
+
+.accessibility-main-icon img {
+
+  width: 32px;
+
+  height: 32px;
+
+  object-fit: contain;
+
+}
+
+
+.accessibility-title h1 {
+
+  font-size: 31px;
+
+  line-height: 1.1;
+
+  margin-bottom: 5px;
+
+}
+
+
+.accessibility-title p {
+
+  color: #d9c5ad;
+
+  font-size: 16px;
+
+}
+
+
+/* =====================================================
+   CLOSE
+===================================================== */
+
+.accessibility-close {
+
+  width: 48px;
+
+  height: 48px;
+
+  min-height: 48px;
+
+  flex-shrink: 0;
+
+  border-radius: 50%;
+
+  background: #321f0e;
+
+  color: #fff4e8;
+
+  font-size: 30px;
+
+  line-height: 1;
+
+}
+
+
+/* =====================================================
+   ACCESSIBILITY ROW
+===================================================== */
+
+.accessibility-row {
+
+  display: grid;
+
+  grid-template-columns:
+    52px
+    1fr
+    auto;
+
+  align-items: center;
+
+  gap: 16px;
+
+  min-height: 94px;
+
+  padding: 14px 0;
+
+  border-bottom:
+    1px solid
+    rgba(
+      255,
+      240,
+      220,
+      0.15
+    );
+
+}
+
+
+.accessibility-row.last {
+
+  border-bottom: none;
+
+}
+
+
+.accessibility-icon {
+
+  width: 44px;
+
+  height: 44px;
+
+  padding: 9px;
+
+  object-fit: contain;
+
+  border-radius: 50%;
+
+  background: #4a2c12;
+
+}
+
+
+.accessibility-label h2 {
+
+  margin-bottom: 5px;
+
+  font-size: 18px;
+
+  font-weight: 500;
+
+}
+
+
+.accessibility-label p {
+
+  color: #d9c5ad;
+
+  font-family: monospace;
+
+  font-size: 14px;
+
+  line-height: 1.5;
+
+}
+
+
+/* =====================================================
+   LANGUAGE
+===================================================== */
+
+.language-selector {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 10px;
+
+  min-height: 48px;
+
+  padding: 8px 14px;
+
+  border-radius: 25px;
+
+  background: #4a2c12;
+
+  color: #f8eadc;
+
+}
+
+
+.language-selector img {
+
+  width: 20px;
+
+  height: 20px;
+
+  object-fit: contain;
+
+}
+
+
+/* =====================================================
+   TEXT SIZE
+===================================================== */
+
+.text-size-selector {
+
+  display: flex;
+
+  align-items: center;
+
+  padding: 4px;
+
+  border-radius: 25px;
+
+  background: #4a2c12;
+
+}
+
+
+.text-size-selector button {
+
+  width: 42px;
+
+  height: 40px;
+
+  min-height: 40px;
+
+  border-radius: 50%;
+
+  background: transparent;
+
+  color: #d9c5ad;
+
+}
+
+
+.text-size-selector button.selected {
+
+  background: #ffe0c1;
+
+  color: #392412;
+
+}
+
+
+/* =====================================================
+   TOGGLE
+===================================================== */
+
+.toggle {
+
+  position: relative;
+
+  width: 58px;
+
+  height: 32px;
+
+  min-height: 32px;
+
+  padding: 0;
+
+  border-radius: 20px;
+
+  background: #321f0e;
+
+}
+
+
+.toggle span {
+
+  position: absolute;
+
+  top: 4px;
+
+  left: 4px;
+
+  width: 24px;
+
+  height: 24px;
+
+  border-radius: 50%;
+
+  background: #d8cdc2;
+
+  transition:
+    transform 0.2s ease;
+
+}
+
+
+.toggle.active {
+
+  background: #ffe0c1;
+
+}
+
+
+.toggle.active span {
+
+  transform:
+    translateX(26px);
+
+  background: #51351f;
 
 }
 
@@ -1495,17 +1063,33 @@ button:active {
 
 .ar-screen {
 
-  position: relative;
+  position: fixed;
 
-  padding: 0;
+  inset: 0;
+
+  display: none;
+
+  width: 100vw;
+
+  height: 100dvh;
 
   overflow: hidden;
 
   background: #000;
+
 }
 
 
-/* MINDAR SCENE */
+.ar-screen.active {
+
+  display: block;
+
+}
+
+
+/* =====================================================
+   A-FRAME
+===================================================== */
 
 #mindarScene {
 
@@ -1518,68 +1102,58 @@ button:active {
   height: 100% !important;
 
   z-index: 1;
+
 }
 
 
-/*
-   A-Frame creates the actual camera canvas.
-*/
+/* Remove A-Frame UI */
 
-#mindarScene canvas {
+.a-enter-vr,
+.a-orientation-modal {
 
-  width: 100% !important;
+  display: none !important;
 
-  height: 100% !important;
-}
-
-
-/* AR UI */
-
-.ar-ui {
-
-  position: absolute;
-
-  inset: 0;
-
-  z-index: 20;
-
-  pointer-events: none;
 }
 
 
 /* =====================================================
-   AR TOP BAR
+   AR UI
 ===================================================== */
 
-.ar-top-bar {
+.ar-back,
+.ar-accessibility {
 
-  position: absolute;
+  position: fixed;
 
-  top: 24px;
+  z-index: 20;
 
-  left: 24px;
+  top: 20px;
 
-  right: 24px;
+  width: 50px;
 
-  display: flex;
+  height: 50px;
 
-  justify-content: space-between;
+  border-radius: 50%;
 
-  align-items: center;
+  background: #3b2108;
+
+  color: #fff4e8;
+
 }
 
 
-.ar-circle-button {
+.ar-back {
 
-  width: 46px;
+  left: 22px;
 
-  height: 46px;
+  font-size: 29px;
 
-  min-height: 46px;
+}
 
-  padding: 0;
 
-  border-radius: 50%;
+.ar-accessibility {
+
+  right: 22px;
 
   display: flex;
 
@@ -1587,23 +1161,17 @@ button:active {
 
   justify-content: center;
 
-  background: #382008;
-
-  color: #ffe6c9;
-
-  font-size: 27px;
-
-  pointer-events: auto;
 }
 
 
-.ar-circle-button img {
+.ar-accessibility img {
 
-  width: 25px;
+  width: 29px;
 
-  height: 25px;
+  height: 29px;
 
   object-fit: contain;
+
 }
 
 
@@ -1613,7 +1181,9 @@ button:active {
 
 .scan-message {
 
-  position: absolute;
+  position: fixed;
+
+  z-index: 20;
 
   top: 105px;
 
@@ -1621,22 +1191,18 @@ button:active {
 
   transform: translateX(-50%);
 
-  white-space: nowrap;
-
-  padding: 14px 25px;
+  padding: 14px 26px;
 
   border-radius: 30px;
 
-  background: #321b04;
+  background: #3b2108;
 
-  color: #f7d9b5;
+  color: #f4dfc8;
 
-  font-size: 18px;
+  font-size: 19px;
 
-  font-weight: 500;
+  white-space: nowrap;
 
-  box-shadow:
-    0 10px 30px rgba(0, 0, 0, 0.25);
 }
 
 
@@ -1646,112 +1212,143 @@ button:active {
 
 .scan-frame {
 
-  position: absolute;
+  position: fixed;
 
-  left: 50%;
+  z-index: 15;
 
   top: 50%;
 
-  transform: translate(-50%, -50%);
+  left: 50%;
 
-  width: min(72vw, 310px);
+  width: min(
+    320px,
+    60vw
+  );
 
-  height: min(58vh, 430px);
+  height: min(
+    430px,
+    60vh
+  );
+
+  transform: translate(
+    -50%,
+    -50%
+  );
+
+  pointer-events: none;
+
 }
 
-
-/* CORNERS */
 
 .corner {
 
   position: absolute;
 
-  width: 58px;
+  width: 60px;
 
-  height: 58px;
+  height: 60px;
 
-  border-color: #2e1604;
+  border-color: #3b2108;
 
   border-style: solid;
 
-  border-width: 0;
 }
 
 
-.corner.top-left {
+.top-left {
 
   top: 0;
   left: 0;
 
-  border-top-width: 7px;
-  border-left-width: 7px;
+  border-width:
+    6px 0 0 6px;
 
-  border-radius: 18px 0 0 0;
+  border-radius:
+    18px 0 0 0;
+
 }
 
 
-.corner.top-right {
+.top-right {
 
   top: 0;
   right: 0;
 
-  border-top-width: 7px;
-  border-right-width: 7px;
+  border-width:
+    6px 6px 0 0;
 
-  border-radius: 0 18px 0 0;
+  border-radius:
+    0 18px 0 0;
+
 }
 
 
-.corner.bottom-left {
+.bottom-left {
 
   bottom: 0;
   left: 0;
 
-  border-bottom-width: 7px;
-  border-left-width: 7px;
+  border-width:
+    0 0 6px 6px;
 
-  border-radius: 0 0 0 18px;
+  border-radius:
+    0 0 0 18px;
+
 }
 
 
-.corner.bottom-right {
+.bottom-right {
 
   bottom: 0;
   right: 0;
 
-  border-bottom-width: 7px;
-  border-right-width: 7px;
+  border-width:
+    0 6px 6px 0;
 
-  border-radius: 0 0 18px 0;
+  border-radius:
+    0 0 18px 0;
+
 }
 
 
-/* SEARCH BUTTON */
+/* =====================================================
+   SEARCH ICON
+===================================================== */
 
-.scan-search {
+.search-icon {
 
-  position: absolute;
+  position: fixed;
+
+  z-index: 20;
 
   top: 50%;
+
   left: 50%;
 
-  transform: translate(-50%, -50%);
+  transform:
+    translate(
+      -50%,
+      -50%
+    );
 
-  width: 64px;
-  height: 64px;
+  width: 68px;
+
+  height: 68px;
 
   display: flex;
 
   align-items: center;
+
   justify-content: center;
 
   border-radius: 50%;
 
-  background: #4b2c00;
+  background: #5b3600;
 
-  color: #e9c34d;
+  color: #e7bb3d;
 
-  font-size: 38px;
+  font-size: 42px;
+
 }
 
 
@@ -1761,23 +1358,27 @@ button:active {
 
 .scan-status {
 
-  position: absolute;
+  position: fixed;
 
-  bottom: 75px;
+  z-index: 20;
+
+  bottom: 78px;
 
   left: 50%;
 
-  transform: translateX(-50%);
+  transform:
+    translateX(-50%);
 
-  white-space: nowrap;
+  color: #3b2108;
 
   font-family: monospace;
 
-  letter-spacing: 3px;
-
   font-size: 12px;
 
-  color: #2d1605;
+  letter-spacing: 4px;
+
+  white-space: nowrap;
+
 }
 
 
@@ -1787,33 +1388,34 @@ button:active {
 
 .artifact-found {
 
-  position: absolute;
+  position: fixed;
 
   inset: 0;
 
-  display: flex;
-
-  flex-direction: column;
-
-  justify-content: space-between;
-
-  opacity: 0;
+  z-index: 30;
 
   pointer-events: none;
 
-  transition: opacity 0.3s ease;
+  opacity: 0;
+
+  visibility: hidden;
+
+  transition:
+    opacity 0.25s ease;
+
 }
 
 
 .artifact-found.visible {
 
   opacity: 1;
+
+  visibility: visible;
+
 }
 
 
-/* FOUND MESSAGE */
-
-.found-message {
+.found-pill {
 
   position: absolute;
 
@@ -1821,181 +1423,206 @@ button:active {
 
   left: 50%;
 
-  transform: translateX(-50%);
+  transform:
+    translateX(-50%);
 
-  padding: 13px 25px;
+  padding: 13px 27px;
 
   border-radius: 30px;
 
-  background: #321b04;
+  background: #3b2108;
 
-  color: #f7d9b5;
+  color: #f4dfc8;
 
   font-size: 18px;
 
-  white-space: nowrap;
 }
 
-
-/* INFO CARD */
 
 .artifact-info {
 
   position: absolute;
 
-  left: 8%;
+  left: 55px;
 
-  bottom: 55px;
+  bottom: 34px;
 
-  width: min(300px, 70vw);
+  width: 300px;
 
-  padding: 22px;
+  padding: 20px 18px;
 
-  border-radius: 22px;
+  border-radius: 24px;
 
-  background: rgba(50, 25, 3, 0.94);
+  background: #3b2108;
 
-  color: #fff0dc;
+  color: #fff4e8;
 
-  box-shadow:
-    0 15px 40px rgba(0, 0, 0, 0.3);
 }
 
 
 .artifact-info h2 {
 
-  margin-bottom: 4px;
+  font-size: 20px;
 
-  font-size: 18px;
+  margin-bottom: 3px;
 
-  font-weight: 500;
 }
 
 
-.artifact-info span {
+.artifact-info h3 {
 
-  display: block;
+  font-size: 12px;
 
-  margin-bottom: 16px;
+  font-weight: 400;
 
-  font-size: 11px;
+  margin-bottom: 20px;
 
-  color: #e8cdb0;
 }
 
 
 .artifact-info p {
 
-  font-size: 12px;
+  font-size: 13px;
 
-  line-height: 1.45;
+  line-height: 1.4;
 
-  color: #f0ddc8;
 }
 
 
 /* =====================================================
-   MOBILE AR
+   MOBILE
 ===================================================== */
 
 @media (max-width: 600px) {
 
   .setup-content h1 {
 
-    font-size: 34px;
+    font-size: 36px;
 
   }
 
 
   .setup-content > p {
 
-    font-size: 17px;
+    font-size: 18px;
 
-    margin-bottom: 38px;
+    margin-bottom: 58px;
 
   }
 
 
   .accessibility-button {
 
-    width: 88vw;
+    width: 342px;
 
-    min-height: 72px;
-
-    font-size: 23px;
+    height: 72px;
 
   }
 
 
-  .accessibility-overlay {
-
-    align-items: flex-end;
-
-    padding: 0;
-  }
-
-
-  .accessibility-overlay .accessibility-card {
+  .accessibility-card {
 
     width: 100%;
 
-    max-height: 88vh;
+    max-height: 92vh;
 
-    border-radius: 28px 28px 0 0;
+    padding:
+      18px 20px 5px;
 
-    padding: 22px 20px;
   }
 
 
-  .ar-top-bar {
+  .accessibility-title {
 
-    top: 24px;
+    gap: 12px;
 
-    left: 20px;
+  }
 
-    right: 20px;
+
+  .accessibility-title h1 {
+
+    font-size: 25px;
+
+  }
+
+
+  .accessibility-title p {
+
+    font-size: 13px;
+
+  }
+
+
+  .accessibility-row {
+
+    grid-template-columns:
+      44px
+      1fr
+      auto;
+
+    gap: 12px;
+
+  }
+
+
+  .accessibility-label h2 {
+
+    font-size: 16px;
+
+  }
+
+
+  .accessibility-label p {
+
+    font-size: 12px;
 
   }
 
 
   .scan-message {
 
-    top: 105px;
+    top: 110px;
 
     font-size: 16px;
 
-    padding: 13px 20px;
+    padding:
+      13px 20px;
 
   }
 
 
   .scan-frame {
 
-    width: 72vw;
+    width: 62vw;
 
-    height: 58vh;
+    height: 55vh;
 
   }
 
 
   .artifact-info {
 
-    left: 7%;
+    left: 20px;
 
-    bottom: 35px;
+    bottom: 25px;
 
-    width: 68vw;
+    width: 178px;
 
-    padding: 18px;
+    padding: 16px;
 
   }
 
 
-  .found-message {
+  .artifact-info h2 {
 
-    top: 105px;
+    font-size: 17px;
 
-    font-size: 16px;
+  }
+
+
+  .artifact-info p {
+
+    font-size: 11px;
 
   }
 
