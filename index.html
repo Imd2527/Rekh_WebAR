@@ -2,20 +2,40 @@
 <html lang="en">
 
 <head>
+
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
 
   <title>Rekh</title>
 
-  <link rel="stylesheet" href="style.css">
+  <link
+    rel="stylesheet"
+    href="style.css"
+  >
 
-  <!-- A-Frame -->
-  <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+  <!-- =====================================================
+       A-FRAME
+  ====================================================== -->
 
-  <!-- MindAR Image Tracking -->
-  <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
+  <script
+    src="https://aframe.io/releases/1.5.0/aframe.min.js">
+  </script>
+
+
+  <!-- =====================================================
+       MINDAR IMAGE TRACKING
+  ====================================================== -->
+
+  <script
+    src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js">
+  </script>
 
 </head>
+
 
 <body>
 
@@ -24,7 +44,10 @@
        LOADING SCREEN
   ====================================================== -->
 
-  <section id="loading" class="screen active">
+  <section
+    id="loading"
+    class="screen active"
+  >
 
     <img
       src="assets/images/Rekh Logo.png"
@@ -40,16 +63,22 @@
 
     <div class="loading-line"></div>
 
-    <span>INITIALIZING ENVIRONMENT</span>
+    <span>
+      INITIALIZING ENVIRONMENT
+    </span>
 
   </section>
+
 
 
   <!-- =====================================================
        WELCOME SCREEN
   ====================================================== -->
 
-  <section id="welcome" class="screen">
+  <section
+    id="welcome"
+    class="screen"
+  >
 
     <img
       src="assets/images/Rekh Logo.png"
@@ -59,9 +88,12 @@
 
     <h1>Rekh</h1>
 
+
     <div class="welcome-card">
 
-      <h2>Welcome to</h2>
+      <h2>
+        Welcome to
+      </h2>
 
       <p>
         Raja Dinkar Kelkar Museum's AR Experience
@@ -71,22 +103,32 @@
 
     </div>
 
-    <button onclick="showScreen('howRekh')">
+
+    <button
+      onclick="showScreen('howRekh')"
+    >
       Continue on Web →
     </button>
 
-    <button class="secondary">
+
+    <button
+      class="secondary"
+    >
       Install App
     </button>
 
   </section>
 
 
+
   <!-- =====================================================
        HOW REKH WORKS
   ====================================================== -->
 
-  <section id="howRekh" class="screen">
+  <section
+    id="howRekh"
+    class="screen"
+  >
 
     <div class="story-carousel">
 
@@ -100,104 +142,137 @@
 
       </div>
 
+
       <div class="story-dots">
 
         <button
           class="dot active"
           onclick="showStory(0)"
-          aria-label="Story frame 1">
-        </button>
+          aria-label="Story frame 1"
+        ></button>
 
         <button
           class="dot"
           onclick="showStory(1)"
-          aria-label="Story frame 2">
-        </button>
+          aria-label="Story frame 2"
+        ></button>
 
         <button
           class="dot"
           onclick="showStory(2)"
-          aria-label="Story frame 3">
-        </button>
+          aria-label="Story frame 3"
+        ></button>
 
         <button
           class="dot"
           onclick="showStory(3)"
-          aria-label="Story frame 4">
-        </button>
+          aria-label="Story frame 4"
+        ></button>
 
       </div>
 
     </div>
 
 
-    <h1>How Rekh Works</h1>
+    <h1>
+      How Rekh Works
+    </h1>
 
     <p>
       Turning museum stories into experiences beyond reading
     </p>
 
 
-    <button onclick="showScreen('setup')">
+    <button
+      onclick="showScreen('setup')"
+    >
       Set Up Experience →
     </button>
 
 
     <button
       class="text-button"
-      onclick="showScreen('howWorks')">
+      onclick="showScreen('howWorks')"
+    >
       ⓘ How it works
     </button>
 
   </section>
 
 
+
   <!-- =====================================================
        HOW IT WORKS POPUP
   ====================================================== -->
 
-  <section id="howWorks" class="screen">
+  <section
+    id="howWorks"
+    class="screen"
+  >
 
     <div class="how-card">
 
       <button
         class="close"
         onclick="showScreen('howRekh')"
-        aria-label="Close">
+        aria-label="Close"
+      >
         ×
       </button>
 
-      <h1>ⓘ How it works</h1>
+
+      <h1>
+        ⓘ How it works
+      </h1>
+
 
       <div class="instruction">
+
         <b>① Look</b>
+
         <p>
           Point your phone at the artifact and see it come alive.
         </p>
+
       </div>
 
+
       <div class="instruction">
+
         <b>② Choose</b>
+
         <p>
           Tap a glowing point to open a short story.
         </p>
+
       </div>
 
+
       <div class="instruction">
+
         <b>③ Interact</b>
+
         <p>
           Drag to turn the artifact and view every side.
         </p>
+
       </div>
 
+
       <div class="instruction">
+
         <b>④ Story</b>
+
         <p>
           Listen or read at your own pace. Nothing is timed.
         </p>
+
       </div>
 
-      <button onclick="showScreen('howRekh')">
+
+      <button
+        onclick="showScreen('howRekh')"
+      >
         Got it
       </button>
 
@@ -206,23 +281,31 @@
   </section>
 
 
+
   <!-- =====================================================
        SET UP EXPERIENCE
   ====================================================== -->
 
-  <section id="setup" class="screen setup-screen">
+  <section
+    id="setup"
+    class="screen setup-screen"
+  >
+
 
     <button
       class="setup-back"
       onclick="showScreen('howRekh')"
-      aria-label="Back">
+      aria-label="Back"
+    >
       ←
     </button>
 
 
     <div class="setup-content">
 
-      <h1>Set Up the Experience</h1>
+      <h1>
+        Set Up the Experience
+      </h1>
 
       <p>
         Choose what feels right. You can<br>
@@ -230,11 +313,12 @@
       </p>
 
 
-      <!-- ACCESSIBILITY BUTTON -->
+      <!-- ACCESSIBILITY -->
 
       <button
         class="accessibility-button"
-        onclick="openAccessibility()">
+        onclick="openAccessibility()"
+      >
 
         <span class="setup-accessibility-icon">
 
@@ -252,13 +336,13 @@
       </button>
 
 
-      <!-- CONTINUE
-           HIDDEN UNTIL ACCESSIBILITY IS CLOSED -->
+      <!-- CONTINUE -->
 
       <button
         id="setupContinue"
         class="setup-continue"
-        onclick="continueSetup()">
+        onclick="continueSetup()"
+      >
 
         Continue
 
@@ -269,15 +353,18 @@
   </section>
 
 
+
   <!-- =====================================================
        ACCESSIBILITY OVERLAY
   ====================================================== -->
 
   <section
     id="accessibilityOverlay"
-    class="accessibility-overlay">
+    class="accessibility-overlay"
+  >
 
     <div class="accessibility-card">
+
 
       <!-- HEADER -->
 
@@ -292,7 +379,9 @@
 
           <div>
 
-            <h1>Accessibility</h1>
+            <h1>
+              Accessibility
+            </h1>
 
             <p>
               Make the experience your own
@@ -306,13 +395,13 @@
         <button
           class="close accessibility-close"
           onclick="closeAccessibility()"
-          aria-label="Close accessibility settings">
-
+          aria-label="Close accessibility settings"
+        >
           ×
-
         </button>
 
       </div>
+
 
 
       <!-- LANGUAGE -->
@@ -327,7 +416,9 @@
 
         <div class="accessibility-label">
 
-          <h2>Language</h2>
+          <h2>
+            Language
+          </h2>
 
           <p>
             Choose your language
@@ -335,7 +426,10 @@
 
         </div>
 
-        <button class="language-selector">
+
+        <button
+          class="language-selector"
+        >
 
           English
 
@@ -347,6 +441,7 @@
         </button>
 
       </div>
+
 
 
       <!-- TEXT SIZE -->
@@ -361,7 +456,9 @@
 
         <div class="accessibility-label">
 
-          <h2>Text size</h2>
+          <h2>
+            Text size
+          </h2>
 
           <p>
             Make words bigger or smaller
@@ -369,19 +466,25 @@
 
         </div>
 
+
         <div class="text-size-selector">
 
-          <button>A</button>
+          <button>
+            A
+          </button>
 
           <button class="selected">
             A
           </button>
 
-          <button>A</button>
+          <button>
+            A
+          </button>
 
         </div>
 
       </div>
+
 
 
       <!-- AUDIO -->
@@ -396,7 +499,9 @@
 
         <div class="accessibility-label">
 
-          <h2>Audio</h2>
+          <h2>
+            Audio
+          </h2>
 
           <p>
             Narrated stories through earphones
@@ -404,16 +509,19 @@
 
         </div>
 
+
         <button
           class="toggle active"
           onclick="toggleSetting(this)"
-          aria-label="Toggle audio">
+          aria-label="Toggle audio"
+        >
 
           <span></span>
 
         </button>
 
       </div>
+
 
 
       <!-- CAPTIONS -->
@@ -428,7 +536,9 @@
 
         <div class="accessibility-label">
 
-          <h2>Captions</h2>
+          <h2>
+            Captions
+          </h2>
 
           <p>
             Show text for every story
@@ -436,16 +546,19 @@
 
         </div>
 
+
         <button
           class="toggle active"
           onclick="toggleSetting(this)"
-          aria-label="Toggle captions">
+          aria-label="Toggle captions"
+        >
 
           <span></span>
 
         </button>
 
       </div>
+
 
 
       <!-- HIGH CONTRAST -->
@@ -460,7 +573,9 @@
 
         <div class="accessibility-label">
 
-          <h2>High contrast</h2>
+          <h2>
+            High contrast
+          </h2>
 
           <p>
             For easier readability
@@ -468,16 +583,19 @@
 
         </div>
 
+
         <button
           class="toggle"
           onclick="toggleSetting(this)"
-          aria-label="Toggle high contrast">
+          aria-label="Toggle high contrast"
+        >
 
           <span></span>
 
         </button>
 
       </div>
+
 
 
       <!-- HAPTIC FEEDBACK -->
@@ -492,7 +610,9 @@
 
         <div class="accessibility-label">
 
-          <h2>Haptic feedback</h2>
+          <h2>
+            Haptic feedback
+          </h2>
 
           <p>
             Gentle vibrations
@@ -500,10 +620,12 @@
 
         </div>
 
+
         <button
           class="toggle"
           onclick="toggleSetting(this)"
-          aria-label="Toggle haptic feedback">
+          aria-label="Toggle haptic feedback"
+        >
 
           <span></span>
 
@@ -511,25 +633,34 @@
 
       </div>
 
+
     </div>
 
   </section>
+
 
 
   <!-- =====================================================
        AR SCREEN
   ====================================================== -->
 
-  <section id="arScreen" class="screen ar-screen">
+  <section
+    id="arScreen"
+    class="screen ar-screen"
+  >
 
-    <!-- MINDAR CAMERA -->
+
+    <!-- =================================================
+         MINDAR CAMERA
+    ================================================== -->
 
     <a-scene
+
       id="mindarScene"
 
       mindar-image="
-        imageTargetSrc: assets/images/Vishnu_Artifact-target.mind;
-        autoStart: true;
+        imageTargetSrc: assets/Vishnu_Artifact-target.mind;
+        autoStart: false;
         filterMinCF: 0.001;
         filterBeta: 1000;
         warmupTolerance: 5;
@@ -548,24 +679,44 @@
 
       device-orientation-permission-ui="enabled: false"
 
-     
     >
+
+
+      <!-- CAMERA -->
 
       <a-camera
         position="0 0 0"
-        look-controls="enabled: false">
+        look-controls="enabled: false"
+      >
       </a-camera>
 
 
-      <!-- SINGLE IMAGE TARGET -->
+
+      <!-- =================================================
+           VISHNU IMAGE TARGET
+      ================================================== -->
 
       <a-entity
+
         id="vishnuTarget"
-        mindar-image-target="targetIndex: 0">
+
+        mindar-image-target="
+          targetIndex: 0
+        "
+
+      >
+
+        <!--
+          AR content will be added here later.
+          For now the artifact itself is
+          detected by the MindAR target.
+        -->
 
       </a-entity>
 
+
     </a-scene>
+
 
 
     <!-- =================================================
@@ -579,20 +730,21 @@
 
       <div class="ar-top-bar">
 
+
         <button
           class="ar-circle-button"
           onclick="showScreen('setup')"
-          aria-label="Back">
-
+          aria-label="Back"
+        >
           ←
-
         </button>
 
 
         <button
           class="ar-circle-button"
           onclick="openAccessibility()"
-          aria-label="Accessibility">
+          aria-label="Accessibility"
+        >
 
           <img
             src="assets/images/AccessibilityIcon.png"
@@ -604,27 +756,39 @@
       </div>
 
 
-      <!-- SCANNING MESSAGE -->
+
+      <!-- =================================================
+           SCANNING MESSAGE
+      ================================================== -->
 
       <div
         id="scanMessage"
-        class="scan-message">
+        class="scan-message"
+      >
 
         Point your camera at the artifact
 
       </div>
 
 
-      <!-- SCAN FRAME -->
+
+      <!-- =================================================
+           SCAN FRAME
+      ================================================== -->
 
       <div
         id="scanFrame"
-        class="scan-frame">
+        class="scan-frame"
+      >
 
         <span class="corner top-left"></span>
+
         <span class="corner top-right"></span>
+
         <span class="corner bottom-left"></span>
+
         <span class="corner bottom-right"></span>
+
 
         <div class="scan-search">
           ⌕
@@ -633,28 +797,38 @@
       </div>
 
 
-      <!-- SCANNING STATUS -->
+
+      <!-- =================================================
+           SCANNING STATUS
+      ================================================== -->
 
       <div
         id="scanStatus"
-        class="scan-status">
+        class="scan-status"
+      >
 
         LOOKING FOR ARTIFACT ...
 
       </div>
 
 
+
       <!-- =================================================
-           FOUND UI
+           ARTIFACT FOUND
       ================================================== -->
 
       <div
         id="artifactFound"
-        class="artifact-found">
+        class="artifact-found"
+      >
+
 
         <div class="found-message">
+
           Artifact found
+
         </div>
+
 
 
         <div class="artifact-info">
@@ -676,11 +850,15 @@
 
         </div>
 
+
       </div>
+
 
     </div>
 
+
   </section>
+
 
 
   <!-- =====================================================
@@ -688,6 +866,7 @@
   ====================================================== -->
 
   <script src="script.js"></script>
+
 
 </body>
 
