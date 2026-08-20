@@ -1,6 +1,6 @@
-/* =========================================
+/* =====================================================
    SCREEN NAVIGATION
-========================================= */
+===================================================== */
 
 function showScreen(screenId) {
 
@@ -8,27 +8,26 @@ function showScreen(screenId) {
     screen.classList.remove("active");
   });
 
-  const targetScreen = document.getElementById(screenId);
+  const screen = document.getElementById(screenId);
 
-  if (targetScreen) {
-    targetScreen.classList.add("active");
+  if (screen) {
+    screen.classList.add("active");
   }
-
 }
 
 
-/* =========================================
+/* =====================================================
    LOADING SCREEN
-========================================= */
+===================================================== */
 
 setTimeout(() => {
   showScreen("welcome");
 }, 2500);
 
 
-/* =========================================
+/* =====================================================
    STORYBOARD
-========================================= */
+===================================================== */
 
 const storyFrames = [
   "assets/images/Rekh_How_It_Works_Frame_1_HD.png",
@@ -40,98 +39,88 @@ const storyFrames = [
 let currentStory = 0;
 
 
-function updateStory() {
-
-  const storyImage = document.getElementById("storyFrame");
-
-  if (!storyImage) return;
-
-  storyImage.src = storyFrames[currentStory];
-
-
-  document.querySelectorAll(".dot").forEach((dot, index) => {
-
-    dot.classList.toggle(
-      "active",
-      index === currentStory
-    );
-
-  });
-
-}
-
-
 function showStory(index) {
 
   currentStory = index;
 
-  updateStory();
+  const storyImage = document.getElementById("storyFrame");
+
+  if (storyImage) {
+    storyImage.src = storyFrames[currentStory];
+  }
+
+  document.querySelectorAll(".dot").forEach((dot, i) => {
+
+    dot.classList.toggle(
+      "active",
+      i === currentStory
+    );
+
+  });
+}
+
+
+/* =====================================================
+   ACCESSIBILITY
+===================================================== */
+
+/*
+   Accessibility starts CLOSED.
+   Continue also starts HIDDEN.
+*/
+
+
+function openAccessibility() {
+
+  const overlay =
+    document.getElementById("accessibilityOverlay");
+
+  const continueButton =
+    document.getElementById("setupContinue");
+
+  if (overlay) {
+    overlay.classList.add("open");
+  }
+
+  /*
+     Keep Continue hidden while
+     accessibility panel is open.
+  */
+
+  if (continueButton) {
+    continueButton.classList.remove("show");
+  }
 
 }
 
 
-/* =========================================
-   STORYBOARD SWIPE
-========================================= */
+function closeAccessibility() {
 
-let touchStartX = 0;
-let touchEndX = 0;
+  const overlay =
+    document.getElementById("accessibilityOverlay");
 
-const swipeArea = document.querySelector(".story-carousel");
+  const continueButton =
+    document.getElementById("setupContinue");
 
-if (swipeArea) {
+  if (overlay) {
+    overlay.classList.remove("open");
+  }
 
-  swipeArea.addEventListener("touchstart", function(event) {
+  /*
+     Once the accessibility panel is closed,
+     show Continue.
+  */
 
-    touchStartX =
-      event.changedTouches[0].screenX;
-
-  });
-
-
-  swipeArea.addEventListener("touchend", function(event) {
-
-    touchEndX =
-      event.changedTouches[0].screenX;
-
-
-    /* SWIPE LEFT */
-
-    if (touchEndX < touchStartX - 50) {
-
-      currentStory++;
-
-      if (currentStory >= storyFrames.length) {
-        currentStory = 0;
-      }
-
-      updateStory();
-
-    }
-
-
-    /* SWIPE RIGHT */
-
-    if (touchEndX > touchStartX + 50) {
-
-      currentStory--;
-
-      if (currentStory < 0) {
-        currentStory = storyFrames.length - 1;
-      }
-
-      updateStory();
-
-    }
-
-  });
+  if (continueButton) {
+    continueButton.classList.add("show");
+  }
 
 }
 
 
-/* =========================================
+/* =====================================================
    ACCESSIBILITY TOGGLES
-========================================= */
+===================================================== */
 
 function toggleSetting(button) {
 
@@ -140,100 +129,19 @@ function toggleSetting(button) {
 }
 
 
-/* =========================================
-   TEXT SIZE
-========================================= */
+/* =====================================================
+   CONTINUE
+===================================================== */
 
-const textSizeButtons =
-  document.querySelectorAll(".text-size-selector button");
+function continueSetup() {
 
-textSizeButtons.forEach((button, index) => {
+  /*
+     For now this simply keeps the setup flow ready
+     for the next screen.
 
-  button.addEventListener("click", function() {
+     We can connect this to the AR experience later.
+  */
 
-    textSizeButtons.forEach(btn => {
-      btn.classList.remove("selected");
-    });
-
-    this.classList.add("selected");
-
-
-    /* Small */
-
-    if (index === 0) {
-      document.body.classList.remove("large-text");
-      document.body.classList.add("small-text");
-    }
-
-
-    /* Medium */
-
-    if (index === 1) {
-      document.body.classList.remove("small-text");
-      document.body.classList.remove("large-text");
-    }
-
-
-    /* Large */
-
-    if (index === 2) {
-      document.body.classList.remove("small-text");
-      document.body.classList.add("large-text");
-    }
-
-  });
-
-});
-
-
-/* =========================================
-   HIGH CONTRAST
-========================================= */
-
-function updateHighContrast(button) {
-
-  document.body.classList.toggle(
-    "high-contrast",
-    button.classList.contains("active")
-  );
+  console.log("Continue clicked");
 
 }
-
-
-/* =========================================
-   ACCESSIBILITY SETTINGS
-========================================= */
-
-document.addEventListener("click", function(event) {
-
-  const button = event.target.closest(".toggle");
-
-  if (!button) return;
-
-
-  /* High contrast is the third toggle
-     after Audio and Captions */
-
-  const rows =
-    document.querySelectorAll(".accessibility-row");
-
-  rows.forEach(row => {
-
-    const title =
-      row.querySelector(".accessibility-label h2");
-
-    if (!title) return;
-
-
-    if (title.textContent.trim() === "High contrast") {
-
-      const toggle =
-        row.querySelector(".toggle");
-
-      updateHighContrast(toggle);
-
-    }
-
-  });
-
-});
