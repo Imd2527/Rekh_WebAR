@@ -17,7 +17,7 @@ function showScreen(screenId) {
 
 
 /* =====================================================
-   LOADING SCREEN
+   LOADING
 ===================================================== */
 
 setTimeout(() => {
@@ -30,12 +30,10 @@ setTimeout(() => {
 ===================================================== */
 
 const storyFrames = [
-
   "assets/images/Rekh_How_It_Works_Frame_1_HD.png",
   "assets/images/Rekh_How_It_Works_Frame_2_HD.png",
   "assets/images/Rekh_How_It_Works_Frame_3_HD.png",
   "assets/images/Rekh_How_It_Works_Frame_4_HD.png"
-
 ];
 
 let currentStory = 0;
@@ -45,14 +43,11 @@ function showStory(index) {
 
   currentStory = index;
 
-  const storyImage =
+  const image =
     document.getElementById("storyFrame");
 
-  if (storyImage) {
-
-    storyImage.src =
-      storyFrames[currentStory];
-
+  if (image) {
+    image.src = storyFrames[index];
   }
 
   document.querySelectorAll(".dot").forEach(
@@ -60,12 +55,11 @@ function showStory(index) {
 
       dot.classList.toggle(
         "active",
-        i === currentStory
+        i === index
       );
 
     }
   );
-
 }
 
 
@@ -88,7 +82,6 @@ function openAccessibility() {
   if (continueButton) {
     continueButton.classList.remove("show");
   }
-
 }
 
 
@@ -107,7 +100,6 @@ function closeAccessibility() {
   if (continueButton) {
     continueButton.classList.add("show");
   }
-
 }
 
 
@@ -123,110 +115,74 @@ function toggleSetting(button) {
 
 
 /* =====================================================
-   MINDAR VARIABLES
+   START AR
 ===================================================== */
 
 let arStarted = false;
-let arStarting = false;
 
-
-/* =====================================================
-   CONTINUE → OPEN AR
-===================================================== */
 
 function continueSetup() {
 
-  console.log("Continue clicked");
-  console.log("Opening AR camera...");
+  console.log("CONTINUE CLICKED");
 
   /*
-     IMPORTANT:
-     Show the AR screen immediately.
+     Show AR screen
   */
 
   showScreen("arScreen");
 
 
   /*
-     Start MindAR immediately from the
-     button interaction.
+     Wait until the AR screen is visible,
+     then start MindAR.
   */
 
-  startAR();
+  setTimeout(() => {
+
+    startAR();
+
+  }, 100);
 
 }
 
 
 /* =====================================================
-   START MINDAR
+   MINDAR
 ===================================================== */
 
 function startAR() {
 
+  if (arStarted) {
+    return;
+  }
+
+
   const scene =
     document.getElementById("mindarScene");
+
 
   if (!scene) {
 
     console.error(
-      "ERROR: mindarScene not found."
+      "MindAR scene not found"
     );
 
     return;
 
   }
 
-
-  /*
-     Prevent multiple starts.
-  */
-
-  if (arStarted || arStarting) {
-
-    console.log(
-      "AR is already starting/running."
-    );
-
-    return;
-
-  }
-
-
-  arStarting = true;
-
-
-  /*
-     Make absolutely sure the AR screen
-     is visible before starting MindAR.
-  */
-
-  const arScreen =
-    document.getElementById("arScreen");
-
-  if (arScreen) {
-
-    arScreen.classList.add("active");
-
-  }
-
-
-  /*
-     Get MindAR system.
-  */
 
   const startMindAR = () => {
 
-    const arSystem =
+    const mindar =
       scene.systems["mindar-image-system"];
 
 
-    if (!arSystem) {
+    if (!mindar) {
 
       console.error(
-        "ERROR: MindAR image system not found."
+        "MindAR system not found"
       );
-
-      arStarting = false;
 
       return;
 
@@ -234,83 +190,30 @@ function startAR() {
 
 
     console.log(
-      "MindAR system found."
+      "MINDAR SYSTEM FOUND"
     );
-
-
-    /*
-       Register AR events BEFORE starting.
-    */
-
-    setupAREvents();
 
 
     /*
        START CAMERA
-       ----------------
-
-       This triggers the browser's
-       camera permission request.
     */
 
+    mindar.start();
+
+
+    arStarted = true;
+
+
     console.log(
-      "Requesting camera access..."
+      "MINDAR CAMERA STARTED"
     );
-
-
-    try {
-
-      const result =
-        arSystem.start();
-
-
-      /*
-         MindAR start() returns a Promise.
-      */
-
-      if (result && typeof result.then === "function") {
-
-        result
-          .then(() => {
-
-            console.log(
-              "MindAR start() successful."
-            );
-
-          })
-          .catch(error => {
-
-            console.error(
-              "MindAR failed to start:",
-              error
-            );
-
-            arStarting = false;
-
-            showCameraError(error);
-
-          });
-
-      }
-
-    } catch (error) {
-
-      console.error(
-        "Camera start error:",
-        error
-      );
-
-      arStarting = false;
-
-      showCameraError(error);
-
-    }
 
   };
 
 
   /*
-     A-Frame may still be loading.
+     Same idea as your working postcard:
+     wait until A-Frame is ready.
   */
 
   if (scene.hasLoaded) {
@@ -327,41 +230,18 @@ function startAR() {
 
   }
 
-}
 
-
-/* =====================================================
-   AR EVENTS
-===================================================== */
-
-function setupAREvents() {
-
-  const scene =
-    document.getElementById("mindarScene");
-
-  const target =
-    document.getElementById("vishnuTarget");
-
-
-  if (!scene) {
-    return;
-  }
-
-
-  /*
-     CAMERA / AR READY
-  */
+  /* =================================================
+     AR READY
+  ================================================= */
 
   scene.addEventListener(
     "arReady",
     () => {
 
       console.log(
-        "MindAR ready — CAMERA IS RUNNING."
+        "CAMERA READY"
       );
-
-      arStarted = true;
-      arStarting = false;
 
       showScanning();
 
@@ -370,67 +250,63 @@ function setupAREvents() {
   );
 
 
-  /*
-     CAMERA / AR ERROR
-  */
+  /* =================================================
+     AR ERROR
+  ================================================= */
 
   scene.addEventListener(
     "arError",
     event => {
 
       console.error(
-        "MindAR AR error:",
+        "AR ERROR:",
         event
       );
-
-      arStarted = false;
-      arStarting = false;
-
-      showCameraError(event);
 
     },
     { once: true }
   );
 
 
-  /*
-     ARTIFACT FOUND
-  */
+  /* =================================================
+     TARGET
+  ================================================= */
 
-  if (target) {
-
-    target.addEventListener(
-      "targetFound",
-      () => {
-
-        console.log(
-          "Vishnu artifact found!"
-        );
-
-        showArtifactFound();
-
-      }
-    );
+  const target =
+    document.getElementById("vishnuTarget");
 
 
-    /*
-       ARTIFACT LOST
-    */
-
-    target.addEventListener(
-      "targetLost",
-      () => {
-
-        console.log(
-          "Vishnu artifact lost."
-        );
-
-        showScanning();
-
-      }
-    );
-
+  if (!target) {
+    return;
   }
+
+
+  target.addEventListener(
+    "targetFound",
+    () => {
+
+      console.log(
+        "VISHNU FOUND!"
+      );
+
+      showArtifactFound();
+
+    }
+  );
+
+
+  target.addEventListener(
+    "targetLost",
+    () => {
+
+      console.log(
+        "VISHNU LOST"
+      );
+
+      showScanning();
+
+    }
+  );
 
 }
 
@@ -441,216 +317,71 @@ function setupAREvents() {
 
 function showScanning() {
 
-  const scanMessage =
+  const message =
     document.getElementById("scanMessage");
 
-  const scanFrame =
+  const frame =
     document.getElementById("scanFrame");
 
-  const scanStatus =
+  const status =
     document.getElementById("scanStatus");
 
-  const artifactFound =
+  const found =
     document.getElementById("artifactFound");
 
 
-  if (scanMessage) {
-
-    scanMessage.style.display =
-      "block";
-
+  if (message) {
+    message.style.display = "block";
   }
 
-
-  if (scanFrame) {
-
-    scanFrame.style.display =
-      "block";
-
+  if (frame) {
+    frame.style.display = "block";
   }
 
-
-  if (scanStatus) {
-
-    scanStatus.style.display =
-      "block";
-
+  if (status) {
+    status.style.display = "block";
   }
 
-
-  if (artifactFound) {
-
-    artifactFound.classList.remove(
-      "visible"
-    );
-
+  if (found) {
+    found.classList.remove("visible");
   }
 
 }
 
 
 /* =====================================================
-   ARTIFACT FOUND UI
+   ARTIFACT FOUND
 ===================================================== */
 
 function showArtifactFound() {
 
-  const scanMessage =
+  const message =
     document.getElementById("scanMessage");
 
-  const scanFrame =
+  const frame =
     document.getElementById("scanFrame");
 
-  const scanStatus =
+  const status =
     document.getElementById("scanStatus");
 
-  const artifactFound =
+  const found =
     document.getElementById("artifactFound");
 
 
-  if (scanMessage) {
-
-    scanMessage.style.display =
-      "none";
-
+  if (message) {
+    message.style.display = "none";
   }
 
-
-  if (scanFrame) {
-
-    scanFrame.style.display =
-      "none";
-
+  if (frame) {
+    frame.style.display = "none";
   }
 
-
-  if (scanStatus) {
-
-    scanStatus.style.display =
-      "none";
-
+  if (status) {
+    status.style.display = "none";
   }
 
-
-  if (artifactFound) {
-
-    artifactFound.classList.add(
-      "visible"
-    );
-
+  if (found) {
+    found.classList.add("visible");
   }
 
 }
-
-
-/* =====================================================
-   CAMERA ERROR
-===================================================== */
-
-function showCameraError(error) {
-
-  console.error(
-    "Camera could not be started:",
-    error
-  );
-
-
-  /*
-     Keep the AR screen visible,
-     but tell the user what happened.
-  */
-
-  const scanMessage =
-    document.getElementById("scanMessage");
-
-
-  if (scanMessage) {
-
-    scanMessage.innerHTML =
-      "Camera access is required";
-
-
-    scanMessage.style.display =
-      "block";
-
-  }
-
-
-  /*
-     Helpful console information.
-  */
-
-  if (
-    error &&
-    error.name === "NotAllowedError"
-  ) {
-
-    console.error(
-      "Camera permission was denied."
-    );
-
-  }
-
-}
-
-
-/* =====================================================
-   INITIAL AR UI STATE
-===================================================== */
-
-document.addEventListener(
-  "DOMContentLoaded",
-  () => {
-
-    const scanMessage =
-      document.getElementById("scanMessage");
-
-    const scanFrame =
-      document.getElementById("scanFrame");
-
-    const scanStatus =
-      document.getElementById("scanStatus");
-
-    const artifactFound =
-      document.getElementById("artifactFound");
-
-
-    /*
-       Do not show AR scanning UI
-       until camera starts.
-    */
-
-    if (scanMessage) {
-
-      scanMessage.style.display =
-        "none";
-
-    }
-
-
-    if (scanFrame) {
-
-      scanFrame.style.display =
-        "none";
-
-    }
-
-
-    if (scanStatus) {
-
-      scanStatus.style.display =
-        "none";
-
-    }
-
-
-    if (artifactFound) {
-
-      artifactFound.classList.remove(
-        "visible"
-      );
-
-    }
-
-  }
-);
