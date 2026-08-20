@@ -17,19 +17,33 @@ body {
   color: #fff4e8;
 }
 
-/* ---------- SCREEN SYSTEM ---------- */
+
+/* =========================================================
+   SCREEN SYSTEM
+========================================================= */
 
 .screen {
   display: none;
+
   width: 100%;
   height: 100vh;
   min-height: 100dvh;
+
   position: relative;
   overflow: hidden;
 
   background:
-    radial-gradient(circle at 50% 20%, rgba(100, 83, 61, 0.25), transparent 35%),
-    linear-gradient(145deg, #181410 0%, #211a14 55%, #120f0c 100%);
+    radial-gradient(
+      circle at 50% 20%,
+      rgba(100, 83, 61, 0.25),
+      transparent 35%
+    ),
+    linear-gradient(
+      145deg,
+      #181410 0%,
+      #211a14 55%,
+      #120f0c 100%
+    );
 }
 
 .screen.active {
@@ -39,7 +53,10 @@ body {
   justify-content: center;
 }
 
-/* ---------- LOGO ---------- */
+
+/* =========================================================
+   LOGO
+========================================================= */
 
 .logo {
   width: clamp(55px, 8vw, 95px);
@@ -48,7 +65,10 @@ body {
   margin-bottom: 18px;
 }
 
-/* ---------- TYPOGRAPHY ---------- */
+
+/* =========================================================
+   TYPOGRAPHY
+========================================================= */
 
 h1 {
   font-size: clamp(34px, 5vw, 64px);
@@ -60,7 +80,44 @@ p {
   line-height: 1.5;
 }
 
-/* ---------- LOADING SCREEN ---------- */
+
+/* =========================================================
+   BUTTONS
+========================================================= */
+
+button {
+  border: none;
+  cursor: pointer;
+  font: inherit;
+
+  min-height: 52px;
+  padding: 14px 30px;
+
+  border-radius: 30px;
+
+  background: #f4e9dc;
+  color: #35271c;
+
+  font-weight: 600;
+  font-size: 16px;
+
+  transition:
+    transform 0.2s ease,
+    opacity 0.2s ease;
+}
+
+button:hover {
+  transform: scale(1.03);
+}
+
+button:active {
+  transform: scale(0.98);
+}
+
+
+/* =========================================================
+   LOADING SCREEN
+========================================================= */
 
 #loading h1 {
   margin-bottom: 16px;
@@ -68,40 +125,58 @@ p {
 
 #loading > p {
   color: #d8c9b9;
+
   font-size: clamp(14px, 1.8vw, 20px);
+
   text-align: center;
+
   margin-bottom: 55px;
 }
 
 .loading-line {
   width: min(320px, 55vw);
+
   height: 4px;
+
   background: #756149;
+
   border-radius: 10px;
+
   overflow: hidden;
+
   position: relative;
+
   margin-bottom: 14px;
 }
 
 .loading-line::after {
   content: "";
+
   position: absolute;
+
   left: 0;
   top: 0;
+
   height: 100%;
   width: 35%;
+
   background: #e4a84c;
+
   border-radius: 10px;
+
   animation: loading 2.5s ease-in-out forwards;
 }
 
 #loading > span {
   font-size: 11px;
+
   letter-spacing: 4px;
+
   color: #c8b8a5;
 }
 
 @keyframes loading {
+
   from {
     width: 0;
   }
@@ -109,9 +184,13 @@ p {
   to {
     width: 100%;
   }
+
 }
 
-/* ---------- WELCOME SCREEN ---------- */
+
+/* =========================================================
+   WELCOME SCREEN
+========================================================= */
 
 #welcome {
   gap: 12px;
@@ -127,121 +206,178 @@ p {
 
 .welcome-card {
   width: min(520px, 82vw);
+
   padding: 35px 30px;
+
   border-radius: 24px;
 
-  background: linear-gradient(
-    145deg,
-    rgba(119, 82, 47, 0.9),
-    rgba(80, 57, 38, 0.9)
-  );
+  background:
+    linear-gradient(
+      145deg,
+      rgba(119, 82, 47, 0.9),
+      rgba(80, 57, 38, 0.9)
+    );
 
   border: 1px solid rgba(255, 222, 180, 0.15);
+
   text-align: center;
+
   margin-bottom: 25px;
 }
 
 .welcome-card h2 {
   font-size: clamp(20px, 3vw, 32px);
+
   font-weight: 500;
+
   margin-bottom: 15px;
 }
 
 .welcome-card p {
   font-size: clamp(15px, 2vw, 21px);
+
   color: #fff4e8;
 }
 
 .small-line {
   width: 55px;
   height: 3px;
+
   background: #e5bd42;
+
   margin: 20px auto 0;
+
   border-radius: 5px;
-}
-
-/* ---------- BUTTONS ---------- */
-
-button {
-  border: none;
-  cursor: pointer;
-  font: inherit;
-
-  min-height: 52px;
-  padding: 14px 30px;
-  border-radius: 30px;
-
-  background: #f4e9dc;
-  color: #35271c;
-
-  font-weight: 600;
-  font-size: 16px;
-
-  transition: transform 0.2s ease, opacity 0.2s ease;
-}
-
-button:hover {
-  transform: scale(1.03);
-}
-
-button:active {
-  transform: scale(0.98);
 }
 
 #welcome .secondary {
   background: transparent;
+
   border: 1px solid rgba(244, 233, 220, 0.35);
+
   color: #f4e9dc;
 }
 
-/* ---------- HOW REKH WORKS ---------- */
+
+/* =========================================================
+   HOW REKH WORKS
+========================================================= */
 
 #howRekh {
   text-align: center;
+
   padding: 35px;
+}
+
+.story-carousel {
+  width: 100%;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
 }
 
 .story-image {
   width: min(500px, 80vw);
-  height: min(300px, 42vh);
-  margin-bottom: 35px;
 
-  border-radius: 22px;
+  height: min(300px, 42vh);
+
+  border-radius: 28px;
+
   overflow: hidden;
 
+  border: 1px solid rgba(255, 255, 255, 0.15);
+
   background: #211b16;
-  border: 1px solid rgba(255, 255, 255, 0.12);
+
+  margin-bottom: 18px;
 }
 
 .story-image img {
   width: 100%;
   height: 100%;
-  object-fit: contain;
+
+  object-fit: cover;
+
+  display: block;
+}
+
+.story-dots {
+  display: flex;
+
+  justify-content: center;
+
+  align-items: center;
+
+  gap: 8px;
+
+  margin-top: 0;
+
+  margin-bottom: 28px;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+
+  min-height: 8px;
+
+  padding: 0;
+
+  border: none;
+
+  border-radius: 50%;
+
+  background: #777;
+
+  cursor: pointer;
+}
+
+.dot.active {
+  width: 24px;
+  height: 8px;
+
+  border-radius: 10px;
+
+  background: #f4eadb;
 }
 
 #howRekh h1 {
   font-size: clamp(30px, 4vw, 52px);
+
   margin-bottom: 15px;
 }
 
 #howRekh > p {
   width: min(600px, 80vw);
+
   color: #d4c5b5;
+
   font-size: clamp(15px, 1.8vw, 20px);
+
   margin-bottom: 30px;
 }
 
 .text-button {
   margin-top: 12px;
+
   background: transparent;
+
   color: #eee1d4;
+
   font-size: 14px;
 }
 
-/* ---------- HOW IT WORKS ---------- */
+
+/* =========================================================
+   HOW IT WORKS
+========================================================= */
 
 #howWorks {
   padding: 25px;
+
   background: rgba(10, 8, 6, 0.96);
 }
 
@@ -249,42 +385,51 @@ button:active {
   position: relative;
 
   width: min(600px, 90vw);
+
   max-height: 90vh;
+
   overflow-y: auto;
 
   padding: 45px 40px 35px;
 
   border-radius: 28px;
 
-  background: linear-gradient(
-    145deg,
-    #62503e,
-    #392d22
-  );
+  background:
+    linear-gradient(
+      145deg,
+      #62503e,
+      #392d22
+    );
 
   border: 1px solid rgba(255, 238, 216, 0.15);
 
-  box-shadow: 0 20px 80px rgba(0, 0, 0, 0.45);
+  box-shadow:
+    0 20px 80px rgba(0, 0, 0, 0.45);
 }
 
 .how-card h1 {
   font-size: clamp(25px, 3vw, 38px);
+
   margin-bottom: 35px;
 }
 
 .close {
   position: absolute;
+
   top: 18px;
   right: 20px;
 
   width: 42px;
   height: 42px;
+
   min-height: 42px;
 
   padding: 0;
 
   border-radius: 50%;
+
   background: rgba(255, 255, 255, 0.08);
+
   color: #fff4e8;
 
   font-size: 25px;
@@ -292,160 +437,34 @@ button:active {
 
 .instruction {
   margin-bottom: 27px;
+
   padding-left: 5px;
 }
 
 .instruction b {
   display: block;
+
   font-size: 20px;
+
   margin-bottom: 7px;
 }
 
 .instruction p {
   color: #d8cabc;
+
   font-size: 16px;
 }
 
 
-/* STORY CAROUSEL */
+/* =========================================================
+   SET UP EXPERIENCE
+========================================================= */
 
-.story-carousel {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.story-image {
-  width: min(500px, 80vw);
-  height: min(300px, 42vh);
-  border-radius: 28px;
-  overflow: hidden;
-  border: 1px solid rgba(255,255,255,0.15);
-  background: #211b16;
-}
-
-.story-image img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-
-.story-dots {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 8px;
-  margin-top: 18px;
-}
-
-.dot {
-  width: 8px;
-  height: 8px;
-  min-height: 8px;
-  padding: 0;
-  border: none;
-  border-radius: 50%;
-  background: #777;
-  cursor: pointer;
-}
-
-.dot.active {
-  width: 24px;
-  height: 8px;
-  border-radius: 10px;
-  background: #f4eadb;
-}
-
-
-/* PHONE PORTRAIT */
-
-@media (max-width: 600px) {
-
-  .screen {
-    padding: 25px 20px;
-  }
-
-  #loading > p {
-    width: 80vw;
-  }
-
-  .welcome-card {
-    padding: 28px 20px;
-  }
-
-  #welcome h1 {
-    margin-bottom: 25px;
-  }
-
-  .story-image {
-    width: 88vw;
-    height: 30vh;
-  }
-
-  .how-card {
-    padding: 40px 25px 25px;
-    max-height: 88vh;
-  }
-
-}
-
-
-/* LANDSCAPE PHONE */
-
-@media (orientation: landscape) and (max-height: 600px) {
-
-  .screen {
-    justify-content: center;
-    padding: 20px 40px;
-  }
-
-  .story-carousel {
-    grid-row: 1 / 4;
-    width: 100%;
-  }
-
-  .story-image {
-    width: 100%;
-    height: 75vh;
-    margin: 0;
-  }
-
-  #howRekh h1 {
-    align-self: end;
-    margin: 0;
-  }
-
-  #howRekh > p {
-    width: 90%;
-    margin: 0;
-  }
-
-  #howRekh button {
-    justify-self: start;
-  }
-
-  .how-card {
-    width: min(700px, 85vw);
-    max-height: 90vh;
-    padding: 30px 35px;
-  }
-
-  .instruction {
-    margin-bottom: 15px;
-  }
-
-}
-/* =========================================
-   ACCESSIBILITY PANEL
-========================================= */
-
-#accessibility {
+#setup {
   background:
     radial-gradient(
-      circle at 50% 15%,
-      rgba(100, 65, 30, 0.22),
+      circle at 50% 20%,
+      rgba(100, 70, 35, 0.18),
       transparent 40%
     ),
     linear-gradient(
@@ -456,114 +475,352 @@ button:active {
     );
 
   padding: 25px;
-  overflow-y: auto;
-  justify-content: center;
+
+  text-align: center;
 }
 
 
-/* ---------- ACCESSIBILITY CARD ---------- */
+/* ---------- SETUP CONTENT ---------- */
 
-.accessibility-card {
-  width: min(620px, 92vw);
-  max-height: 90vh;
+.setup-content {
+  width: 100%;
 
-  padding: 28px 32px;
+  max-width: 500px;
 
-  border-radius: 28px;
-
-  background: #604421;
-
-  border: 1px solid rgba(255, 220, 170, 0.25);
-
-  box-shadow:
-    0 20px 60px rgba(0, 0, 0, 0.35);
-
-  overflow-y: auto;
-}
-
-
-/* ---------- HEADER ---------- */
-
-.accessibility-header {
   display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
 
-  padding-bottom: 22px;
-  margin-bottom: 8px;
+  flex-direction: column;
 
-  border-bottom: 1px solid rgba(255, 240, 220, 0.18);
-}
-
-.accessibility-title {
-  display: flex;
   align-items: center;
-  gap: 18px;
-}
-
-.accessibility-title > img {
-  width: 54px;
-  height: 54px;
-
-  object-fit: contain;
-
-  padding: 12px;
-
-  border-radius: 16px;
-
-  background: rgba(35, 21, 10, 0.75);
-}
-
-.accessibility-title h1 {
-  font-size: clamp(25px, 4vw, 34px);
-  line-height: 1.1;
-
-  margin: 0 0 7px;
-}
-
-.accessibility-title p {
-  color: #d9c5ad;
-  font-size: 15px;
 }
 
 
-/* ---------- CLOSE BUTTON ---------- */
+/* ---------- BACK BUTTON ---------- */
 
-.accessibility-header .close {
-  flex-shrink: 0;
+.setup-back {
+  position: absolute;
 
-  width: 44px;
-  height: 44px;
-  min-height: 44px;
+  top: 24px;
+  left: 20px;
+
+  width: 40px;
+  height: 40px;
+
+  min-height: 40px;
 
   padding: 0;
 
   border-radius: 50%;
 
-  background: rgba(50, 31, 16, 0.7);
-  color: #f8eadc;
+  background: #5a3d20;
 
-  font-size: 28px;
-  font-weight: 300;
+  color: #f4e9dc;
+
+  font-size: 24px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
 }
 
 
-/* ---------- ACCESSIBILITY ROW ---------- */
+/* ---------- HEADING ---------- */
 
-.accessibility-row {
-  display: grid;
+#setup .setup-content h1 {
+  font-size: clamp(32px, 8vw, 48px);
 
-  grid-template-columns: 52px 1fr auto;
+  line-height: 1.1;
+
+  margin-bottom: 8px;
+
+  font-weight: 600;
+}
+
+
+/* ---------- SUBTEXT ---------- */
+
+#setup .setup-content > p {
+  color: #d8c9b9;
+
+  font-size: 18px;
+
+  line-height: 1.5;
+
+  margin-bottom: 55px;
+}
+
+
+/* =========================================================
+   ACCESSIBILITY BUTTON
+========================================================= */
+
+.accessibility-button {
+  width: min(343px, 88vw);
+
+  height: 72px;
+
+  min-height: 72px;
+
+  padding: 0 28px;
+
+  border-radius: 40px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: flex-start;
+
+  gap: 15px;
+
+  background: #5b4023;
+
+  border: 1px solid rgba(231, 177, 91, 0.45);
+
+  color: #fff4e8;
+
+  font-size: 23px;
+
+  font-weight: 500;
+
+  text-align: left;
+}
+
+
+/* ---------- ICON INSIDE BUTTON ---------- */
+
+.setup-icon {
+  width: 40px;
+  height: 40px;
+
+  min-width: 40px;
+
+  border-radius: 8px;
+
+  background: #2c190a;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+}
+
+.setup-icon img {
+  width: 25px;
+  height: 25px;
+
+  object-fit: contain;
+
+  display: block;
+}
+
+
+/* =========================================================
+   CONTINUE BUTTON
+========================================================= */
+
+/*
+   Hidden initially.
+   JS adds .show after accessibility is closed.
+*/
+
+.setup-continue {
+  display: none;
+
+  width: 204px;
+
+  height: 64px;
+
+  min-height: 64px;
+
+  margin-top: 32px;
+
+  background: #f7dcc2;
+
+  color: #2d1b0d;
+
+  font-size: 24px;
+
+  font-weight: 500;
+}
+
+.setup-continue.show {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+}
+
+
+/* =========================================================
+   ACCESSIBILITY POPUP OVERLAY
+========================================================= */
+
+.accessibility-overlay {
+  position: fixed;
+
+  inset: 0;
+
+  z-index: 9999;
+
+  display: none;
+
+  align-items: flex-end;
+
+  justify-content: center;
+
+  background: rgba(10, 6, 3, 0.25);
+}
+
+.accessibility-overlay.open {
+  display: flex;
+}
+
+
+/* =========================================================
+   ACCESSIBILITY CARD
+========================================================= */
+
+.accessibility-card {
+  width: min(430px, 100vw);
+
+  max-height: 92vh;
+
+  overflow-y: auto;
+
+  padding: 18px 28px 28px;
+
+  border-radius: 28px 28px 0 0;
+
+  background: #634722;
+
+  border: 1px solid rgba(235, 184, 104, 0.45);
+
+  box-shadow:
+    0 -10px 50px rgba(0, 0, 0, 0.35);
+}
+
+
+/* ---------- HANDLE ---------- */
+
+.accessibility-card::before {
+  content: "";
+
+  display: block;
+
+  width: 48px;
+  height: 5px;
+
+  border-radius: 10px;
+
+  background: #39220e;
+
+  margin: 0 auto 18px;
+}
+
+
+/* =========================================================
+   ACCESSIBILITY HEADER
+========================================================= */
+
+.accessibility-header {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  padding-bottom: 20px;
+
+  border-bottom: 1px solid rgba(255, 239, 215, 0.18);
+}
+
+.accessibility-title {
+  display: flex;
 
   align-items: center;
 
   gap: 16px;
+}
 
-  min-height: 88px;
+.accessibility-title > img {
+  width: 40px;
+  height: 40px;
+
+  object-fit: contain;
+
+  padding: 8px;
+
+  border-radius: 9px;
+
+  background: #2c190a;
+}
+
+.accessibility-title h1 {
+  margin: 0 0 5px;
+
+  font-size: 18px;
+
+  font-weight: 500;
+}
+
+.accessibility-title p {
+  margin: 0;
+
+  color: #e0cfbc;
+
+  font-size: 16px;
+}
+
+
+/* =========================================================
+   ACCESSIBILITY CLOSE BUTTON
+========================================================= */
+
+.accessibility-header .close {
+  position: static;
+
+  width: 42px;
+  height: 42px;
+
+  min-height: 42px;
+
+  padding: 0;
+
+  flex-shrink: 0;
+
+  border-radius: 50%;
+
+  background: #2c190a;
+
+  color: #f4e9dc;
+
+  font-size: 25px;
+}
+
+
+/* =========================================================
+   ACCESSIBILITY ROWS
+========================================================= */
+
+.accessibility-row {
+  display: grid;
+
+  grid-template-columns: 40px 1fr auto;
+
+  align-items: center;
+
+  gap: 14px;
+
+  min-height: 90px;
 
   padding: 16px 0;
 
-  border-bottom: 1px solid rgba(255, 240, 220, 0.15);
+  border-bottom: 1px solid rgba(255, 239, 215, 0.15);
 }
 
 .accessibility-row:last-child {
@@ -574,20 +831,24 @@ button:active {
 /* ---------- ICON ---------- */
 
 .accessibility-icon {
-  width: 44px;
-  height: 44px;
+  width: 40px;
+  height: 40px;
 
-  object-fit: contain;
-
-  padding: 10px;
+  padding: 9px;
 
   border-radius: 50%;
 
-  background: rgba(52, 31, 13, 0.75);
+  background: #44290f;
+
+  object-fit: contain;
+
+  display: block;
 }
 
 
-/* ---------- TEXT ---------- */
+/* =========================================================
+   ACCESSIBILITY TEXT
+========================================================= */
 
 .accessibility-label {
   min-width: 0;
@@ -596,8 +857,9 @@ button:active {
 .accessibility-label h2 {
   margin: 0 0 5px;
 
-  font-size: 18px;
-  font-weight: 500;
+  font-size: 16px;
+
+  font-weight: 400;
 
   color: #fff3e5;
 }
@@ -605,37 +867,41 @@ button:active {
 .accessibility-label p {
   margin: 0;
 
+  color: #e0cfbc;
+
   font-family: monospace;
 
-  font-size: 14px;
-  line-height: 1.4;
+  font-size: 15px;
 
-  color: #d9c5ad;
+  line-height: 1.4;
 }
 
 
-/* =========================================
+/* =========================================================
    LANGUAGE SELECTOR
-========================================= */
+========================================================= */
 
 .language-selector {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  min-height: 44px;
 
-  gap: 10px;
-
-  min-height: 48px;
-
-  padding: 10px 16px;
+  padding: 8px 12px;
 
   border-radius: 25px;
 
-  background: rgba(70, 42, 20, 0.85);
+  background: #4a2c10;
 
-  color: #f8eadc;
+  color: #f4e9dc;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 8px;
 
   font-size: 15px;
+
   font-weight: 400;
 }
 
@@ -647,41 +913,46 @@ button:active {
 }
 
 
-/* =========================================
-   TEXT SIZE SELECTOR
-========================================= */
+/* =========================================================
+   TEXT SIZE
+========================================================= */
 
 .text-size-selector {
   display: flex;
+
   align-items: center;
 
-  min-height: 48px;
+  min-height: 44px;
 
   padding: 4px;
 
   border-radius: 25px;
 
-  background: rgba(70, 42, 20, 0.85);
+  background: #4a2c10;
 }
 
 .text-size-selector button {
-  width: 42px;
-  height: 40px;
-  min-height: 40px;
+  width: 36px;
+  height: 36px;
+
+  min-height: 36px;
 
   padding: 0;
 
   border-radius: 50%;
 
   background: transparent;
+
   color: #d9c5ad;
 
   font-size: 16px;
+
   font-weight: 400;
 }
 
 .text-size-selector button.selected {
   background: #ffe0c1;
+
   color: #392412;
 }
 
@@ -690,24 +961,23 @@ button:active {
 }
 
 
-/* =========================================
-   TOGGLE SWITCH
-========================================= */
+/* =========================================================
+   TOGGLE
+========================================================= */
 
 .toggle {
   position: relative;
 
-  width: 56px;
-  height: 32px;
-  min-height: 32px;
+  width: 52px;
+  height: 30px;
+
+  min-height: 30px;
 
   padding: 0;
 
   border-radius: 20px;
 
-  background: rgba(40, 26, 15, 0.75);
-
-  transition: background 0.2s ease;
+  background: #33200e;
 }
 
 .toggle span {
@@ -716,27 +986,24 @@ button:active {
   top: 4px;
   left: 4px;
 
-  width: 24px;
-  height: 24px;
+  width: 22px;
+  height: 22px;
 
   border-radius: 50%;
 
-  background: #d8cdc2;
+  background: #d9d1c8;
 
   transition: transform 0.2s ease;
 }
 
-
-/* ON */
-
 .toggle.active {
-  background: #ffe0c1;
+  background: #f4dcc5;
 }
 
 .toggle.active span {
-  transform: translateX(24px);
+  transform: translateX(22px);
 
-  background: #51351f;
+  background: #5b3b20;
 }
 
 .toggle:hover {
@@ -744,23 +1011,100 @@ button:active {
 }
 
 
-/* =========================================
+/* =========================================================
    PHONE PORTRAIT
-========================================= */
+========================================================= */
 
 @media (max-width: 600px) {
 
-  #accessibility {
-    padding: 20px;
+  .screen {
+    padding: 25px 20px;
   }
 
+
+  /* ---------- LOADING ---------- */
+
+  #loading > p {
+    width: 80vw;
+  }
+
+
+  /* ---------- WELCOME ---------- */
+
+  .welcome-card {
+    padding: 28px 20px;
+  }
+
+  #welcome h1 {
+    margin-bottom: 25px;
+  }
+
+
+  /* ---------- STORY ---------- */
+
+  .story-image {
+    width: 88vw;
+
+    height: 30vh;
+  }
+
+
+  /* ---------- HOW IT WORKS ---------- */
+
+  .how-card {
+    padding: 40px 25px 25px;
+
+    max-height: 88vh;
+  }
+
+
+  /* ---------- SETUP ---------- */
+
+  #setup {
+    padding: 25px 16px;
+  }
+
+  #setup .setup-content h1 {
+    font-size: 36px;
+  }
+
+  #setup .setup-content > p {
+    font-size: 18px;
+
+    margin-bottom: 55px;
+
+    max-width: 350px;
+  }
+
+  .accessibility-button {
+    width: calc(100vw - 60px);
+
+    max-width: 343px;
+
+    height: 72px;
+
+    min-height: 72px;
+
+    font-size: 23px;
+  }
+
+  .setup-continue {
+    width: 204px;
+
+    height: 64px;
+
+    min-height: 64px;
+  }
+
+
+  /* ---------- ACCESSIBILITY ---------- */
+
   .accessibility-card {
-    width: 100%;
-    max-height: 92vh;
+    width: calc(100vw - 40px);
 
-    padding: 22px 20px;
+    max-height: 88vh;
 
-    border-radius: 26px;
+    padding: 18px 20px 25px;
   }
 
   .accessibility-header {
@@ -772,30 +1116,31 @@ button:active {
   }
 
   .accessibility-title > img {
-    width: 48px;
-    height: 48px;
+    width: 40px;
+    height: 40px;
 
-    padding: 10px;
+    padding: 8px;
   }
 
   .accessibility-title h1 {
-    font-size: 25px;
+    font-size: 18px;
   }
 
   .accessibility-title p {
-    font-size: 13px;
+    font-size: 14px;
   }
 
   .accessibility-header .close {
     width: 40px;
     height: 40px;
+
     min-height: 40px;
 
-    font-size: 25px;
+    font-size: 24px;
   }
 
   .accessibility-row {
-    grid-template-columns: 44px 1fr auto;
+    grid-template-columns: 40px 1fr auto;
 
     gap: 12px;
 
@@ -820,26 +1165,28 @@ button:active {
   }
 
   .language-selector {
-    min-height: 44px;
+    min-height: 42px;
 
-    padding: 8px 12px;
+    padding: 8px 11px;
 
     font-size: 14px;
   }
 
   .text-size-selector {
-    min-height: 44px;
+    min-height: 42px;
   }
 
   .text-size-selector button {
-    width: 36px;
-    height: 36px;
-    min-height: 36px;
+    width: 34px;
+    height: 34px;
+
+    min-height: 34px;
   }
 
   .toggle {
     width: 52px;
     height: 30px;
+
     min-height: 30px;
   }
 
@@ -858,9 +1205,9 @@ button:active {
 }
 
 
-/* =========================================
+/* =========================================================
    VERY SMALL PHONES
-========================================= */
+========================================================= */
 
 @media (max-width: 380px) {
 
@@ -870,6 +1217,7 @@ button:active {
 
   .accessibility-row {
     grid-template-columns: 40px 1fr auto;
+
     gap: 9px;
   }
 
@@ -887,6 +1235,55 @@ button:active {
 
   .text-size-selector button {
     width: 32px;
+  }
+
+}
+
+
+/* =========================================================
+   LANDSCAPE PHONE
+========================================================= */
+
+@media (orientation: landscape) and (max-height: 600px) {
+
+  .screen {
+    justify-content: center;
+
+    padding: 20px 40px;
+  }
+
+  .story-carousel {
+    width: 100%;
+  }
+
+  .story-image {
+    width: 100%;
+
+    height: 75vh;
+  }
+
+  #howRekh h1 {
+    align-self: end;
+
+    margin: 0;
+  }
+
+  #howRekh > p {
+    width: 90%;
+
+    margin: 0;
+  }
+
+  .how-card {
+    width: min(700px, 85vw);
+
+    max-height: 90vh;
+
+    padding: 30px 35px;
+  }
+
+  .instruction {
+    margin-bottom: 15px;
   }
 
 }
