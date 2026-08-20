@@ -3,12 +3,19 @@
 
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
 
   <title>Rekh</title>
 
-  <link rel="stylesheet" href="style.css">
+  <link
+    rel="stylesheet"
+    href="style.css"
+  >
 </head>
+
 
 <body>
 
@@ -17,7 +24,10 @@
        LOADING SCREEN
   ====================================================== -->
 
-  <section id="loading" class="screen active">
+  <section
+    id="loading"
+    class="screen active"
+  >
 
     <img
       src="assets/images/Rekh Logo.png"
@@ -45,7 +55,10 @@
        WELCOME SCREEN
   ====================================================== -->
 
-  <section id="welcome" class="screen">
+  <section
+    id="welcome"
+    class="screen"
+  >
 
     <img
       src="assets/images/Rekh Logo.png"
@@ -54,6 +67,7 @@
     >
 
     <h1>Rekh</h1>
+
 
     <div class="welcome-card">
 
@@ -67,9 +81,13 @@
 
     </div>
 
-    <button onclick="showScreen('howRekh')">
+
+    <button
+      onclick="showScreen('howRekh')"
+    >
       Continue on Web →
     </button>
+
 
     <button class="secondary">
       Install App
@@ -83,7 +101,11 @@
        HOW REKH WORKS
   ====================================================== -->
 
-  <section id="howRekh" class="screen">
+  <section
+    id="howRekh"
+    class="screen"
+  >
+
 
     <!-- STORYBOARD -->
 
@@ -100,60 +122,73 @@
       </div>
 
 
+      <!-- STORY DOTS -->
+
       <div class="story-dots">
 
         <button
           class="dot active"
           onclick="showStory(0)"
-          aria-label="Story frame 1">
-        </button>
+          aria-label="Story frame 1"
+        ></button>
+
 
         <button
           class="dot"
           onclick="showStory(1)"
-          aria-label="Story frame 2">
-        </button>
+          aria-label="Story frame 2"
+        ></button>
+
 
         <button
           class="dot"
           onclick="showStory(2)"
-          aria-label="Story frame 3">
-        </button>
+          aria-label="Story frame 3"
+        ></button>
+
 
         <button
           class="dot"
           onclick="showStory(3)"
-          aria-label="Story frame 4">
-        </button>
+          aria-label="Story frame 4"
+        ></button>
 
       </div>
 
     </div>
 
 
+
     <h1>
       How Rekh Works
     </h1>
+
 
     <p>
       Turning museum stories into experiences beyond reading
     </p>
 
 
-    <!-- GO TO SETUP -->
 
-    <button onclick="showScreen('setup')">
+    <!-- SET UP EXPERIENCE -->
+
+    <button
+      onclick="showScreen('setup')"
+    >
       Set Up Experience →
     </button>
 
 
+
+    <!-- HOW IT WORKS -->
+
     <button
       class="text-button"
-      onclick="showScreen('howWorks')">
-
+      onclick="showScreen('howWorks')"
+    >
       ⓘ How it works
-
     </button>
+
 
   </section>
 
@@ -163,23 +198,27 @@
        HOW IT WORKS POPUP
   ====================================================== -->
 
-  <section id="howWorks" class="screen">
+  <section
+    id="howWorks"
+    class="screen"
+  >
 
     <div class="how-card">
+
 
       <button
         class="close"
         onclick="showScreen('howRekh')"
-        aria-label="Close">
-
+        aria-label="Close"
+      >
         ×
-
       </button>
 
 
       <h1>
         ⓘ How it works
       </h1>
+
 
 
       <div class="instruction">
@@ -193,6 +232,7 @@
       </div>
 
 
+
       <div class="instruction">
 
         <b>② Choose</b>
@@ -202,6 +242,7 @@
         </p>
 
       </div>
+
 
 
       <div class="instruction">
@@ -215,6 +256,7 @@
       </div>
 
 
+
       <div class="instruction">
 
         <b>④ Story</b>
@@ -226,9 +268,13 @@
       </div>
 
 
-      <button onclick="showScreen('howRekh')">
+
+      <button
+        onclick="showScreen('howRekh')"
+      >
         Got it
       </button>
+
 
     </div>
 
@@ -240,7 +286,10 @@
        SET UP THE EXPERIENCE
   ====================================================== -->
 
-  <section id="setup" class="screen">
+  <section
+    id="setup"
+    class="screen"
+  >
 
 
     <!-- BACK BUTTON -->
@@ -248,15 +297,16 @@
     <button
       class="setup-back"
       onclick="showScreen('howRekh')"
-      aria-label="Go back">
-
+      aria-label="Go back"
+    >
       ←
-
     </button>
 
 
-    <div class="setup-content">
 
+    <!-- SETUP CONTENT -->
+
+    <div class="setup-content">
 
       <h1>
         Set Up the Experience
@@ -264,27 +314,24 @@
 
 
       <p>
-        Choose what feels right. You can<br>
+        Choose what feels right. You can
+        <br>
         change anytime.
       </p>
 
 
-      <!-- ===============================================
-           ACCESSIBILITY BUTTON
-      ================================================ -->
+
+      <!-- ACCESSIBILITY BUTTON -->
 
       <button
         class="accessibility-button"
-        onclick="openAccessibility()">
+        onclick="openAccessibility()"
+      >
 
-        <span class="setup-icon">
-
-          <img
-            src="./assets/icons/AccessibilityIcon.png"
-            alt=""
-          >
-
-        </span>
+        <img
+          src="assets/images/AccessibilityIcon.png"
+          alt=""
+        >
 
         <span>
           Accessibility
@@ -293,21 +340,16 @@
       </button>
 
 
-      <!-- ===============================================
-           CONTINUE BUTTON
 
-           IMPORTANT:
-           Hidden initially.
-           Appears only after accessibility is closed.
-      ================================================ -->
+      <!-- CONTINUE BUTTON
+           Hidden initially -->
 
       <button
         id="setupContinue"
         class="setup-continue"
-        onclick="continueSetup()">
-
+        onclick="continueSetup()"
+      >
         Continue
-
       </button>
 
 
@@ -318,25 +360,19 @@
 
 
   <!-- =====================================================
-       ACCESSIBILITY POPUP OVERLAY
-
-       This is OUTSIDE the setup screen.
-
-       It starts hidden.
-       It opens only when Accessibility is tapped.
+       ACCESSIBILITY OVERLAY
   ====================================================== -->
 
-  <div
+  <section
     id="accessibilityOverlay"
-    class="accessibility-overlay">
+    class="accessibility-overlay"
+  >
 
 
     <div class="accessibility-card">
 
 
-      <!-- ===============================================
-           HEADER
-      ================================================ -->
+      <!-- HEADER -->
 
       <div class="accessibility-header">
 
@@ -345,16 +381,16 @@
 
 
           <img
-            src="./assets/icons/AccessibilityIcon.png"
+            src="assets/images/AccessibilityIcon.png"
             alt="Accessibility"
           >
 
 
           <div>
 
-            <h2>
+            <h1>
               Accessibility
-            </h2>
+            </h1>
 
             <p>
               Make the experience your own
@@ -366,15 +402,15 @@
         </div>
 
 
+
         <!-- CLOSE -->
 
         <button
-          class="close accessibility-close"
+          class="close"
           onclick="closeAccessibility()"
-          aria-label="Close accessibility settings">
-
+          aria-label="Close accessibility settings"
+        >
           ×
-
         </button>
 
 
@@ -382,15 +418,15 @@
 
 
 
-      <!-- ===============================================
+      <!-- =================================================
            LANGUAGE
-      ================================================ -->
+      ================================================== -->
 
       <div class="accessibility-row">
 
 
         <img
-          src="./assets/icons/LanguageTranslateIcon.png"
+          src="assets/images/LanguageTranslateIcon.png"
           class="accessibility-icon"
           alt=""
         >
@@ -409,12 +445,14 @@
         </div>
 
 
-        <button class="language-selector">
+        <button
+          class="language-selector"
+        >
 
           English
 
           <img
-            src="./assets/icons/LanguageTranslateIcon.png"
+            src="assets/images/LanguageTranslateIcon.png"
             alt=""
           >
 
@@ -425,15 +463,15 @@
 
 
 
-      <!-- ===============================================
+      <!-- =================================================
            TEXT SIZE
-      ================================================ -->
+      ================================================== -->
 
       <div class="accessibility-row">
 
 
         <img
-          src="./assets/icons/TextSizeIcon.png"
+          src="assets/images/TextSizeIcon.png"
           class="accessibility-icon"
           alt=""
         >
@@ -454,17 +492,21 @@
 
         <div class="text-size-selector">
 
+
           <button>
             A
           </button>
+
 
           <button class="selected">
             A
           </button>
 
+
           <button>
             A
           </button>
+
 
         </div>
 
@@ -473,15 +515,15 @@
 
 
 
-      <!-- ===============================================
+      <!-- =================================================
            AUDIO
-      ================================================ -->
+      ================================================== -->
 
       <div class="accessibility-row">
 
 
         <img
-          src="./assets/icons/AudioIcon.png"
+          src="assets/images/AudioIcon.png"
           class="accessibility-icon"
           alt=""
         >
@@ -503,7 +545,8 @@
         <button
           class="toggle active"
           onclick="toggleSetting(this)"
-          aria-label="Toggle audio">
+          aria-label="Toggle audio"
+        >
 
           <span></span>
 
@@ -514,15 +557,15 @@
 
 
 
-      <!-- ===============================================
+      <!-- =================================================
            CAPTIONS
-      ================================================ -->
+      ================================================== -->
 
       <div class="accessibility-row">
 
 
         <img
-          src="./assets/icons/CaptionsIcon.png"
+          src="assets/images/CaptionsIcon.png"
           class="accessibility-icon"
           alt=""
         >
@@ -544,7 +587,8 @@
         <button
           class="toggle active"
           onclick="toggleSetting(this)"
-          aria-label="Toggle captions">
+          aria-label="Toggle captions"
+        >
 
           <span></span>
 
@@ -555,15 +599,15 @@
 
 
 
-      <!-- ===============================================
+      <!-- =================================================
            HIGH CONTRAST
-      ================================================ -->
+      ================================================== -->
 
       <div class="accessibility-row">
 
 
         <img
-          src="./assets/icons/HighContrastIcon.png"
+          src="assets/images/HighContrastIcon.png"
           class="accessibility-icon"
           alt=""
         >
@@ -585,7 +629,8 @@
         <button
           class="toggle"
           onclick="toggleSetting(this)"
-          aria-label="Toggle high contrast">
+          aria-label="Toggle high contrast"
+        >
 
           <span></span>
 
@@ -596,15 +641,15 @@
 
 
 
-      <!-- ===============================================
+      <!-- =================================================
            HAPTIC FEEDBACK
-      ================================================ -->
+      ================================================== -->
 
       <div class="accessibility-row">
 
 
         <img
-          src="./assets/icons/HapticsIcon.png"
+          src="assets/images/HapticsIcon.png"
           class="accessibility-icon"
           alt=""
         >
@@ -626,7 +671,8 @@
         <button
           class="toggle"
           onclick="toggleSetting(this)"
-          aria-label="Toggle haptic feedback">
+          aria-label="Toggle haptic feedback"
+        >
 
           <span></span>
 
@@ -638,7 +684,8 @@
 
     </div>
 
-  </div>
+
+  </section>
 
 
 
@@ -647,6 +694,7 @@
   ====================================================== -->
 
   <script src="script.js"></script>
+
 
 </body>
 
