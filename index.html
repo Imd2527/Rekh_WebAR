@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,27 +10,51 @@
 
 <body>
 
-  <!-- LOADING SCREEN -->
+  <!-- =========================
+       LOADING SCREEN
+  ========================== -->
   <section id="loading" class="screen active">
-    <img src="assets/images/Rekh Logo.png" class="logo">
+
+    <img
+      src="assets/images/Rekh Logo.png"
+      class="logo"
+      alt="Rekh logo"
+    >
+
     <h1>Rekh</h1>
+
     <p>Discovering heritage through spatial narratives.</p>
 
     <div class="loading-line"></div>
+
     <span>INITIALIZING ENVIRONMENT</span>
+
   </section>
 
 
-  <!-- WELCOME SCREEN -->
+  <!-- =========================
+       WELCOME SCREEN
+  ========================== -->
   <section id="welcome" class="screen">
-    <img src="assets/images/Rekh Logo.png" class="logo">
+
+    <img
+      src="assets/images/Rekh Logo.png"
+      class="logo"
+      alt="Rekh logo"
+    >
 
     <h1>Rekh</h1>
 
     <div class="welcome-card">
+
       <h2>Welcome to</h2>
-      <p>Raja Dinkar Kelkar Museum's AR Experience</p>
+
+      <p>
+        Raja Dinkar Kelkar Museum's AR Experience
+      </p>
+
       <div class="small-line"></div>
+
     </div>
 
     <button onclick="showScreen('howRekh')">
@@ -39,39 +64,58 @@
     <button class="secondary">
       Install App
     </button>
+
   </section>
 
 
-  <!-- HOW REKH WORKS -->
+  <!-- =========================
+       HOW REKH WORKS
+  ========================== -->
   <section id="howRekh" class="screen">
 
-    <!-- STORYBOARD SLIDER -->
-    <div class="story-slider">
+    <!-- STORYBOARD CAROUSEL -->
+    <div class="story-carousel">
 
-      <button class="story-nav previous" onclick="previousStory()">
-        ‹
-      </button>
+      <div class="story-image">
 
-      <div class="story-image" id="storySwipeArea">
         <img
           id="storyFrame"
           src="assets/images/Rekh_How_It_Works_Frame_1_HD.png"
           alt="How Rekh works"
         >
+
       </div>
 
-      <button class="story-nav next" onclick="nextStory()">
-        ›
-      </button>
 
-    </div>
+      <!-- STORYBOARD DOTS -->
+      <div class="story-dots">
 
-    <!-- FRAME INDICATORS -->
-    <div class="story-dots">
-      <span class="story-dot active"></span>
-      <span class="story-dot"></span>
-      <span class="story-dot"></span>
-      <span class="story-dot"></span>
+        <button
+          class="dot active"
+          onclick="showStory(0)"
+          aria-label="Story frame 1">
+        </button>
+
+        <button
+          class="dot"
+          onclick="showStory(1)"
+          aria-label="Story frame 2">
+        </button>
+
+        <button
+          class="dot"
+          onclick="showStory(2)"
+          aria-label="Story frame 3">
+        </button>
+
+        <button
+          class="dot"
+          onclick="showStory(3)"
+          aria-label="Story frame 4">
+        </button>
+
+      </div>
+
     </div>
 
 
@@ -81,47 +125,82 @@
       Turning museum stories into experiences beyond reading
     </p>
 
+
     <button onclick="showScreen('howWorks')">
       Set Up Experience →
     </button>
 
-    <button class="text-button" onclick="showScreen('howWorks')">
+
+    <button
+      class="text-button"
+      onclick="showScreen('howWorks')">
       ⓘ How it works
     </button>
 
   </section>
 
 
-  <!-- HOW IT WORKS POPUP -->
+  <!-- =========================
+       HOW IT WORKS POPUP
+  ========================== -->
   <section id="howWorks" class="screen">
 
     <div class="how-card">
 
-      <button class="close" onclick="showScreen('howRekh')">
+      <button
+        class="close"
+        onclick="showScreen('howRekh')"
+        aria-label="Close">
         ×
       </button>
 
+
       <h1>ⓘ How it works</h1>
 
+
       <div class="instruction">
+
         <b>① Look</b>
-        <p>Point your phone at the artifact and see it come alive.</p>
+
+        <p>
+          Point your phone at the artifact and see it come alive.
+        </p>
+
       </div>
 
+
       <div class="instruction">
+
         <b>② Choose</b>
-        <p>Tap a glowing point to open a short story.</p>
+
+        <p>
+          Tap a glowing point to open a short story.
+        </p>
+
       </div>
 
+
       <div class="instruction">
+
         <b>③ Interact</b>
-        <p>Drag to turn the artifact and view every side.</p>
+
+        <p>
+          Drag to turn the artifact and view every side.
+        </p>
+
       </div>
 
+
       <div class="instruction">
+
         <b>④ Story</b>
-        <p>Listen or read at your own pace. Nothing is timed.</p>
+
+        <p>
+          Listen or read at your own pace. Nothing is timed.
+        </p>
+
       </div>
+
 
       <button onclick="showScreen('howRekh')">
         Got it
@@ -132,77 +211,146 @@
   </section>
 
 
-  <!-- STORYBOARD SLIDER SCRIPT -->
+  <!-- =========================
+       STORYBOARD JAVASCRIPT
+  ========================== -->
   <script>
 
     const storyFrames = [
+
       "assets/images/Rekh_How_It_Works_Frame_1_HD.png",
+
       "assets/images/Rekh_How_It_Works_Frame_2_HD.png",
+
       "assets/images/Rekh_How_It_Works_Frame_3_HD.png",
+
       "assets/images/Rekh_How_It_Works_Frame_4_HD.png"
+
     ];
+
 
     let currentStory = 0;
 
-    function updateStory() {
-      document.getElementById("storyFrame").src = storyFrames[currentStory];
 
-      const dots = document.querySelectorAll(".story-dot");
+    /* CHANGE STORY FRAME */
+
+    function updateStory() {
+
+      document.getElementById("storyFrame").src =
+        storyFrames[currentStory];
+
+
+      const dots =
+        document.querySelectorAll(".dot");
+
 
       dots.forEach((dot, index) => {
-        dot.classList.toggle("active", index === currentStory);
+
+        dot.classList.toggle(
+          "active",
+          index === currentStory
+        );
+
       });
+
     }
 
-    function nextStory() {
-      currentStory++;
 
-      if (currentStory >= storyFrames.length) {
-        currentStory = 0;
-      }
+    /* TAP A DOT */
+
+    function showStory(index) {
+
+      currentStory = index;
 
       updateStory();
-    }
 
-    function previousStory() {
-      currentStory--;
-
-      if (currentStory < 0) {
-        currentStory = storyFrames.length - 1;
-      }
-
-      updateStory();
     }
 
 
-    /* SWIPE SUPPORT */
+    /* =========================
+       SWIPE SUPPORT
+    ========================== */
 
     let touchStartX = 0;
     let touchEndX = 0;
 
-    const swipeArea = document.getElementById("storySwipeArea");
 
-    swipeArea.addEventListener("touchstart", function(event) {
-      touchStartX = event.changedTouches[0].screenX;
-    });
+    const swipeArea =
+      document.querySelector(".story-carousel");
 
-    swipeArea.addEventListener("touchend", function(event) {
-      touchEndX = event.changedTouches[0].screenX;
 
-      if (touchEndX < touchStartX - 50) {
-        nextStory();
+    swipeArea.addEventListener(
+      "touchstart",
+      function(event) {
+
+        touchStartX =
+          event.changedTouches[0].screenX;
+
       }
+    );
 
-      if (touchEndX > touchStartX + 50) {
-        previousStory();
+
+    swipeArea.addEventListener(
+      "touchend",
+      function(event) {
+
+        touchEndX =
+          event.changedTouches[0].screenX;
+
+
+        /* SWIPE LEFT */
+
+        if (touchEndX < touchStartX - 50) {
+
+          currentStory++;
+
+
+          if (
+            currentStory >= storyFrames.length
+          ) {
+
+            currentStory = 0;
+
+          }
+
+
+          updateStory();
+
+        }
+
+
+        /* SWIPE RIGHT */
+
+        if (touchEndX > touchStartX + 50) {
+
+          currentStory--;
+
+
+          if (currentStory < 0) {
+
+            currentStory =
+              storyFrames.length - 1;
+
+          }
+
+
+          updateStory();
+
+        }
+
       }
-    });
+    );
 
   </script>
 
 
-  <!-- MAIN JAVASCRIPT -->
+  <!-- =========================
+       MAIN JAVASCRIPT
+  ========================== -->
   <script src="script.js"></script>
 
+
 </body>
+
 </html>
+
