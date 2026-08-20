@@ -210,7 +210,190 @@
 
   </section>
 
+<!-- =========================
+     ACCESSIBILITY PANEL
+========================== -->
 
+<section id="accessibility" class="screen">
+
+  <div class="accessibility-card">
+
+    <!-- HEADER -->
+    <div class="accessibility-header">
+
+      <div class="accessibility-title">
+
+        <img
+          src="assets/icons/AccessibilityIcon.png"
+          alt="Accessibility"
+        >
+
+        <div>
+          <h1>Accessibility</h1>
+          <p>Make the experience your own</p>
+        </div>
+
+      </div>
+
+      <button
+        class="close"
+        onclick="showScreen('setup')"
+        aria-label="Close accessibility settings">
+        ×
+      </button>
+
+    </div>
+
+
+    <!-- LANGUAGE -->
+    <div class="accessibility-row">
+
+      <img
+        src="assets/icons/LanguageTranslateIcon.png"
+        class="accessibility-icon"
+        alt=""
+      >
+
+      <div class="accessibility-label">
+        <h2>Language</h2>
+        <p>Choose your language</p>
+      </div>
+
+      <button class="language-selector">
+        English
+        <img
+          src="assets/icons/LanguageTranslateIcon.png"
+          alt=""
+        >
+      </button>
+
+    </div>
+
+
+    <!-- TEXT SIZE -->
+    <div class="accessibility-row">
+
+      <img
+        src="assets/icons/TextSizeIcon.png"
+        class="accessibility-icon"
+        alt=""
+      >
+
+      <div class="accessibility-label">
+        <h2>Text size</h2>
+        <p>Make words bigger or smaller</p>
+      </div>
+
+      <div class="text-size-selector">
+
+        <button>A</button>
+        <button class="selected">A</button>
+        <button>A</button>
+
+      </div>
+
+    </div>
+
+
+    <!-- AUDIO -->
+    <div class="accessibility-row">
+
+      <img
+        src="assets/icons/AudioIcon.png"
+        class="accessibility-icon"
+        alt=""
+      >
+
+      <div class="accessibility-label">
+        <h2>Audio</h2>
+        <p>Narrated stories through earphones</p>
+      </div>
+
+      <button
+        class="toggle active"
+        onclick="toggleSetting(this)"
+        aria-label="Toggle audio">
+        <span></span>
+      </button>
+
+    </div>
+
+
+    <!-- CAPTIONS -->
+    <div class="accessibility-row">
+
+      <img
+        src="assets/icons/CaptionsIcon.png"
+        class="accessibility-icon"
+        alt=""
+      >
+
+      <div class="accessibility-label">
+        <h2>Captions</h2>
+        <p>Show text for every story</p>
+      </div>
+
+      <button
+        class="toggle active"
+        onclick="toggleSetting(this)"
+        aria-label="Toggle captions">
+        <span></span>
+      </button>
+
+    </div>
+
+
+    <!-- HIGH CONTRAST -->
+    <div class="accessibility-row">
+
+      <img
+        src="assets/icons/HighContrastIcon.png"
+        class="accessibility-icon"
+        alt=""
+      >
+
+      <div class="accessibility-label">
+        <h2>High contrast</h2>
+        <p>For easier readability</p>
+      </div>
+
+      <button
+        class="toggle"
+        onclick="toggleSetting(this)"
+        aria-label="Toggle high contrast">
+        <span></span>
+      </button>
+
+    </div>
+
+
+    <!-- HAPTIC FEEDBACK -->
+    <div class="accessibility-row">
+
+      <img
+        src="assets/icons/HapticsIcon.png"
+        class="accessibility-icon"
+        alt=""
+      >
+
+      <div class="accessibility-label">
+        <h2>Haptic feedback</h2>
+        <p>Gentle vibrations</p>
+      </div>
+
+      <button
+        class="toggle"
+        onclick="toggleSetting(this)"
+        aria-label="Toggle haptic feedback">
+        <span></span>
+      </button>
+
+    </div>
+
+
+  </div>
+
+</section>
   
 
   <!-- =========================
