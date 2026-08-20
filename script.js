@@ -156,66 +156,111 @@ function continueSetup() {
 
 }
 
-
 /* =====================================================
-   MINDAR
+   MINDAR AR
 ===================================================== */
 
 let arStarted = false;
+let arSystem = null;
 
+
+/* =====================================================
+   START AR
+===================================================== */
 
 function startAR() {
-
-  if (arStarted) {
-    return;
-  }
 
   const scene =
     document.getElementById("mindarScene");
 
   if (!scene) {
+
     console.error("MindAR scene not found.");
+
     return;
+
   }
 
 
-  const target =
-    document.getElementById("vishnuTarget");
+  /*
+     Wait until A-Frame has finished loading
+     the scene and MindAR system.
+  */
 
-  if (!target) {
-    console.error("Vishnu target not found.");
-    return;
-  }
+  const launchAR = () => {
+
+    arSystem =
+      scene.systems["mindar-image-system"];
 
 
-  arStarted = true;
+    if (!arSystem) {
 
+      console.error(
+        "MindAR image system not found."
+      );
 
-  /* -----------------------------------------
-     TARGET FOUND
-  ----------------------------------------- */
-
-  target.addEventListener(
-    "targetFound",
-    () => {
-
-      console.log("Vishnu artifact found.");
-
-      showArtifactFound();
+      return;
 
     }
-  );
 
 
-  /* -----------------------------------------
-     TARGET LOST
-  ----------------------------------------- */
+    if (arStarted) {
 
-  target.addEventListener(
-    "targetLost",
+      return;
+
+    }
+
+
+    arStarted = true;
+
+
+    console.log(
+      "Starting MindAR camera..."
+    );
+
+
+    /*
+       THIS is what actually requests
+       camera permission and starts
+       the device camera.
+    */
+
+    arSystem.start();
+
+  };
+
+
+  /*
+     If A-Frame is already loaded,
+     start immediately.
+  */
+
+  if (scene.hasLoaded) {
+
+    launchAR();
+
+  } else {
+
+    scene.addEventListener(
+      "loaded",
+      launchAR,
+      { once: true }
+    );
+
+  }
+
+
+  /*
+     MindAR successfully started.
+  */
+
+  scene.addEventListener(
+    "arReady",
     () => {
 
-      console.log("Vishnu artifact lost.");
+      console.log(
+        "MindAR ready — camera is running."
+      );
 
       showScanning();
 
@@ -223,20 +268,65 @@ function startAR() {
   );
 
 
-  /* -----------------------------------------
-     AR ERROR
-  ----------------------------------------- */
+  /*
+     Camera / AR startup failed.
+  */
 
   scene.addEventListener(
     "arError",
-    () => {
+    (event) => {
 
       console.error(
-        "MindAR could not start."
+        "MindAR camera error:",
+        event
+      );
+
+      alert(
+        "Camera could not start. Please allow camera access and reload the page."
       );
 
     }
   );
+
+
+  /*
+     Vishnu detected.
+  */
+
+  const target =
+    document.getElementById("vishnuTarget");
+
+
+  if (target) {
+
+    target.addEventListener(
+      "targetFound",
+      () => {
+
+        console.log(
+          "Vishnu artifact found!"
+        );
+
+        showArtifactFound();
+
+      }
+    );
+
+
+    target.addEventListener(
+      "targetLost",
+      () => {
+
+        console.log(
+          "Vishnu artifact lost."
+        );
+
+        showScanning();
+
+      }
+    );
+
+  }
 
 }
 
@@ -261,26 +351,42 @@ function showScanning() {
 
 
   if (scanMessage) {
-    scanMessage.style.display = "block";
+
+    scanMessage.style.display =
+      "block";
+
   }
+
 
   if (scanFrame) {
-    scanFrame.style.display = "block";
+
+    scanFrame.style.display =
+      "block";
+
   }
+
 
   if (scanStatus) {
-    scanStatus.style.display = "block";
+
+    scanStatus.style.display =
+      "block";
+
   }
 
+
   if (artifactFound) {
-    artifactFound.classList.remove("visible");
+
+    artifactFound.classList.remove(
+      "visible"
+    );
+
   }
 
 }
 
 
 /* =====================================================
-   ARTIFACT FOUND UI
+   ARTIFACT FOUND
 ===================================================== */
 
 function showArtifactFound() {
@@ -299,19 +405,70 @@ function showArtifactFound() {
 
 
   if (scanMessage) {
-    scanMessage.style.display = "none";
+
+    scanMessage.style.display =
+      "none";
+
   }
+
 
   if (scanFrame) {
-    scanFrame.style.display = "none";
+
+    scanFrame.style.display =
+      "none";
+
   }
+
 
   if (scanStatus) {
-    scanStatus.style.display = "none";
+
+    scanStatus.style.display =
+      "none";
+
   }
 
+
   if (artifactFound) {
-    artifactFound.classList.add("visible");
+
+    artifactFound.classList.add(
+      "visible"
+    );
+
   }
 
 }
+
+
+/* =====================================================
+   CONTINUE → START AR
+===================================================== */
+
+function continueSetup() {
+
+  console.log(
+    "Continue clicked — opening camera..."
+  );
+
+
+  /*
+     Show AR screen FIRST.
+     This is important because the A-Frame
+     scene was previously hidden.
+  */
+
+  showScreen("arScreen");
+
+
+  /*
+     Give the browser one frame to make
+     the AR scene visible, then start MindAR.
+  */
+
+  requestAnimationFrame(() => {
+
+    startAR();
+
+  });
+
+}
+
