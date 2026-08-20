@@ -38,7 +38,6 @@ const storyFrames = [
 
 let currentStory = 0;
 
-
 function showStory(index) {
 
   currentStory = index;
@@ -52,12 +51,10 @@ function showStory(index) {
 
   document.querySelectorAll(".dot").forEach(
     (dot, i) => {
-
       dot.classList.toggle(
         "active",
         i === index
       );
-
     }
   );
 }
@@ -108,186 +105,89 @@ function closeAccessibility() {
 ===================================================== */
 
 function toggleSetting(button) {
-
   button.classList.toggle("active");
-
 }
 
 
 /* =====================================================
-   START AR
+   CONTINUE → AR
 ===================================================== */
-
-let arStarted = false;
-
 
 function continueSetup() {
 
-  console.log("CONTINUE CLICKED");
+  console.log("CONTINUE → AR");
 
   /*
-     Show AR screen
+     Just switch to the AR screen.
+
+     MindAR has autoStart:true,
+     so it starts the camera itself.
   */
 
   showScreen("arScreen");
-
-
-  /*
-     Wait until the AR screen is visible,
-     then start MindAR.
-  */
-
-  setTimeout(() => {
-
-    startAR();
-
-  }, 100);
-
 }
 
 
 /* =====================================================
-   MINDAR
+   AR TARGET
 ===================================================== */
 
-function startAR() {
+document.addEventListener("DOMContentLoaded", () => {
 
-  if (arStarted) {
-    return;
-  }
-
+  const target =
+    document.getElementById("vishnuTarget");
 
   const scene =
     document.getElementById("mindarScene");
 
 
-  if (!scene) {
-
-    console.error(
-      "MindAR scene not found"
-    );
-
+  if (!target || !scene) {
     return;
-
-  }
-
-
-  const startMindAR = () => {
-
-    const mindar =
-      scene.systems["mindar-image-system"];
-
-
-    if (!mindar) {
-
-      console.error(
-        "MindAR system not found"
-      );
-
-      return;
-
-    }
-
-
-    console.log(
-      "MINDAR SYSTEM FOUND"
-    );
-
-
-    /*
-       START CAMERA
-    */
-
-    mindar.start();
-
-
-    arStarted = true;
-
-
-    console.log(
-      "MINDAR CAMERA STARTED"
-    );
-
-  };
-
-
-  /*
-     Same idea as your working postcard:
-     wait until A-Frame is ready.
-  */
-
-  if (scene.hasLoaded) {
-
-    startMindAR();
-
-  } else {
-
-    scene.addEventListener(
-      "loaded",
-      startMindAR,
-      { once: true }
-    );
-
   }
 
 
   /* =================================================
-     AR READY
+     CAMERA READY
   ================================================= */
 
   scene.addEventListener(
     "arReady",
     () => {
 
-      console.log(
-        "CAMERA READY"
-      );
+      console.log("CAMERA READY");
 
       showScanning();
 
-    },
-    { once: true }
+    }
   );
 
 
   /* =================================================
-     AR ERROR
+     CAMERA ERROR
   ================================================= */
 
   scene.addEventListener(
     "arError",
-    event => {
+    (event) => {
 
       console.error(
         "AR ERROR:",
         event
       );
 
-    },
-    { once: true }
+    }
   );
 
 
   /* =================================================
-     TARGET
+     VISHNU FOUND
   ================================================= */
-
-  const target =
-    document.getElementById("vishnuTarget");
-
-
-  if (!target) {
-    return;
-  }
-
 
   target.addEventListener(
     "targetFound",
     () => {
 
-      console.log(
-        "VISHNU FOUND!"
-      );
+      console.log("VISHNU FOUND");
 
       showArtifactFound();
 
@@ -295,20 +195,22 @@ function startAR() {
   );
 
 
+  /* =================================================
+     VISHNU LOST
+  ================================================= */
+
   target.addEventListener(
     "targetLost",
     () => {
 
-      console.log(
-        "VISHNU LOST"
-      );
+      console.log("VISHNU LOST");
 
       showScanning();
 
     }
   );
 
-}
+});
 
 
 /* =====================================================
@@ -345,7 +247,6 @@ function showScanning() {
   if (found) {
     found.classList.remove("visible");
   }
-
 }
 
 
@@ -383,5 +284,4 @@ function showArtifactFound() {
   if (found) {
     found.classList.add("visible");
   }
-
 }
