@@ -1627,3 +1627,233 @@ p {
   }
 
 }
+/* =====================================================
+   AR HOTSPOTS
+===================================================== */
+
+.hotspot {
+
+  cursor: pointer;
+
+  transition:
+    transform 0.2s ease;
+
+}
+
+
+.hotspot:active {
+
+  transform: scale(1.25);
+
+}
+
+
+/* =====================================================
+   HOTSPOT INFORMATION CARD
+===================================================== */
+
+.hotspot-info {
+
+  position: fixed;
+
+  z-index: 50;
+
+  left: 50%;
+
+  bottom: 28px;
+
+  transform:
+    translateX(-50%)
+    translateY(30px);
+
+  width: min(
+    340px,
+    calc(100vw - 40px)
+  );
+
+  padding: 22px;
+
+  border-radius: 24px;
+
+  background: #3b2108;
+
+  color: #fff4e8;
+
+  box-shadow:
+    0 15px 50px
+    rgba(
+      0,
+      0,
+      0,
+      0.45
+    );
+
+  opacity: 0;
+
+  visibility: hidden;
+
+  pointer-events: none;
+
+  transition:
+    opacity 0.25s ease,
+    transform 0.25s ease;
+
+}
+
+
+.hotspot-info.visible {
+
+  opacity: 1;
+
+  visibility: visible;
+
+  pointer-events: auto;
+
+  transform:
+    translateX(-50%)
+    translateY(0);
+
+}
+
+
+/* =====================================================
+   CLOSE
+===================================================== */
+
+.hotspot-close {
+
+  position: absolute;
+
+  top: 12px;
+
+  right: 12px;
+
+  width: 34px;
+
+  height: 34px;
+
+  min-height: 34px;
+
+  padding: 0;
+
+  border-radius: 50%;
+
+  background: #261608;
+
+  color: #fff4e8;
+
+  font-size: 23px;
+
+}
+
+
+/* =====================================================
+   NUMBER
+===================================================== */
+
+.hotspot-number {
+
+  margin-bottom: 6px;
+
+  color: #e7bb3d;
+
+  font-family: monospace;
+
+  font-size: 11px;
+
+  letter-spacing: 3px;
+
+}
+
+
+/* =====================================================
+   TITLE
+===================================================== */
+
+.hotspot-info h2 {
+
+  margin-bottom: 8px;
+
+  font-size: 22px;
+
+  font-weight: 500;
+
+}
+
+
+.hotspot-info p {
+
+  color: #e0cdb8;
+
+  font-size: 14px;
+
+  line-height: 1.5;
+
+}
+
+
+/* =====================================================
+   AUDIO / ANIMATION / WRITTEN
+===================================================== */
+
+.hotspot-actions {
+
+  display: flex;
+
+  gap: 8px;
+
+  margin-top: 18px;
+
+}
+
+
+.hotspot-actions button {
+
+  flex: 1;
+
+  min-height: 38px;
+
+  padding: 8px 10px;
+
+  border-radius: 20px;
+
+  background: #604421;
+
+  color: #fff4e8;
+
+  font-size: 12px;
+
+}
+
+
+.hotspot-actions button:hover {
+
+  background: #76552c;
+
+}
+
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+@media (max-width: 600px) {
+
+  .hotspot-info {
+
+    bottom: 20px;
+
+    width: calc(100vw - 40px);
+
+    padding: 20px;
+
+  }
+
+
+  .hotspot-actions button {
+
+    font-size: 11px;
+
+  }
+
+}
