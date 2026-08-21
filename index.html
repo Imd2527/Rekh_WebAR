@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-<!-- GitHub Pages redeploy -->
+
   <meta charset="UTF-8">
 
   <meta
@@ -48,7 +48,7 @@
 
 <!-- =====================================================
      LOADING SCREEN
-====================================================== -->
+===================================================== -->
 
 <section
   id="loading"
@@ -61,7 +61,9 @@
     alt="Rekh"
   >
 
-  <h1>Rekh</h1>
+  <h1>
+    Rekh
+  </h1>
 
   <p>
     Loading your experience...
@@ -79,7 +81,7 @@
 
 <!-- =====================================================
      WELCOME SCREEN
-====================================================== -->
+===================================================== -->
 
 <section
   id="welcome"
@@ -124,13 +126,12 @@
 
 <!-- =====================================================
      HOW REKH WORKS
-====================================================== -->
+===================================================== -->
 
 <section
   id="howRekh"
   class="screen"
 >
-
 
   <div class="story-carousel">
 
@@ -150,28 +151,21 @@
       <button
         class="dot active"
         onclick="showStory(0)"
-        aria-label="Story frame 1"
       ></button>
-
 
       <button
         class="dot"
         onclick="showStory(1)"
-        aria-label="Story frame 2"
       ></button>
-
 
       <button
         class="dot"
         onclick="showStory(2)"
-        aria-label="Story frame 3"
       ></button>
-
 
       <button
         class="dot"
         onclick="showStory(3)"
-        aria-label="Story frame 4"
       ></button>
 
     </div>
@@ -182,7 +176,6 @@
   <h1>
     How Rekh Works
   </h1>
-
 
   <p>
     Scan an artifact to reveal its stories,
@@ -196,14 +189,13 @@
     Continue
   </button>
 
-
 </section>
 
 
 
 <!-- =====================================================
      SET UP EXPERIENCE
-====================================================== -->
+===================================================== -->
 
 <section
   id="setup"
@@ -224,11 +216,9 @@
 
   <div class="setup-content">
 
-
     <h1>
       Set Up the Experience
     </h1>
-
 
     <p>
       Choose what feels right. You can<br>
@@ -275,7 +265,6 @@
       Continue
     </button>
 
-
   </div>
 
 </section>
@@ -284,7 +273,7 @@
 
 <!-- =====================================================
      ACCESSIBILITY OVERLAY
-====================================================== -->
+===================================================== -->
 
 <div
   id="accessibilityOverlay"
@@ -303,7 +292,6 @@
     <!-- HEADER -->
 
     <div class="accessibility-header">
-
 
       <div class="accessibility-title">
 
@@ -330,7 +318,6 @@
 
         </div>
 
-
       </div>
 
 
@@ -342,7 +329,6 @@
         ×
       </button>
 
-
     </div>
 
 
@@ -352,7 +338,6 @@
     ================================================== -->
 
     <div class="accessibility-row">
-
 
       <img
         class="accessibility-icon"
@@ -387,7 +372,6 @@
 
       </button>
 
-
     </div>
 
 
@@ -397,7 +381,6 @@
     ================================================== -->
 
     <div class="accessibility-row">
-
 
       <img
         class="accessibility-icon"
@@ -435,7 +418,6 @@
 
       </div>
 
-
     </div>
 
 
@@ -445,7 +427,6 @@
     ================================================== -->
 
     <div class="accessibility-row">
-
 
       <img
         class="accessibility-icon"
@@ -476,7 +457,6 @@
 
       </button>
 
-
     </div>
 
 
@@ -486,7 +466,6 @@
     ================================================== -->
 
     <div class="accessibility-row">
-
 
       <img
         class="accessibility-icon"
@@ -517,7 +496,6 @@
 
       </button>
 
-
     </div>
 
 
@@ -527,7 +505,6 @@
     ================================================== -->
 
     <div class="accessibility-row">
-
 
       <img
         class="accessibility-icon"
@@ -558,7 +535,6 @@
 
       </button>
 
-
     </div>
 
 
@@ -568,7 +544,6 @@
     ================================================== -->
 
     <div class="accessibility-row last">
-
 
       <img
         class="accessibility-icon"
@@ -599,7 +574,6 @@
 
       </button>
 
-
     </div>
 
 
@@ -611,7 +585,7 @@
 
 <!-- =====================================================
      AR SCREEN
-====================================================== -->
+===================================================== -->
 
 <section
   id="arScreen"
@@ -651,11 +625,8 @@
   >
 
 
-    <a-assets>
-      <a-asset-item id="artifactModel" src="assets/3d/visnu_lokesvara17mb.glb"></a-asset-item>
-    </a-assets>
-
     <!-- =================================================
+         CAMERA
     ================================================== -->
 
     <a-camera
@@ -669,35 +640,17 @@
 
     <!-- =================================================
          VISHNU TARGET
-    ================================================= -->
+    ================================================== -->
 
     <a-entity
       id="vishnuTarget"
       mindar-image-target="targetIndex: 0"
     >
-      <!-- ===============================================
-           3D MODEL (Placeholder)
-      ================================================ -->
-      <a-entity id="artifact3DContainer" visible="false">
-        <a-gltf-model
-          id="artifact3D"
-          src="#artifactModel"
-          scale="1 1 1"
-          position="0 0 0"
-          rotation="0 0 0"
-        ></a-gltf-model>
-      </a-entity>
-      
-      <!-- Lighting so the model is visible -->
-      <a-entity light="type: ambient; color: #ffffff; intensity: 1.5"></a-entity>
-      <a-entity light="type: directional; color: #ffffff; intensity: 2" position="1 2 1"></a-entity>
-      <a-entity light="type: directional; color: #ffffff; intensity: 1" position="-1 -1 -1"></a-entity>
 
 
-
-      <!-- ===============================================
+      <!-- =================================================
            HOTSPOT 1 — CROWN
-      ================================================ -->
+      ================================================== -->
 
       <a-image
         id="hotspot1"
@@ -722,9 +675,9 @@
 
 
 
-      <!-- ===============================================
+      <!-- =================================================
            HOTSPOT 2 — RIGHT HAND
-      ================================================ -->
+      ================================================== -->
 
       <a-image
         id="hotspot2"
@@ -749,9 +702,9 @@
 
 
 
-      <!-- ===============================================
+      <!-- =================================================
            HOTSPOT 3 — ORNAMENTAL ARCH
-      ================================================ -->
+      ================================================== -->
 
       <a-image
         id="hotspot3"
@@ -838,11 +791,8 @@
   >
 
     <span class="corner top-left"></span>
-
     <span class="corner top-right"></span>
-
     <span class="corner bottom-left"></span>
-
     <span class="corner bottom-right"></span>
 
   </div>
@@ -892,20 +842,18 @@
     </div>
 
 
+
     <!-- INFO CARD -->
 
     <div class="artifact-info">
-
 
       <h2>
         Shri Vishnu
       </h2>
 
-
       <h3>
         South India, 17th Century A.D.
       </h3>
-
 
       <p>
         A 17th century South Indian
@@ -923,14 +871,12 @@
       <button
         id="exploreArtifactButton"
         class="explore-artifact-button"
-        onclick="exploreArtifact()"
+        onclick="enterHotspotMode()"
       >
         Explore the artifact
       </button>
 
-
     </div>
-
 
   </div>
 
@@ -938,6 +884,9 @@
 
   <!-- ===================================================
        INVISIBLE TAP LAYER
+
+       Kept for compatibility with the previous code.
+       It is NOT used to trigger hotspot mode.
   ==================================================== -->
 
   <div
@@ -965,68 +914,214 @@
 
 
   <!-- ===================================================
-       HOTSPOT CONTENT CARD
+       HOTSPOT STORY / AUDIO CARD
   ==================================================== -->
 
-  <div id="hotspotInfo" class="hotspot-info custom-card">
-    <button class="hotspot-close" onclick="closeHotspot()">×</button>
-    <div class="card-header">
-      <div class="card-title">THE CROWN & FACE</div>
-      <div class="card-subtitle">How the vessel was held</div>
+  <div
+    id="hotspotInfo"
+    class="hotspot-info"
+  >
+
+
+    <!-- =================================================
+         CLOSE BUTTON
+    ================================================== -->
+
+    <button
+      class="hotspot-close"
+      onclick="closeHotspot()"
+      aria-label="Close"
+    >
+      ×
+    </button>
+
+
+
+    <!-- =================================================
+         STORY TITLE
+    ================================================== -->
+
+    <div class="story-heading">
+
+      <h2 id="hotspotTitle">
+        THE CROWN &amp; FACE
+      </h2>
+
+      <p id="hotspotSubtitle">
+        How the vessel was held
+      </p>
+
     </div>
-    <div class="card-media"></div>
-    <div class="card-audio">
-      <div class="audio-waveform">
-        <div class="bar" style="height: 16px; background: #ebd2b4;"></div>
-        <div class="bar" style="height: 24px; background: #ebd2b4;"></div>
-        <div class="bar" style="height: 10px; background: #ebd2b4;"></div>
-        <div class="bar" style="height: 20px; background: #ebd2b4;"></div>
-        <div class="bar" style="height: 8px; background: #ebd2b4;"></div>
-        <div class="bar" style="height: 14px; background: #ebd2b4;"></div>
-        <div class="bar" style="height: 6px; background: #ebd2b4;"></div>
-        
-        <div class="bar" style="height: 18px; background: rgba(255,255,255,0.2);"></div>
-        <div class="bar" style="height: 30px; background: rgba(255,255,255,0.2);"></div>
-        <div class="bar" style="height: 10px; background: rgba(255,255,255,0.2);"></div>
-        <div class="bar" style="height: 14px; background: rgba(255,255,255,0.2);"></div>
-        <div class="bar" style="height: 28px; background: rgba(255,255,255,0.2);"></div>
-        <div class="bar" style="height: 10px; background: rgba(255,255,255,0.2);"></div>
-        <div class="bar" style="height: 20px; background: rgba(255,255,255,0.2);"></div>
-        <div class="bar" style="height: 14px; background: rgba(255,255,255,0.2);"></div>
-        <div class="bar" style="height: 24px; background: rgba(255,255,255,0.2);"></div>
-        <div class="bar" style="height: 10px; background: rgba(255,255,255,0.2);"></div>
-        <div class="bar" style="height: 26px; background: rgba(255,255,255,0.2);"></div>
-        <div class="bar" style="height: 12px; background: rgba(255,255,255,0.2);"></div>
-        <div class="bar" style="height: 22px; background: rgba(255,255,255,0.2);"></div>
-      </div>
-      <div class="audio-times">
-        <span>00:02</span>
-        <div class="scrubber">
-          <div class="scrubber-track"></div>
-          <div class="scrubber-fill" style="width: 20%;"></div>
-          <div class="scrubber-thumb" style="left: 20%;"></div>
-        </div>
-        <span>00:24</span>
-      </div>
-      <div class="audio-controls">
-        <button class="btn-play">
-           <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5h2v14H8Zm6 0h2v14h-2Z"/></svg>
-        </button>
-        <button class="btn-rewind">
-           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><text x="12" y="15" font-size="9" fill="currentColor" stroke="none" text-anchor="middle">10</text></svg>
-        </button>
-        <span class="audio-status">Playing story</span>
-      </div>
+
+
+
+    <!-- =================================================
+         VISUAL / ANIMATION PLACEHOLDER
+
+         This is intentionally empty for now.
+    ================================================== -->
+
+    <div
+      class="story-visual"
+      id="storyVisual"
+    >
     </div>
-    <div class="card-captions">
-      <div class="captions-title">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2" ry="2"></rect><line x1="6" y1="12" x2="10" y2="12"></line><line x1="14" y1="12" x2="18" y2="12"></line><line x1="6" y1="16" x2="18" y2="16"></line></svg> CAPTIONS
-      </div>
-      <div class="captions-text">
-        The calm face and elaborate crown give Vishnu a composed, authoritative presence. In sacred sculpture, such details...
-      </div>
+
+
+
+    <!-- =================================================
+         AUDIO WAVEFORM
+    ================================================== -->
+
+    <div
+      class="audio-waveform"
+      id="audioWaveform"
+    >
+
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+
     </div>
+
+
+
+    <!-- =================================================
+         AUDIO PROGRESS
+    ================================================== -->
+
+    <div class="audio-progress-row">
+
+      <span id="audioCurrentTime">
+        00:00
+      </span>
+
+
+      <input
+        type="range"
+        id="audioProgress"
+        min="0"
+        max="100"
+        value="0"
+      >
+
+
+      <span id="audioDuration">
+        00:00
+      </span>
+
+    </div>
+
+
+
+    <!-- =================================================
+         AUDIO CONTROLS
+    ================================================== -->
+
+    <div class="audio-controls">
+
+
+      <!-- PLAY / PAUSE -->
+
+      <button
+        id="playPauseButton"
+        class="play-pause-button"
+        onclick="toggleStoryAudio()"
+        aria-label="Play or pause"
+      >
+        ▶
+      </button>
+
+
+      <!-- REWIND -->
+
+      <button
+        class="rewind-button"
+        onclick="rewindStoryAudio()"
+        aria-label="Replay 10 seconds"
+      >
+        ↶
+      </button>
+
+
+      <span class="playing-label">
+        Playing story
+      </span>
+
+    </div>
+
+
+
+    <!-- =================================================
+         CAPTIONS
+    ================================================== -->
+
+    <div class="captions-box">
+
+
+      <div class="captions-heading">
+
+        <img
+          src="assets/images/CaptionsIcon.png"
+          alt=""
+        >
+
+        <span>
+          CAPTIONS
+        </span>
+
+      </div>
+
+
+      <p id="hotspotDescription">
+        The calm face and elaborate crown give Vishnu
+        a composed, authoritative presence. In sacred
+        sculpture, such details communicate the deity's
+        divine and royal character.
+      </p>
+
+
+    </div>
+
+
   </div>
+
+
+
+  <!-- ===================================================
+       STORY AUDIO
+
+       Audio file uploaded by the user.
+  ==================================================== -->
+
+  <audio
+    id="storyAudio"
+    src="assets/images/Audio1.mp3"
+    preload="metadata"
+  ></audio>
+
 
 </section>
 
@@ -1034,7 +1129,7 @@
 
 <!-- =====================================================
      JAVASCRIPT
-====================================================== -->
+===================================================== -->
 
 <script
   src="script.js">
