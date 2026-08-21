@@ -104,8 +104,7 @@
     </h2>
 
     <p>
-      Point your camera at museum artifacts
-      and uncover the stories hidden within them.
+      Through this experience uncover the stories within.
     </p>
 
     <div class="small-line"></div>
@@ -590,24 +589,17 @@
 
 </div>
 
-
-
 <!-- =====================================================
      AR SCREEN
 ===================================================== -->
 
-<section
-  id="arScreen"
-  class="screen ar-screen"
->
-
+<section id="arScreen" class="screen ar-screen">
 
   <!-- ===================================================
        MINDAR SCENE
   ==================================================== -->
 
   <a-scene
-
     id="mindarScene"
 
     mindar-image="
@@ -634,17 +626,18 @@
     embedded
   >
 
-
     <!-- CAMERA -->
 
     <a-camera
       position="0 0 0"
       look-controls="enabled: false"
+      cursor="rayOrigin: mouse"
+      raycaster="objects: .hotspot"
     ></a-camera>
 
 
     <!-- =================================================
-         VISHNU IMAGE TARGET
+         VISHNU TARGET
     ================================================== -->
 
     <a-entity
@@ -654,71 +647,99 @@
 
 
       <!-- ===============================================
-           HOTSPOT 1
-           HEAD / CROWN
+           HOTSPOT 1 — HEAD / CROWN
       ================================================ -->
 
       <a-circle
         id="hotspot1"
         class="hotspot"
-        position="0 0.27 0.05"
+        position="0 0.27 0.06"
         radius="0.045"
+
         material="
           color: #f4d35e;
           shader: flat;
           opacity: 1;
           side: double;
         "
+
+        animation__pulse="
+          property: scale;
+          from: 1 1 1;
+          to: 1.25 1.25 1.25;
+          dur: 900;
+          dir: alternate;
+          loop: true;
+          easing: easeInOutSine;
+        "
       ></a-circle>
 
 
       <!-- ===============================================
-           HOTSPOT 2
-           LEFT SIDE
+           HOTSPOT 2 — LEFT SIDE
       ================================================ -->
 
       <a-circle
         id="hotspot2"
         class="hotspot"
-        position="-0.27 0.02 0.05"
+        position="-0.27 0.02 0.06"
         radius="0.045"
+
         material="
           color: #f4d35e;
           shader: flat;
           opacity: 1;
           side: double;
         "
+
+        animation__pulse="
+          property: scale;
+          from: 1 1 1;
+          to: 1.25 1.25 1.25;
+          dur: 900;
+          dir: alternate;
+          loop: true;
+          easing: easeInOutSine;
+        "
       ></a-circle>
 
 
       <!-- ===============================================
-           HOTSPOT 3
-           RIGHT SIDE
+           HOTSPOT 3 — RIGHT SIDE
       ================================================ -->
 
       <a-circle
         id="hotspot3"
         class="hotspot"
-        position="0.27 -0.05 0.05"
+        position="0.27 -0.05 0.06"
         radius="0.045"
+
         material="
           color: #f4d35e;
           shader: flat;
           opacity: 1;
           side: double;
+        "
+
+        animation__pulse="
+          property: scale;
+          from: 1 1 1;
+          to: 1.25 1.25 1.25;
+          dur: 900;
+          dir: alternate;
+          loop: true;
+          easing: easeInOutSine;
         "
       ></a-circle>
 
 
     </a-entity>
 
-
   </a-scene>
 
 
-
   <!-- ===================================================
-       AR UI — BACK
+       TOP LEFT — BACK
   ==================================================== -->
 
   <button
@@ -730,28 +751,26 @@
   </button>
 
 
-
   <!-- ===================================================
-       AR UI — ACCESSIBILITY
+       TOP RIGHT — ACCESSIBILITY
   ==================================================== -->
 
   <button
     class="ar-accessibility"
-    onclick="openAccessibilityFromAR()"
+    onclick="openAccessibility()"
     aria-label="Accessibility"
   >
 
     <img
       src="assets/images/AccessibilityIcon.png"
-      alt=""
+      alt="Accessibility"
     >
 
   </button>
 
 
-
   <!-- ===================================================
-       SCAN MESSAGE
+       SCANNING MESSAGE
   ==================================================== -->
 
   <div
@@ -760,7 +779,6 @@
   >
     Point your camera at the artifact
   </div>
-
 
 
   <!-- ===================================================
@@ -772,24 +790,12 @@
     class="scan-frame"
   >
 
-    <span
-      class="corner top-left"
-    ></span>
-
-    <span
-      class="corner top-right"
-    ></span>
-
-    <span
-      class="corner bottom-left"
-    ></span>
-
-    <span
-      class="corner bottom-right"
-    ></span>
+    <span class="corner top-left"></span>
+    <span class="corner top-right"></span>
+    <span class="corner bottom-left"></span>
+    <span class="corner bottom-right"></span>
 
   </div>
-
 
 
   <!-- ===================================================
@@ -804,7 +810,6 @@
   </div>
 
 
-
   <!-- ===================================================
        SCAN STATUS
   ==================================================== -->
@@ -817,9 +822,8 @@
   </div>
 
 
-
   <!-- ===================================================
-       ARTIFACT FOUND
+       ARTIFACT FOUND STATE
   ==================================================== -->
 
   <div
@@ -827,11 +831,14 @@
     class="artifact-found"
   >
 
+    <!-- TOP PILL -->
 
     <div class="found-pill">
       Artifact found
     </div>
 
+
+    <!-- INFO CARD -->
 
     <div class="artifact-info">
 
@@ -853,13 +860,41 @@
 
     </div>
 
+  </div>
+
+
+  <!-- ===================================================
+       INVISIBLE TAP LAYER
+
+       This is active ONLY after the artifact is found.
+       User can tap anywhere to move to hotspots.
+  ==================================================== -->
+
+  <div
+    id="artifactTapLayer"
+    class="artifact-tap-layer"
+  ></div>
+
+
+  <!-- ===================================================
+       HOTSPOT STATE
+  ==================================================== -->
+
+  <div
+    id="hotspotUI"
+    class="hotspot-ui"
+  >
+
+    <div class="hotspot-hint">
+      Explore the artifact
+    </div>
 
   </div>
 
 
-
   <!-- ===================================================
-       HOTSPOT INFORMATION CARD
+       HOTSPOT CONTENT CARD
+       Hidden until a hotspot is tapped.
   ==================================================== -->
 
   <div
@@ -867,20 +902,13 @@
     class="hotspot-info"
   >
 
-
-    <!-- CLOSE -->
-
     <button
-      id="hotspotClose"
       class="hotspot-close"
       onclick="closeHotspot()"
-      aria-label="Close hotspot information"
     >
       ×
     </button>
 
-
-    <!-- NUMBER -->
 
     <div
       id="hotspotNumber"
@@ -890,16 +918,12 @@
     </div>
 
 
-    <!-- TITLE -->
-
     <h2
       id="hotspotTitle"
     >
       Vishnu
     </h2>
 
-
-    <!-- DESCRIPTION -->
 
     <p
       id="hotspotDescription"
@@ -908,11 +932,7 @@
     </p>
 
 
-    <!-- ACTIONS -->
-
-    <div
-      class="hotspot-actions"
-    >
+    <div class="hotspot-actions">
 
       <button>
         Audio
@@ -927,7 +947,6 @@
       </button>
 
     </div>
-
 
   </div>
 
