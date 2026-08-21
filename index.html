@@ -644,98 +644,95 @@
       id="vishnuTarget"
       mindar-image-target="targetIndex: 0"
     >
+<!-- HOTSPOT 1 -->
+<a-entity
+  id="hotspot1"
+  class="hotspot"
+  position="0 0.27 0.08"
+  visible="false"
+>
+  <a-circle
+    radius="0.065"
+    material="
+      shader: flat;
+      color: #F4D35E;
+      opacity: 1;
+      transparent: false;
+    "
+  ></a-circle>
+
+  <a-ring
+    radius-inner="0.075"
+    radius-outer="0.09"
+    material="
+      shader: flat;
+      color: #FFF1A8;
+      opacity: 0.8;
+      transparent: false;
+    "
+  ></a-ring>
+</a-entity>
 
 
-      <!-- ===============================================
-           HOTSPOT 1 — HEAD / CROWN
-      ================================================ -->
+<!-- HOTSPOT 2 -->
+<a-entity
+  id="hotspot2"
+  class="hotspot"
+  position="-0.27 0.02 0.08"
+  visible="false"
+>
+  <a-circle
+    radius="0.065"
+    material="
+      shader: flat;
+      color: #F4D35E;
+      opacity: 1;
+      transparent: false;
+    "
+  ></a-circle>
 
-      <a-circle
-        id="hotspot1"
-        class="hotspot"
-        position="0 0.27 0.06"
-        radius="0.045"
-
-        material="
-          color: #f4d35e;
-          shader: flat;
-          opacity: 1;
-          side: double;
-        "
-
-        animation__pulse="
-          property: scale;
-          from: 1 1 1;
-          to: 1.25 1.25 1.25;
-          dur: 900;
-          dir: alternate;
-          loop: true;
-          easing: easeInOutSine;
-        "
-      ></a-circle>
-
-
-      <!-- ===============================================
-           HOTSPOT 2 — LEFT SIDE
-      ================================================ -->
-
-      <a-circle
-        id="hotspot2"
-        class="hotspot"
-        position="-0.27 0.02 0.06"
-        radius="0.045"
-
-        material="
-          color: #f4d35e;
-          shader: flat;
-          opacity: 1;
-          side: double;
-        "
-
-        animation__pulse="
-          property: scale;
-          from: 1 1 1;
-          to: 1.25 1.25 1.25;
-          dur: 900;
-          dir: alternate;
-          loop: true;
-          easing: easeInOutSine;
-        "
-      ></a-circle>
+  <a-ring
+    radius-inner="0.075"
+    radius-outer="0.09"
+    material="
+      shader: flat;
+      color: #FFF1A8;
+      opacity: 0.8;
+      transparent: false;
+    "
+  ></a-ring>
+</a-entity>
 
 
-      <!-- ===============================================
-           HOTSPOT 3 — RIGHT SIDE
-      ================================================ -->
+<!-- HOTSPOT 3 -->
+<a-entity
+  id="hotspot3"
+  class="hotspot"
+  position="0.27 -0.05 0.08"
+  visible="false"
+>
+  <a-circle
+    radius="0.065"
+    material="
+      shader: flat;
+      color: #F4D35E;
+      opacity: 1;
+      transparent: false;
+    "
+  ></a-circle>
 
-      <a-circle
-        id="hotspot3"
-        class="hotspot"
-        position="0.27 -0.05 0.06"
-        radius="0.045"
+  <a-ring
+    radius-inner="0.075"
+    radius-outer="0.09"
+    material="
+      shader: flat;
+      color: #FFF1A8;
+      opacity: 0.8;
+      transparent: false;
+    "
+  ></a-ring>
+</a-entity>
 
-        material="
-          color: #f4d35e;
-          shader: flat;
-          opacity: 1;
-          side: double;
-        "
-
-        animation__pulse="
-          property: scale;
-          from: 1 1 1;
-          to: 1.25 1.25 1.25;
-          dur: 900;
-          dir: alternate;
-          loop: true;
-          easing: easeInOutSine;
-        "
-      ></a-circle>
-
-
-    </a-entity>
-
-  </a-scene>
 
 
   <!-- ===================================================
