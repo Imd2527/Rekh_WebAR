@@ -1011,3 +1011,254 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 });
+/* =====================================================
+   STORY AUDIO
+===================================================== */
+
+const storyAudio =
+  document.getElementById("storyAudio");
+
+const playPauseButton =
+  document.getElementById("playPauseButton");
+
+const audioProgress =
+  document.getElementById("audioProgress");
+
+const audioCurrentTime =
+  document.getElementById("audioCurrentTime");
+
+const audioDuration =
+  document.getElementById("audioDuration");
+
+
+/* -----------------------------------------------------
+   FORMAT TIME
+----------------------------------------------------- */
+
+function formatAudioTime(seconds) {
+
+  if (!isFinite(seconds)) {
+    return "00:00";
+  }
+
+  const minutes =
+    Math.floor(seconds / 60);
+
+  const remainingSeconds =
+    Math.floor(seconds % 60);
+
+  return (
+    String(minutes).padStart(2, "0") +
+    ":" +
+    String(remainingSeconds).padStart(2, "0")
+  );
+}
+
+
+/* -----------------------------------------------------
+   PLAY / PAUSE
+----------------------------------------------------- */
+
+function toggleStoryAudio() {
+
+  if (!storyAudio) {
+    return;
+  }
+
+  if (storyAudio.paused) {
+
+    storyAudio.play()
+      .then(() => {
+
+        if (playPauseButton) {
+          playPauseButton.textContent = "Ⅱ";
+        }
+
+      })
+      .catch(error => {
+
+        console.error(
+          "Audio could not play:",
+          error
+        );
+
+      });
+
+  } else {
+
+    storyAudio.pause();
+
+    if (playPauseButton) {
+      playPauseButton.textContent = "▶";
+    }
+
+  }
+}
+
+
+/* -----------------------------------------------------
+   REWIND 10 SECONDS
+----------------------------------------------------- */
+
+function rewindStoryAudio() {
+
+  if (!storyAudio) {
+    return;
+  }
+
+  storyAudio.currentTime =
+    Math.max(
+      0,
+      storyAudio.currentTime - 10
+    );
+}
+
+
+/* -----------------------------------------------------
+   AUDIO LOADED
+----------------------------------------------------- */
+
+if (storyAudio) {
+
+  storyAudio.addEventListener(
+    "loadedmetadata",
+    () => {
+
+      if (audioDuration) {
+
+        audioDuration.textContent =
+          formatAudioTime(
+            storyAudio.duration
+          );
+
+      }
+
+      if (audioProgress) {
+        audioProgress.value = 0;
+      }
+
+    }
+  );
+
+
+  /* ---------------------------------------------------
+     UPDATE PROGRESS
+  --------------------------------------------------- */
+
+  storyAudio.addEventListener(
+    "timeupdate",
+    () => {
+
+      if (!storyAudio.duration) {
+        return;
+      }
+
+      const percentage =
+        (storyAudio.currentTime /
+          storyAudio.duration) * 100;
+
+      if (audioProgress) {
+        audioProgress.value =
+          percentage;
+      }
+
+      if (audioCurrentTime) {
+
+        audioCurrentTime.textContent =
+          formatAudioTime(
+            storyAudio.currentTime
+          );
+
+      }
+
+    }
+  );
+
+
+  /* ---------------------------------------------------
+     AUDIO ENDED
+  --------------------------------------------------- */
+
+  storyAudio.addEventListener(
+    "ended",
+    () => {
+
+      if (playPauseButton) {
+        playPauseButton.textContent = "▶";
+      }
+
+      if (audioProgress) {
+        audioProgress.value = 0;
+      }
+
+    }
+  );
+
+}
+
+
+/* -----------------------------------------------------
+   SCRUB AUDIO
+----------------------------------------------------- */
+
+if (audioProgress) {
+
+  audioProgress.addEventListener(
+    "input",
+    () => {
+
+      if (!storyAudio ||
+          !storyAudio.duration) {
+        return;
+      }
+
+      storyAudio.currentTime =
+        (audioProgress.value / 100) *
+        storyAudio.duration;
+
+    }
+  );
+
+}
+
+
+/* =====================================================
+   START AUDIO WHEN HOTSPOT OPENS
+===================================================== */
+
+const originalOpenHotspot =
+  window.openHotspot;
+
+window.openHotspot = function(id) {
+
+  if (typeof originalOpenHotspot === "function") {
+
+    originalOpenHotspot(id);
+
+  }
+
+  /*
+     Reset audio whenever a new hotspot opens.
+  */
+
+  if (storyAudio) {
+
+    storyAudio.pause();
+
+    storyAudio.currentTime = 0;
+
+  }
+
+  if (playPauseButton) {
+    playPauseButton.textContent = "▶";
+  }
+
+  if (audioProgress) {
+    audioProgress.value = 0;
+  }
+
+  if (audioCurrentTime) {
+    audioCurrentTime.textContent = "00:00";
+  }
+
+};
