@@ -1,5 +1,5 @@
 /* =====================================================
-   GLOBAL
+   RESET
 ===================================================== */
 
 * {
@@ -13,13 +13,50 @@ body {
   width: 100%;
   height: 100%;
   overflow: hidden;
-  background: #1b0d05;
-  color: #f7ead9;
-  font-family: Arial, Helvetica, sans-serif;
+
+  font-family:
+    Arial,
+    Helvetica,
+    sans-serif;
+
+  background: #1b0b04;
+  color: #f5eadc;
 }
 
-body {
-  position: relative;
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+}
+
+
+/* =====================================================
+   COLOURS
+===================================================== */
+
+:root {
+
+  --brown:
+    #2a1305;
+
+  --dark-brown:
+    #1b0b04;
+
+  --cream:
+    #f5eadc;
+
+  --muted:
+    #b9a99a;
+
+  --gold:
+    #d7a62d;
+
+  --gold-light:
+    #f0cf69;
+
+  --brown-light:
+    #5a3517;
+
 }
 
 
@@ -28,148 +65,146 @@ body {
 ===================================================== */
 
 .screen {
+
   position: fixed;
+
   inset: 0;
 
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 100vh;
 
   display: none;
 
-  opacity: 0;
-
-  transition:
-    opacity 0.35s ease;
-
-  z-index: 1;
-}
-
-.screen.active {
-  display: flex;
-  opacity: 1;
-}
-
-
-/* =====================================================
-   COMMON BACKGROUND
-===================================================== */
-
-.screen-content {
-  position: relative;
-
-  width: 100%;
-  height: 100%;
+  overflow: hidden;
 
   background:
-    radial-gradient(
-      circle at center,
-      #321b0b 0%,
-      #1b0d05 65%,
-      #120803 100%
-    );
+    var(--dark-brown);
+
+  z-index: 1;
+
+}
+
+
+.screen.active {
+
+  display: flex;
+
 }
 
 
 /* =====================================================
-   BACK BUTTON
+   LOADING SCREEN
 ===================================================== */
 
-.back-button {
-  position: absolute;
+#loading {
 
-  top: 20px;
-  left: 22px;
+  flex-direction: column;
 
-  width: 48px;
-  height: 48px;
-
-  border-radius: 50%;
-
-  border: none;
-
-  background: #4a280d;
-
-  color: #f7ead9;
-
-  font-size: 28px;
-
-  display: flex;
   align-items: center;
+
   justify-content: center;
 
-  cursor: pointer;
+  text-align: center;
 
-  z-index: 100;
-}
-
-.back-button:active {
-  transform: scale(0.94);
 }
 
 
-/* =====================================================
-   ACCESSIBILITY BUTTON
-===================================================== */
+#loading .logo {
 
-.accessibility-button {
-  position: absolute;
+  width: 100px;
 
-  top: 20px;
-  right: 22px;
-
-  width: 48px;
-  height: 48px;
-
-  border-radius: 50%;
-
-  border: none;
-
-  background: #4a280d;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  cursor: pointer;
-
-  z-index: 100;
-}
-
-.accessibility-button img {
-  width: 25px;
-  height: 25px;
+  height: 100px;
 
   object-fit: contain;
+
+  margin-bottom: 15px;
+
 }
 
 
-/* =====================================================
-   BUTTONS
-===================================================== */
+#loading h1 {
 
-button {
-  font-family: inherit;
+  margin: 0 0 8px;
+
+  font-size: 32px;
+
+  font-weight: 700;
+
 }
 
-.primary-button {
-  border: none;
 
-  background: #f4dcc2;
+#loading p {
 
-  color: #241207;
+  margin: 0 0 20px;
 
-  padding: 16px 42px;
+  color: var(--muted);
 
-  border-radius: 40px;
+  font-size: 15px;
 
-  font-size: 18px;
-  font-weight: 600;
-
-  cursor: pointer;
 }
 
-.primary-button:active {
-  transform: scale(0.97);
+
+#loading span {
+
+  margin-top: 14px;
+
+  font-size: 11px;
+
+  letter-spacing: 2px;
+
+  color: var(--muted);
+
+}
+
+
+.loading-line {
+
+  width: 150px;
+
+  height: 3px;
+
+  border-radius: 10px;
+
+  background: var(--brown-light);
+
+  overflow: hidden;
+
+  position: relative;
+
+}
+
+
+.loading-line::after {
+
+  content: "";
+
+  position: absolute;
+
+  left: -50%;
+
+  top: 0;
+
+  width: 50%;
+
+  height: 100%;
+
+  background: var(--cream);
+
+  animation: loading 1.5s infinite ease-in-out;
+
+}
+
+
+@keyframes loading {
+
+  0% {
+    left: -50%;
+  }
+
+  100% {
+    left: 100%;
+  }
+
 }
 
 
@@ -178,13 +213,100 @@ button {
 ===================================================== */
 
 #welcome {
+
+  flex-direction: column;
+
   align-items: center;
+
   justify-content: center;
+
   text-align: center;
+
+  padding: 30px;
+
 }
 
-#welcome .content {
-  width: min(90%, 700px);
+
+#welcome .logo {
+
+  width: 90px;
+
+  height: 90px;
+
+  object-fit: contain;
+
+  margin-bottom: 15px;
+
+}
+
+
+#welcome h1 {
+
+  margin: 0 0 20px;
+
+  font-size: clamp(32px, 7vw, 54px);
+
+}
+
+
+.welcome-card {
+
+  max-width: 480px;
+
+  margin-bottom: 30px;
+
+}
+
+
+.welcome-card h2 {
+
+  font-size: 22px;
+
+  line-height: 1.3;
+
+  margin: 0 0 12px;
+
+}
+
+
+.welcome-card p {
+
+  color: var(--muted);
+
+  line-height: 1.6;
+
+  margin: 0;
+
+}
+
+
+.small-line {
+
+  width: 50px;
+
+  height: 2px;
+
+  background: var(--gold);
+
+  margin: 22px auto 0;
+
+}
+
+
+#welcome > button {
+
+  background: var(--cream);
+
+  color: var(--dark-brown);
+
+  padding: 16px 40px;
+
+  border-radius: 40px;
+
+  font-size: 17px;
+
+  font-weight: 700;
+
 }
 
 
@@ -192,67 +314,145 @@ button {
    HOW REKH WORKS
 ===================================================== */
 
-#howItWorks {
+#howRekh {
+
+  flex-direction: column;
+
   align-items: center;
+
   justify-content: center;
-
-  overflow-y: auto;
-}
-
-.how-content {
-  width: min(90%, 700px);
 
   text-align: center;
 
-  padding: 50px 20px;
+  padding: 20px;
+
+  gap: 18px;
+
 }
 
-.story-container {
-  position: relative;
 
-  width: min(100%, 560px);
+.story-carousel {
 
-  margin: 0 auto 25px;
+  width: min(88vw, 520px);
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+}
+
+
+.story-image {
+
+  width: 100%;
+
+  aspect-ratio: 1 / 1;
+
+  border-radius: 24px;
 
   overflow: hidden;
 
-  border-radius: 28px;
+  background: #100803;
+
 }
 
-.story-container img {
+
+.story-image img {
+
   width: 100%;
-  height: auto;
+
+  height: 100%;
 
   display: block;
+
+  object-fit: cover;
+
 }
 
+
 .story-dots {
+
   display: flex;
+
+  align-items: center;
 
   justify-content: center;
 
-  gap: 12px;
+  gap: 10px;
 
-  margin: 20px 0;
+  margin-top: 16px;
+
 }
 
+
 .dot {
-  width: 12px;
-  height: 12px;
+
+  width: 11px;
+
+  height: 11px;
+
+  padding: 0;
 
   border-radius: 50%;
 
-  background: #b6a18d;
+  background: #8f8175;
 
-  cursor: pointer;
 }
 
+
 .dot.active {
+
   width: 42px;
 
   border-radius: 20px;
 
-  background: #f1d9bb;
+  background: var(--cream);
+
+}
+
+
+#howRekh h1 {
+
+  margin: 0;
+
+  font-size: clamp(30px, 7vw, 48px);
+
+}
+
+
+#howRekh > p {
+
+  max-width: 550px;
+
+  margin: 0;
+
+  color: var(--muted);
+
+  font-size: 17px;
+
+  line-height: 1.5;
+
+}
+
+
+#howRekh > button {
+
+  margin-top: 8px;
+
+  padding: 15px 40px;
+
+  border-radius: 40px;
+
+  background: #5a5046;
+
+  color: var(--cream);
+
+  font-size: 17px;
+
+  font-weight: 700;
+
 }
 
 
@@ -260,29 +460,158 @@ button {
    SETUP SCREEN
 ===================================================== */
 
-#setup {
+.setup-screen {
+
+  align-items: center;
+
+  justify-content: center;
+
+}
+
+
+.setup-content {
+
+  width: min(90vw, 500px);
+
+  text-align: center;
+
+}
+
+
+.setup-content h1 {
+
+  margin: 0 0 12px;
+
+  font-size: clamp(30px, 7vw, 48px);
+
+}
+
+
+.setup-content > p {
+
+  margin: 0 0 35px;
+
+  color: var(--muted);
+
+  line-height: 1.6;
+
+}
+
+
+/* =====================================================
+   BACK BUTTON
+===================================================== */
+
+.top-back {
+
+  position: absolute;
+
+  top: 24px;
+  left: 24px;
+
+  width: 52px;
+  height: 52px;
+
+  border-radius: 50%;
+
+  background: var(--brown);
+
+  color: var(--cream);
+
+  font-size: 28px;
+
+  z-index: 20;
+
+}
+
+
+/* =====================================================
+   ACCESSIBILITY BUTTON
+===================================================== */
+
+.accessibility-button {
+
+  width: 100%;
+
+  min-height: 70px;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 16px;
+
+  padding: 12px 18px;
+
+  border-radius: 18px;
+
+  background: #2b180b;
+
+  color: var(--cream);
+
+  font-size: 17px;
+
+  text-align: left;
+
+}
+
+
+.button-icon {
+
+  width: 44px;
+  height: 44px;
+
+  display: flex;
+
   align-items: center;
   justify-content: center;
 
-  text-align: center;
+  border-radius: 50%;
+
+  background: var(--brown);
+
 }
 
-.setup-content {
-  width: min(90%, 700px);
+
+.button-icon img {
+
+  width: 25px;
+  height: 25px;
+
+  object-fit: contain;
+
 }
 
-.setup-content h1 {
-  font-size: clamp(32px, 5vw, 54px);
 
-  margin-bottom: 15px;
+/* =====================================================
+   SETUP CONTINUE
+===================================================== */
+
+.setup-continue {
+
+  width: 100%;
+
+  margin-top: 20px;
+
+  padding: 16px;
+
+  border-radius: 35px;
+
+  background: #5a5046;
+
+  color: var(--cream);
+
+  font-size: 17px;
+
+  font-weight: 700;
+
 }
 
-.setup-content p {
-  font-size: 18px;
 
-  line-height: 1.5;
+.setup-continue.show {
 
-  color: #d7c2ad;
+  display: block;
+
 }
 
 
@@ -290,17 +619,21 @@ button {
    ACCESSIBILITY OVERLAY
 ===================================================== */
 
-#accessibilityOverlay {
-  position: absolute;
+.accessibility-overlay {
+
+  position: fixed;
 
   inset: 0;
 
+  z-index: 1000;
+
   display: flex;
 
-  align-items: center;
+  align-items: flex-end;
+
   justify-content: center;
 
-  background: rgba(15, 7, 2, 0.72);
+  background: rgba(0, 0, 0, 0.55);
 
   opacity: 0;
 
@@ -309,179 +642,311 @@ button {
   pointer-events: none;
 
   transition:
-    opacity 0.3s ease,
-    visibility 0.3s ease;
+    opacity .25s ease,
+    visibility .25s ease;
 
-  z-index: 500;
 }
 
-#accessibilityOverlay.open {
+
+.accessibility-overlay.open {
+
   opacity: 1;
 
   visibility: visible;
 
   pointer-events: auto;
+
 }
 
 
-/* =====================================================
-   ACCESSIBILITY PANEL
-===================================================== */
+.accessibility-card {
 
-.accessibility-panel {
-  position: relative;
-
-  width: min(90%, 540px);
+  width: min(100%, 560px);
 
   max-height: 90vh;
 
   overflow-y: auto;
 
-  background: #694a27;
+  background: #2a1305;
 
-  border: 1px solid #9b6d32;
+  border-radius: 28px 28px 0 0;
 
-  border-radius: 28px;
+  padding: 14px 22px 28px;
 
-  padding: 32px;
-
-  box-shadow:
-    0 20px 60px rgba(0, 0, 0, 0.45);
-}
-
-.accessibility-panel h2 {
-  margin: 0 0 8px;
-
-  font-size: 30px;
-}
-
-.accessibility-panel .subtitle {
-  margin-bottom: 25px;
-
-  color: #dfcbb5;
 }
 
 
-/* =====================================================
-   ACCESSIBILITY CLOSE
-===================================================== */
+.drag-handle {
 
-.accessibility-close {
-  position: absolute;
+  width: 45px;
 
-  top: 20px;
-  right: 20px;
+  height: 5px;
 
-  width: 42px;
-  height: 42px;
+  border-radius: 10px;
 
-  border: none;
+  background: #806e5d;
 
-  border-radius: 50%;
+  margin: 0 auto 22px;
 
-  background: #321b0b;
-
-  color: #f7ead9;
-
-  font-size: 22px;
-
-  cursor: pointer;
 }
 
 
-/* =====================================================
-   ACCESSIBILITY ROW
-===================================================== */
+.accessibility-header {
 
-.accessibility-row {
   display: flex;
-
-  align-items: center;
 
   justify-content: space-between;
 
-  gap: 20px;
+  align-items: flex-start;
 
-  padding: 18px 0;
+  margin-bottom: 24px;
 
-  border-top: 1px solid rgba(244, 220, 194, 0.2);
 }
 
-.accessibility-row-left {
+
+.accessibility-title {
+
   display: flex;
 
   align-items: center;
 
-  gap: 16px;
+  gap: 14px;
+
 }
 
-.accessibility-row img {
-  width: 38px;
-  height: 38px;
 
-  object-fit: contain;
+.accessibility-main-icon {
+
+  width: 48px;
+  height: 48px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: var(--brown);
+
 }
 
-.accessibility-row h3 {
-  margin: 0 0 5px;
 
-  font-size: 17px;
+.accessibility-main-icon img {
+
+  width: 28px;
+  height: 28px;
+
 }
 
-.accessibility-row p {
+
+.accessibility-title h1 {
+
   margin: 0;
 
-  color: #d8c4ad;
+  font-size: 22px;
 
-  font-size: 14px;
+}
+
+
+.accessibility-title p {
+
+  margin: 4px 0 0;
+
+  color: var(--muted);
+
+  font-size: 13px;
+
+}
+
+
+.accessibility-close {
+
+  width: 40px;
+  height: 40px;
+
+  border-radius: 50%;
+
+  background: #42240f;
+
+  color: var(--cream);
+
+  font-size: 25px;
+
 }
 
 
 /* =====================================================
-   ACCESSIBILITY TOGGLE
+   ACCESSIBILITY ROWS
 ===================================================== */
 
+.accessibility-row {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 14px;
+
+  padding: 17px 0;
+
+  border-bottom: 1px solid rgba(245, 234, 220, .1);
+
+}
+
+
+.accessibility-row.last {
+
+  border-bottom: none;
+
+}
+
+
+.accessibility-icon {
+
+  width: 30px;
+  height: 30px;
+
+  object-fit: contain;
+
+}
+
+
+.accessibility-label {
+
+  flex: 1;
+
+}
+
+
+.accessibility-label h2 {
+
+  margin: 0;
+
+  font-size: 16px;
+
+}
+
+
+.accessibility-label p {
+
+  margin: 5px 0 0;
+
+  color: var(--muted);
+
+  font-size: 12px;
+
+  line-height: 1.3;
+
+}
+
+
+/* =====================================================
+   ACCESSIBILITY CONTROLS
+===================================================== */
+
+.language-selector {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 7px;
+
+  padding: 8px 10px;
+
+  border-radius: 10px;
+
+  background: #42240f;
+
+  color: var(--cream);
+
+}
+
+
+.language-selector img {
+
+  width: 14px;
+  height: 14px;
+
+}
+
+
+.text-size-selector {
+
+  display: flex;
+
+  gap: 4px;
+
+}
+
+
+.text-size-selector button {
+
+  width: 30px;
+  height: 30px;
+
+  background: #42240f;
+
+  color: var(--cream);
+
+  border-radius: 7px;
+
+}
+
+
+.text-size-selector button.selected {
+
+  background: var(--cream);
+
+  color: var(--dark-brown);
+
+}
+
+
 .toggle {
-  width: 58px;
-  height: 32px;
 
-  border: none;
+  width: 46px;
+  height: 27px;
 
-  border-radius: 30px;
+  padding: 3px;
 
-  background: #321b0b;
+  border-radius: 20px;
+
+  background: #5a4b40;
 
   position: relative;
 
-  cursor: pointer;
 }
 
-.toggle::after {
-  content: "";
 
-  position: absolute;
+.toggle span {
 
-  width: 24px;
-  height: 24px;
+  display: block;
 
-  top: 4px;
-  left: 4px;
+  width: 21px;
+  height: 21px;
 
   border-radius: 50%;
 
-  background: #d7d0ca;
+  background: var(--cream);
 
-  transition: 0.2s ease;
+  transition: transform .2s ease;
+
 }
+
 
 .toggle.active {
-  background: #f4dcc2;
+
+  background: var(--gold);
+
 }
 
-.toggle.active::after {
-  left: 30px;
 
-  background: #5a3215;
+.toggle.active span {
+
+  transform: translateX(19px);
+
 }
 
 
@@ -489,49 +954,40 @@ button {
    AR SCREEN
 ===================================================== */
 
-#arScreen {
-  background: transparent;
+.ar-screen {
 
-  display: none;
+  background: #000;
 
-  overflow: hidden;
-}
-
-#arScreen.active {
-  display: block;
-}
-
-
-/* =====================================================
-   MINDAR / A-FRAME
-===================================================== */
-
-#mindarScene {
-  position: fixed;
-
-  inset: 0;
-
-  width: 100%;
-  height: 100%;
-
-  z-index: 1;
 }
 
 
 /*
-   Keep A-Frame camera output
-   behind the UI.
+   A-FRAME MUST FILL THE SCREEN
 */
 
-a-scene {
-  position: fixed !important;
+#mindarScene {
+
+  position: absolute !important;
 
   inset: 0 !important;
 
-  width: 100% !important;
-  height: 100% !important;
+  width: 100vw !important;
 
-  z-index: 1;
+  height: 100vh !important;
+
+  z-index: 1 !important;
+
+}
+
+
+/*
+   Hide A-Frame's default VR button
+*/
+
+.a-enter-vr {
+
+  display: none !important;
+
 }
 
 
@@ -539,46 +995,36 @@ a-scene {
    AR UI LAYER
 ===================================================== */
 
-.ar-ui {
+.ar-screen > button,
+.ar-screen > div {
+
   position: fixed;
 
-  inset: 0;
-
-  width: 100%;
-  height: 100%;
-
-  pointer-events: none;
-
-  z-index: 50;
 }
 
 
 /* =====================================================
-   AR BACK BUTTON
+   AR BACK
 ===================================================== */
 
 .ar-back {
-  position: absolute;
 
-  top: 20px;
+  top: 22px;
   left: 22px;
 
-  width: 50px;
-  height: 50px;
-
-  border: none;
+  width: 54px;
+  height: 54px;
 
   border-radius: 50%;
 
-  background: #4a280d;
+  background: var(--brown);
 
-  color: #f7ead9;
+  color: var(--cream);
 
-  font-size: 28px;
+  font-size: 30px;
 
-  pointer-events: auto;
+  z-index: 50;
 
-  cursor: pointer;
 }
 
 
@@ -587,56 +1033,63 @@ a-scene {
 ===================================================== */
 
 .ar-accessibility {
-  position: absolute;
 
-  top: 20px;
+  top: 22px;
   right: 22px;
 
-  width: 50px;
-  height: 50px;
-
-  border: none;
+  width: 54px;
+  height: 54px;
 
   border-radius: 50%;
 
-  background: #4a280d;
+  background: var(--brown);
 
-  pointer-events: auto;
+  z-index: 50;
 
-  cursor: pointer;
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
 }
 
+
 .ar-accessibility img {
-  width: 26px;
-  height: 26px;
+
+  width: 28px;
+  height: 28px;
+
+  object-fit: contain;
+
 }
 
 
 /* =====================================================
-   SCAN MESSAGE
+   SCANNING MESSAGE
 ===================================================== */
 
-#scanMessage {
-  position: absolute;
+.scan-message {
 
   top: 105px;
+
   left: 50%;
 
   transform: translateX(-50%);
 
-  padding: 13px 25px;
+  padding: 14px 24px;
 
   border-radius: 30px;
 
-  background: #4a280d;
+  background: var(--brown);
 
-  color: #f7ead9;
+  color: var(--cream);
 
-  font-size: 18px;
+  font-size: 16px;
 
   white-space: nowrap;
 
-  text-align: center;
+  z-index: 40;
+
 }
 
 
@@ -644,61 +1097,85 @@ a-scene {
    SCAN FRAME
 ===================================================== */
 
-#scanFrame {
-  position: absolute;
+.scan-frame {
 
-  width: min(58vw, 360px);
-
-  aspect-ratio: 0.62;
+  top: 50%;
 
   left: 50%;
-  top: 50%;
+
+  width: min(68vw, 340px);
+
+  height: min(60vh, 500px);
 
   transform: translate(-50%, -50%);
 
-  border: none;
+  z-index: 30;
+
+  pointer-events: none;
+
 }
 
 
-/*
-   Four corner brackets
-*/
-
-#scanFrame::before,
-#scanFrame::after {
-  content: "";
+.corner {
 
   position: absolute;
 
-  inset: 0;
-
-  pointer-events: none;
-}
-
-#scanFrame::before {
-  border-left: 6px solid #4a280d;
-  border-top: 6px solid #4a280d;
-
-  border-radius: 22px 0 0 0;
-
   width: 55px;
-  height: 55px;
-}
 
-#scanFrame::after {
-  border-right: 6px solid #4a280d;
-  border-bottom: 6px solid #4a280d;
-
-  border-radius: 0 0 22px 0;
-
-  width: 55px;
   height: 55px;
 
+  border-color: var(--brown);
+
+  border-style: solid;
+
+}
+
+
+.corner.top-left {
+
+  top: 0;
+  left: 0;
+
+  border-width: 7px 0 0 7px;
+
+  border-radius: 18px 0 0 0;
+
+}
+
+
+.corner.top-right {
+
+  top: 0;
   right: 0;
-  bottom: 0;
 
-  left: auto;
-  top: auto;
+  border-width: 7px 7px 0 0;
+
+  border-radius: 0 18px 0 0;
+
+}
+
+
+.corner.bottom-left {
+
+  bottom: 0;
+  left: 0;
+
+  border-width: 0 0 7px 7px;
+
+  border-radius: 0 0 0 18px;
+
+}
+
+
+.corner.bottom-right {
+
+  bottom: 0;
+  right: 0;
+
+  border-width: 0 7px 7px 0;
+
+  border-radius: 0 0 18px 0;
+
 }
 
 
@@ -706,29 +1183,30 @@ a-scene {
    SEARCH ICON
 ===================================================== */
 
-#searchIcon {
-  position: absolute;
+.search-icon {
+
+  left: 50%;
 
   top: 50%;
-  left: 50%;
 
   transform: translate(-50%, -50%);
 
-  width: 64px;
-  height: 64px;
-
-  border-radius: 50%;
-
-  background: #4a280d;
-
-  display: flex;
+  width: 65px;
+  height: 65px;
 
   align-items: center;
   justify-content: center;
 
-  color: #f0c84b;
+  border-radius: 50%;
 
-  font-size: 30px;
+  background: #4a2a00;
+
+  color: var(--gold-light);
+
+  font-size: 38px;
+
+  z-index: 35;
+
 }
 
 
@@ -736,22 +1214,24 @@ a-scene {
    SCAN STATUS
 ===================================================== */
 
-#scanStatus {
-  position: absolute;
+.scan-status {
 
-  bottom: 90px;
+  bottom: 75px;
 
   left: 50%;
 
   transform: translateX(-50%);
 
-  font-size: 12px;
+  color: #3a210f;
 
-  letter-spacing: 4px;
+  font-size: 10px;
 
-  color: #4a280d;
+  letter-spacing: 3px;
 
   white-space: nowrap;
+
+  z-index: 40;
+
 }
 
 
@@ -759,10 +1239,13 @@ a-scene {
    ARTIFACT FOUND
 ===================================================== */
 
-#artifactFound {
-  position: absolute;
+.artifact-found {
+
+  position: fixed;
 
   inset: 0;
+
+  z-index: 45;
 
   pointer-events: none;
 
@@ -770,23 +1253,26 @@ a-scene {
 
   visibility: hidden;
 
-  transition:
-    opacity 0.3s ease,
-    visibility 0.3s ease;
+  transition: opacity .25s ease;
+
 }
 
-#artifactFound.visible {
+
+.artifact-found.visible {
+
   opacity: 1;
 
   visibility: visible;
+
 }
 
 
 /* =====================================================
-   ARTIFACT FOUND TITLE
+   FOUND PILL
 ===================================================== */
 
-.artifact-found-title {
+.found-pill {
+
   position: absolute;
 
   top: 105px;
@@ -795,66 +1281,76 @@ a-scene {
 
   transform: translateX(-50%);
 
-  padding: 15px 30px;
+  padding: 14px 28px;
 
-  border-radius: 35px;
+  border-radius: 30px;
 
-  background: #321b0b;
+  background: var(--brown);
 
-  color: #f7ead9;
+  color: var(--cream);
 
-  font-size: 21px;
+  font-size: 17px;
 
   white-space: nowrap;
+
 }
 
 
 /* =====================================================
-   ARTIFACT INFO CARD
+   ARTIFACT INFO
 ===================================================== */
 
 .artifact-info {
+
   position: absolute;
 
   left: 32px;
 
-  bottom: 35px;
+  bottom: 55px;
 
-  width: min(82vw, 340px);
+  width: min(82vw, 350px);
 
-  padding: 25px;
+  padding: 22px;
 
-  border-radius: 26px;
+  border-radius: 24px;
 
-  background: rgba(48, 19, 5, 0.96);
+  background: rgba(42, 19, 5, .96);
 
-  color: #f7ead9;
+  color: var(--cream);
 
-  pointer-events: auto;
 }
+
 
 .artifact-info h2 {
-  margin: 0 0 5px;
 
-  font-size: 25px;
+  margin: 0 0 4px;
+
+  font-size: 24px;
+
 }
 
-.artifact-info .date {
-  margin-bottom: 22px;
 
-  font-size: 16px;
+.artifact-info h3 {
 
-  color: #e0c8b0;
+  margin: 0 0 18px;
+
+  font-size: 14px;
+
+  font-weight: 400;
+
+  color: var(--cream);
+
 }
+
 
 .artifact-info p {
+
   margin: 0;
 
-  font-size: 15px;
+  font-size: 14px;
 
   line-height: 1.5;
 
-  color: #f0dfcf;
 }
 
 
@@ -862,89 +1358,143 @@ a-scene {
    EXPLORE BUTTON
 ===================================================== */
 
-.explore-button {
-  position: absolute;
-
-  right: 30px;
-
-  bottom: 35px;
-
-  padding: 15px 27px;
-
-  border: none;
-
-  border-radius: 30px;
-
-  background: #f4dcc2;
-
-  color: #301705;
-
-  font-size: 16px;
-
-  font-weight: 600;
+.explore-artifact-button {
 
   pointer-events: auto;
 
-  cursor: pointer;
+  margin-top: 20px;
+
+  padding: 13px 20px;
+
+  border-radius: 25px;
+
+  background: var(--cream);
+
+  color: var(--dark-brown);
+
+  font-weight: 700;
+
+  font-size: 14px;
+
 }
 
 
 /* =====================================================
-   HOTSPOT MODE
+   ARTIFACT TAP LAYER
 ===================================================== */
 
-#hotspotUI {
-  position: absolute;
+.artifact-tap-layer {
 
-  top: 105px;
+  inset: 0;
 
-  left: 50%;
+  z-index: 20;
 
-  transform: translateX(-50%);
+  display: none;
 
-  padding: 13px 25px;
+  pointer-events: none;
 
-  border-radius: 30px;
+}
 
-  background: #4a280d;
 
-  color: #f7ead9;
+/* =====================================================
+   HOTSPOT UI
+===================================================== */
 
-  font-size: 17px;
+.hotspot-ui {
 
-  white-space: nowrap;
+  inset: 0;
+
+  z-index: 42;
+
+  display: flex;
+
+  justify-content: center;
+
+  align-items: flex-start;
+
+  pointer-events: none;
 
   opacity: 0;
 
   visibility: hidden;
 
-  transition:
-    opacity 0.25s ease,
-    visibility 0.25s ease;
+  transition: opacity .25s ease;
+
 }
 
-#hotspotUI.visible {
+
+.hotspot-ui.visible {
+
   opacity: 1;
 
   visibility: visible;
+
+}
+
+
+.hotspot-hint {
+
+  margin-top: 105px;
+
+  padding: 14px 26px;
+
+  border-radius: 30px;
+
+  background: var(--brown);
+
+  color: var(--cream);
+
+  font-size: 17px;
+
 }
 
 
 /* =====================================================
-   HOTSPOT IMAGE OVERLAYS
+   A-FRAME HOTSPOTS
 ===================================================== */
 
+/*
+   IMPORTANT:
+   Do NOT hide the A-Frame hotspots with
+   opacity/visibility here.
+
+   JavaScript controls their A-Frame
+   visible attribute.
+*/
+
 .hotspot {
-  position: absolute;
 
-  width: 42px;
-  height: 42px;
-
-  object-fit: contain;
+  cursor: pointer;
 
   pointer-events: auto;
 
-  cursor: pointer;
+}
+
+
+/* =====================================================
+   HOTSPOT INFO
+===================================================== */
+
+.hotspot-info {
+
+  position: fixed;
+
+  left: 50%;
+
+  bottom: 30px;
+
+  transform:
+    translate(-50%, 30px);
+
+  width: min(88vw, 390px);
+
+  padding: 24px;
+
+  border-radius: 24px;
+
+  background: rgba(42, 19, 5, .97);
+
+  color: var(--cream);
 
   z-index: 80;
 
@@ -952,153 +1502,115 @@ a-scene {
 
   visibility: hidden;
 
+  pointer-events: none;
+
   transition:
-    opacity 0.25s ease,
-    transform 0.2s ease;
+    opacity .25s ease,
+    transform .25s ease;
+
 }
 
-.hotspot.visible {
+
+.hotspot-info.visible {
+
   opacity: 1;
 
   visibility: visible;
-}
-
-.hotspot:active {
-  transform: scale(0.88);
-}
-
-
-/*
-   Crown hotspot
-*/
-
-#hotspot1 {
-  top: 25%;
-  left: 50%;
-
-  transform: translateX(-50%);
-}
-
-
-/*
-   Right-hand hotspot
-*/
-
-#hotspot2 {
-  top: 48%;
-  right: 24%;
-}
-
-
-/*
-   Arch hotspot
-*/
-
-#hotspot3 {
-  top: 35%;
-  left: 25%;
-}
-
-
-/* =====================================================
-   HOTSPOT INFORMATION CARD
-===================================================== */
-
-#hotspotInfo {
-  position: absolute;
-
-  left: 30px;
-
-  bottom: 30px;
-
-  width: min(82vw, 360px);
-
-  padding: 25px;
-
-  border-radius: 26px;
-
-  background: rgba(48, 19, 5, 0.97);
-
-  color: #f7ead9;
 
   pointer-events: auto;
 
-  opacity: 0;
+  transform:
+    translate(-50%, 0);
 
-  visibility: hidden;
-
-  transform: translateY(20px);
-
-  transition:
-    opacity 0.25s ease,
-    visibility 0.25s ease,
-    transform 0.25s ease;
-
-  z-index: 90;
 }
 
-#hotspotInfo.visible {
-  opacity: 1;
-
-  visibility: visible;
-
-  transform: translateY(0);
-}
-
-
-#hotspotNumber {
-  font-size: 12px;
-
-  letter-spacing: 3px;
-
-  color: #cfae7a;
-
-  margin-bottom: 8px;
-}
-
-
-#hotspotTitle {
-  margin: 0 0 12px;
-
-  font-size: 25px;
-}
-
-
-#hotspotDescription {
-  margin: 0;
-
-  font-size: 15px;
-
-  line-height: 1.5;
-
-  color: #ead9c8;
-}
-
-
-/* =====================================================
-   HOTSPOT CLOSE
-===================================================== */
 
 .hotspot-close {
+
   position: absolute;
 
-  top: 14px;
-  right: 14px;
+  top: 12px;
+
+  right: 12px;
 
   width: 34px;
   height: 34px;
 
-  border: none;
-
   border-radius: 50%;
 
-  background: #4a280d;
+  background: #4a2a00;
 
-  color: #f7ead9;
+  color: var(--cream);
 
-  font-size: 18px;
+  font-size: 20px;
 
-  cursor: pointer;
+}
+
+
+.hotspot-number {
+
+  margin-bottom: 8px;
+
+  color: var(--gold-light);
+
+  font-size: 11px;
+
+  letter-spacing: 2px;
+
+}
+
+
+.hotspot-info h2 {
+
+  margin: 0 0 10px;
+
+  font-size: 25px;
+
+}
+
+
+.hotspot-info p {
+
+  margin: 0;
+
+  color: #e4d6c8;
+
+  font-size: 14px;
+
+  line-height: 1.55;
+
+}
+
+
+/* =====================================================
+   HOTSPOT ACTION BUTTONS
+===================================================== */
+
+.hotspot-actions {
+
+  display: flex;
+
+  gap: 8px;
+
+  margin-top: 18px;
+
+}
+
+
+.hotspot-actions button {
+
+  flex: 1;
+
+  padding: 10px 8px;
+
+  border-radius: 20px;
+
+  background: #42240f;
+
+  color: var(--cream);
+
+  font-size: 12px;
+
 }
 
 
@@ -1108,10 +1620,43 @@ a-scene {
 
 @media (max-width: 600px) {
 
-  .back-button,
-  .accessibility-button,
-  .ar-back,
-  .ar-accessibility {
+
+  #howRekh {
+
+    justify-content: center;
+
+    padding-top: 30px;
+
+  }
+
+
+  .story-carousel {
+
+    width: 82vw;
+
+  }
+
+
+  #howRekh h1 {
+
+    font-size: 34px;
+
+  }
+
+
+  #howRekh > p {
+
+    font-size: 16px;
+
+    max-width: 330px;
+
+  }
+
+
+  .top-back {
+
+    top: 18px;
+    left: 18px;
 
     width: 48px;
     height: 48px;
@@ -1119,24 +1664,44 @@ a-scene {
   }
 
 
-  #scanMessage,
-  #hotspotUI,
-  .artifact-found-title {
+  .ar-back {
 
-    font-size: 15px;
+    top: 20px;
+    left: 20px;
 
-    padding: 12px 20px;
+    width: 54px;
+    height: 54px;
 
   }
 
 
-  #scanStatus {
+  .ar-accessibility {
 
-    bottom: 70px;
+    top: 20px;
+    right: 20px;
 
-    font-size: 10px;
+    width: 54px;
+    height: 54px;
 
-    letter-spacing: 3px;
+  }
+
+
+  .scan-message {
+
+    top: 105px;
+
+    font-size: 15px;
+
+    padding: 13px 20px;
+
+  }
+
+
+  .scan-frame {
+
+    width: 72vw;
+
+    height: 60vh;
 
   }
 
@@ -1145,51 +1710,36 @@ a-scene {
 
     left: 20px;
 
-    bottom: 25px;
+    bottom: 30px;
 
-    width: calc(100% - 40px);
-
-    padding: 22px;
+    width: calc(100vw - 40px);
 
   }
 
 
-  .artifact-info h2 {
+  .found-pill {
 
-    font-size: 23px;
+    top: 100px;
 
-  }
-
-
-  .explore-button {
-
-    left: 20px;
-
-    right: 20px;
-
-    bottom: 25px;
-
-    text-align: center;
+    font-size: 16px;
 
   }
 
 
-  #hotspotInfo {
+  .hotspot-hint {
 
-    left: 20px;
+    margin-top: 105px;
 
-    bottom: 25px;
-
-    width: calc(100% - 40px);
+    font-size: 15px;
 
   }
 
 
-  .hotspot {
+  .hotspot-info {
 
-    width: 38px;
+    bottom: 20px;
 
-    height: 38px;
+    width: calc(100vw - 32px);
 
   }
 
@@ -1197,31 +1747,43 @@ a-scene {
 
 
 /* =====================================================
-   HIDE A-FRAME VR UI
+   SMALL PHONES
 ===================================================== */
 
-.a-enter-vr {
-  display: none !important;
-}
+@media (max-height: 700px) {
 
-.a-enter-ar {
-  display: none !important;
-}
+  .story-carousel {
 
+    width: 65vw;
 
-/* =====================================================
-   PREVENT A-FRAME UI FROM BLOCKING TOUCH
-===================================================== */
-
-.a-canvas {
-  touch-action: none;
-}
+  }
 
 
-/* =====================================================
-   UTILITY
-===================================================== */
+  #howRekh {
 
-.hidden {
-  display: none !important;
+    gap: 10px;
+
+  }
+
+
+  #howRekh h1 {
+
+    font-size: 28px;
+
+  }
+
+
+  #howRekh > p {
+
+    font-size: 14px;
+
+  }
+
+
+  .hotspot-hint {
+
+    margin-top: 90px;
+
+  }
+
 }
