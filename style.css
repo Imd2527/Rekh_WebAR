@@ -1970,3 +1970,414 @@ button {
   line-height: 1.5;
   color: #fff;
 }
+/* =====================================================
+   STORY / AUDIO CARD
+===================================================== */
+
+.hotspot-info {
+  position: fixed;
+
+  left: 7px;
+  right: 7px;
+  bottom: 7px;
+
+  height: 575px;
+
+  background: rgba(91, 67, 38, 0.92);
+
+  border-radius: 28px;
+
+  padding: 30px 23px 22px;
+
+  box-sizing: border-box;
+
+  z-index: 1000;
+
+  color: #fff7eb;
+
+  overflow-y: auto;
+
+  transform: translateY(110%);
+  opacity: 0;
+
+  pointer-events: none;
+
+  transition:
+    transform 0.35s ease,
+    opacity 0.35s ease;
+
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+
+.hotspot-info.visible {
+  transform: translateY(0);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+
+/* =====================================================
+   CLOSE BUTTON
+===================================================== */
+
+.hotspot-close {
+  position: absolute;
+
+  top: 23px;
+  right: 20px;
+
+  width: 40px;
+  height: 40px;
+
+  border-radius: 50%;
+
+  border: 1px solid rgba(255,255,255,0.12);
+
+  background: rgba(80,55,25,0.25);
+
+  color: rgba(255,255,255,0.7);
+
+  font-size: 30px;
+  font-weight: 200;
+
+  line-height: 35px;
+
+  cursor: pointer;
+
+  z-index: 5;
+}
+
+
+/* =====================================================
+   TITLE
+===================================================== */
+
+.story-heading {
+  padding-right: 55px;
+  margin-bottom: 13px;
+}
+
+
+.story-heading h2 {
+  margin: 0;
+
+  font-size: 17px;
+
+  font-weight: 500;
+
+  letter-spacing: 0.3px;
+
+  color: #fff8ee;
+}
+
+
+.story-heading p {
+  margin: 7px 0 0;
+
+  font-size: 14px;
+
+  color: rgba(255,255,255,0.58);
+}
+
+
+/* =====================================================
+   VISUAL / IMAGE AREA
+===================================================== */
+
+.story-visual {
+
+  width: 100%;
+  height: 175px;
+
+  border-radius: 16px;
+
+  background: #3c240b;
+
+  margin-bottom: 17px;
+
+  overflow: hidden;
+}
+
+
+/* If you later add an image */
+
+.story-visual img {
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+
+  display: block;
+}
+
+
+/* =====================================================
+   WAVEFORM
+===================================================== */
+
+.audio-waveform {
+
+  height: 47px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 4px;
+
+  padding: 0 3px;
+
+  box-sizing: border-box;
+}
+
+
+.audio-waveform span {
+
+  width: 5px;
+
+  min-height: 7px;
+
+  background: rgba(255,255,255,0.32);
+
+  border-radius: 5px;
+
+  display: block;
+}
+
+
+/* different heights */
+
+.audio-waveform span:nth-child(1)  { height: 25px; }
+.audio-waveform span:nth-child(2)  { height: 38px; }
+.audio-waveform span:nth-child(3)  { height: 30px; }
+.audio-waveform span:nth-child(4)  { height: 17px; }
+.audio-waveform span:nth-child(5)  { height: 33px; }
+.audio-waveform span:nth-child(6)  { height: 22px; }
+.audio-waveform span:nth-child(7)  { height: 43px; }
+.audio-waveform span:nth-child(8)  { height: 30px; }
+.audio-waveform span:nth-child(9)  { height: 17px; }
+.audio-waveform span:nth-child(10) { height: 27px; }
+.audio-waveform span:nth-child(11) { height: 39px; }
+.audio-waveform span:nth-child(12) { height: 21px; }
+.audio-waveform span:nth-child(13) { height: 15px; }
+.audio-waveform span:nth-child(14) { height: 33px; }
+.audio-waveform span:nth-child(15) { height: 42px; }
+.audio-waveform span:nth-child(16) { height: 25px; }
+.audio-waveform span:nth-child(17) { height: 35px; }
+.audio-waveform span:nth-child(18) { height: 19px; }
+.audio-waveform span:nth-child(19) { height: 30px; }
+.audio-waveform span:nth-child(20) { height: 40px; }
+.audio-waveform span:nth-child(21) { height: 24px; }
+.audio-waveform span:nth-child(22) { height: 35px; }
+.audio-waveform span:nth-child(23) { height: 20px; }
+.audio-waveform span:nth-child(24) { height: 30px; }
+
+
+/* =====================================================
+   AUDIO PROGRESS
+===================================================== */
+
+.audio-progress-row {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 8px;
+
+  margin-top: 1px;
+}
+
+
+.audio-progress-row span {
+
+  font-size: 11px;
+
+  color: rgba(255,255,255,0.55);
+
+  white-space: nowrap;
+}
+
+
+#audioProgress {
+
+  flex: 1;
+
+  height: 4px;
+
+  appearance: none;
+  -webkit-appearance: none;
+
+  background: #2e1b07;
+
+  border-radius: 5px;
+
+  cursor: pointer;
+}
+
+
+#audioProgress::-webkit-slider-thumb {
+
+  appearance: none;
+  -webkit-appearance: none;
+
+  width: 13px;
+  height: 13px;
+
+  border-radius: 50%;
+
+  background: #f5d2a4;
+
+  cursor: pointer;
+}
+
+
+#audioProgress::-moz-range-thumb {
+
+  width: 13px;
+  height: 13px;
+
+  border: none;
+
+  border-radius: 50%;
+
+  background: #f5d2a4;
+
+  cursor: pointer;
+}
+
+
+/* =====================================================
+   AUDIO CONTROLS
+===================================================== */
+
+.audio-controls {
+
+  display: flex;
+
+  align-items: center;
+
+  height: 67px;
+
+  position: relative;
+}
+
+
+.play-pause-button {
+
+  width: 56px;
+  height: 56px;
+
+  border: none;
+
+  border-radius: 50%;
+
+  background: #fff1d8;
+
+  color: #5a3a16;
+
+  font-size: 20px;
+
+  cursor: pointer;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+}
+
+
+.rewind-button {
+
+  margin-left: 20px;
+
+  border: none;
+
+  background: transparent;
+
+  color: #fff3dc;
+
+  font-size: 25px;
+
+  cursor: pointer;
+}
+
+
+.playing-label {
+
+  margin-left: auto;
+
+  font-size: 12px;
+
+  color: rgba(255,255,255,0.65);
+}
+
+
+/* =====================================================
+   CAPTIONS
+===================================================== */
+
+.captions-box {
+
+  margin-top: 5px;
+
+  padding: 17px 17px 20px;
+
+  background: rgba(57,36,13,0.82);
+
+  border-radius: 17px;
+
+  max-height: 150px;
+
+  overflow-y: auto;
+}
+
+
+.captions-heading {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 8px;
+
+  margin-bottom: 12px;
+}
+
+
+.captions-heading img {
+
+  width: 14px;
+  height: 14px;
+
+  object-fit: contain;
+
+  opacity: 0.7;
+}
+
+
+.captions-heading span {
+
+  font-size: 11px;
+
+  letter-spacing: 1px;
+
+  color: rgba(255,255,255,0.65);
+}
+
+
+#hotspotDescription {
+
+  margin: 0;
+
+  font-size: 16px;
+
+  line-height: 1.55;
+
+  color: rgba(255,255,255,0.92);
+}
