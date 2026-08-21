@@ -589,11 +589,17 @@
 
 </div>
 
+
+
 <!-- =====================================================
      AR SCREEN
 ===================================================== -->
 
-<section id="arScreen" class="screen ar-screen">
+<section
+  id="arScreen"
+  class="screen ar-screen"
+>
+
 
   <!-- ===================================================
        MINDAR SCENE
@@ -626,7 +632,10 @@
     embedded
   >
 
-    <!-- CAMERA -->
+
+    <!-- =================================================
+         CAMERA
+    ================================================== -->
 
     <a-camera
       position="0 0 0"
@@ -634,6 +643,7 @@
       cursor="rayOrigin: mouse"
       raycaster="objects: .hotspot"
     ></a-camera>
+
 
 
     <!-- =================================================
@@ -644,94 +654,77 @@
       id="vishnuTarget"
       mindar-image-target="targetIndex: 0"
     >
-<!-- HOTSPOT 1 -->
-<a-entity
-  id="hotspot1"
-  class="hotspot"
-  position="0 0.27 0.08"
-  visible="false"
->
-  <a-circle
-    radius="0.065"
-    material="
-      shader: flat;
-      color: #F4D35E;
-      opacity: 1;
-      transparent: false;
-    "
-  ></a-circle>
-
-  <a-ring
-    radius-inner="0.075"
-    radius-outer="0.09"
-    material="
-      shader: flat;
-      color: #FFF1A8;
-      opacity: 0.8;
-      transparent: false;
-    "
-  ></a-ring>
-</a-entity>
 
 
-<!-- HOTSPOT 2 -->
-<a-entity
-  id="hotspot2"
-  class="hotspot"
-  position="-0.27 0.02 0.08"
-  visible="false"
->
-  <a-circle
-    radius="0.065"
-    material="
-      shader: flat;
-      color: #F4D35E;
-      opacity: 1;
-      transparent: false;
-    "
-  ></a-circle>
+      <!-- =================================================
+           HOTSPOT 1 — CROWN
+      ================================================== -->
 
-  <a-ring
-    radius-inner="0.075"
-    radius-outer="0.09"
-    material="
-      shader: flat;
-      color: #FFF1A8;
-      opacity: 0.8;
-      transparent: false;
-    "
-  ></a-ring>
-</a-entity>
+      <a-image
+        id="hotspot1"
+        class="hotspot"
+        position="0 0.37 0.08"
+        width="0.12"
+        height="0.12"
+        src="assets/images/Hotspot.png"
+        visible="false"
+        material="
+          shader: flat;
+          transparent: true;
+          alphaTest: 0.01;
+          side: double;
+        "
+      ></a-image>
 
 
-<!-- HOTSPOT 3 -->
-<a-entity
-  id="hotspot3"
-  class="hotspot"
-  position="0.27 -0.05 0.08"
-  visible="false"
->
-  <a-circle
-    radius="0.065"
-    material="
-      shader: flat;
-      color: #F4D35E;
-      opacity: 1;
-      transparent: false;
-    "
-  ></a-circle>
 
-  <a-ring
-    radius-inner="0.075"
-    radius-outer="0.09"
-    material="
-      shader: flat;
-      color: #FFF1A8;
-      opacity: 0.8;
-      transparent: false;
-    "
-  ></a-ring>
-</a-entity>
+      <!-- =================================================
+           HOTSPOT 2 — RIGHT HAND
+      ================================================== -->
+
+      <a-image
+        id="hotspot2"
+        class="hotspot"
+        position="0.25 0.02 0.08"
+        width="0.12"
+        height="0.12"
+        src="assets/images/Hotspot.png"
+        visible="false"
+        material="
+          shader: flat;
+          transparent: true;
+          alphaTest: 0.01;
+          side: double;
+        "
+      ></a-image>
+
+
+
+      <!-- =================================================
+           HOTSPOT 3 — ORNAMENTAL ARCH
+      ================================================== -->
+
+      <a-image
+        id="hotspot3"
+        class="hotspot"
+        position="0.34 0.34 0.08"
+        width="0.12"
+        height="0.12"
+        src="assets/images/Hotspot.png"
+        visible="false"
+        material="
+          shader: flat;
+          transparent: true;
+          alphaTest: 0.01;
+          side: double;
+        "
+      ></a-image>
+
+
+    </a-entity>
+
+
+  </a-scene>
 
 
 
@@ -746,6 +739,7 @@
   >
     ←
   </button>
+
 
 
   <!-- ===================================================
@@ -766,6 +760,7 @@
   </button>
 
 
+
   <!-- ===================================================
        SCANNING MESSAGE
   ==================================================== -->
@@ -776,6 +771,7 @@
   >
     Point your camera at the artifact
   </div>
+
 
 
   <!-- ===================================================
@@ -795,6 +791,7 @@
   </div>
 
 
+
   <!-- ===================================================
        SEARCH ICON
   ==================================================== -->
@@ -805,6 +802,7 @@
   >
     ⌕
   </div>
+
 
 
   <!-- ===================================================
@@ -819,6 +817,7 @@
   </div>
 
 
+
   <!-- ===================================================
        ARTIFACT FOUND STATE
   ==================================================== -->
@@ -828,11 +827,13 @@
     class="artifact-found"
   >
 
+
     <!-- TOP PILL -->
 
     <div class="found-pill">
       Artifact found
     </div>
+
 
 
     <!-- INFO CARD -->
@@ -855,16 +856,30 @@
         frame.
       </p>
 
+
+      <!-- =================================================
+           EXPLORE BUTTON
+      ================================================== -->
+
+      <button
+        id="exploreArtifactButton"
+        class="explore-artifact-button"
+        onclick="enterHotspotMode()"
+      >
+        Explore the artifact
+      </button>
+
     </div>
 
   </div>
 
 
+
   <!-- ===================================================
        INVISIBLE TAP LAYER
 
-       This is active ONLY after the artifact is found.
-       User can tap anywhere to move to hotspots.
+       Kept for compatibility with the previous code.
+       It is NOT used to trigger hotspot mode.
   ==================================================== -->
 
   <div
@@ -873,8 +888,9 @@
   ></div>
 
 
+
   <!-- ===================================================
-       HOTSPOT STATE
+       HOTSPOT UI
   ==================================================== -->
 
   <div
@@ -883,21 +899,22 @@
   >
 
     <div class="hotspot-hint">
-      Explore the artifact
+      Tap a hotspot to explore
     </div>
 
   </div>
 
 
+
   <!-- ===================================================
        HOTSPOT CONTENT CARD
-       Hidden until a hotspot is tapped.
   ==================================================== -->
 
   <div
     id="hotspotInfo"
     class="hotspot-info"
   >
+
 
     <button
       class="hotspot-close"
@@ -944,6 +961,7 @@
       </button>
 
     </div>
+
 
   </div>
 
