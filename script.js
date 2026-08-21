@@ -8,11 +8,13 @@ function showScreen(screenId) {
     screen.classList.remove("active");
   });
 
-  const screen = document.getElementById(screenId);
+  const screen =
+    document.getElementById(screenId);
 
   if (screen) {
     screen.classList.add("active");
   }
+
 }
 
 
@@ -142,11 +144,11 @@ function toggleSetting(button) {
 ===================================================== */
 
 /*
-   There are THREE states:
+   THREE AR STATES:
 
-   1. scanning
-   2. artifact found
-   3. hotspots
+   1. SCANNING
+   2. ARTIFACT FOUND
+   3. HOTSPOTS
 */
 
 let arStarted = false;
@@ -154,6 +156,50 @@ let arStarted = false;
 let artifactDetected = false;
 
 let hotspotMode = false;
+
+let arEventsBound = false;
+
+let hotspotsBound = false;
+
+
+/* =====================================================
+   RESET AR STATE
+===================================================== */
+
+function resetARState() {
+
+  artifactDetected = false;
+
+  hotspotMode = false;
+
+
+  const found =
+    document.getElementById("artifactFound");
+
+  const tapLayer =
+    document.getElementById("artifactTapLayer");
+
+
+  if (found) {
+
+    found.classList.remove(
+      "visible"
+    );
+
+  }
+
+
+  if (tapLayer) {
+
+    tapLayer.style.display =
+      "none";
+
+  }
+
+
+  hideHotspots();
+
+}
 
 
 /* =====================================================
@@ -171,8 +217,8 @@ function continueSetup() {
 
 
   /*
-     Give the browser time to make
-     the AR screen visible.
+     Give the browser a moment
+     to display the AR screen.
   */
 
   setTimeout(() => {
@@ -190,13 +236,6 @@ function continueSetup() {
 
 function startAR() {
 
-  if (arStarted) {
-
-    return;
-
-  }
-
-
   const scene =
     document.getElementById("mindarScene");
 
@@ -212,68 +251,98 @@ function startAR() {
   }
 
 
-  const startMindAR = () => {
-
-    const mindar =
-      scene.systems["mindar-image-system"];
+  const target =
+    document.getElementById("vishnuTarget");
 
 
-    if (!mindar) {
+  if (!target) {
 
-      console.error(
-        "MindAR image system not found."
-      );
-
-      return;
-
-    }
-
-
-    console.log(
-      "MindAR system found."
+    console.error(
+      "Vishnu target not found."
     );
 
-
-    /*
-       Start the camera.
-    */
-
-    mindar.start();
-
-
-    arStarted = true;
-
-
-    console.log(
-      "MindAR camera started."
-    );
-
-  };
-
-
-  /*
-     A-Frame already loaded
-  */
-
-  if (scene.hasLoaded) {
-
-    startMindAR();
+    return;
 
   }
 
-  /*
-     A-Frame still loading
-  */
 
-  else {
+  /* =================================================
+     TARGET EVENTS
+     
+     Bind these only once so that
+     reopening AR does not create
+     duplicate listeners.
+  ================================================= */
 
-    scene.addEventListener(
-      "loaded",
-      startMindAR,
-      { once: true }
+  if (!arEventsBound) {
+
+
+    /* ---------------------------------------------
+       TARGET FOUND
+    --------------------------------------------- */
+
+    target.addEventListener(
+      "targetFound",
+      () => {
+
+        console.log(
+          "VISHNU FOUND"
+        );
+
+
+        artifactDetected = true;
+
+        hotspotMode = false;
+
+
+        /*
+           Do NOT show hotspots immediately.
+
+           First show the artifact information.
+        */
+
+        showArtifactFound();
+
+      }
     );
 
+
+    /* ---------------------------------------------
+       TARGET LOST
+    --------------------------------------------- */
+
+    target.addEventListener(
+      "targetLost",
+      () => {
+
+        console.log(
+          "VISHNU LOST"
+        );
+
+
+        artifactDetected = false;
+
+        hotspotMode = false;
+
+
+        hideHotspots();
+
+        showScanning();
+
+      }
+    );
+
+
+    arEventsBound = true;
+
   }
+
+
+  /* =================================================
+     HOTSPOT EVENTS
+  ================================================= */
+
+  setupHotspots();
 
 
   /* =================================================
@@ -294,7 +363,9 @@ function startAR() {
       showScanning();
 
     },
-    { once: true }
+    {
+      once: true
+    }
   );
 
 
@@ -311,108 +382,99 @@ function startAR() {
         event
       );
 
+
       alert(
         "Camera could not start. Please allow camera access and reload the page."
       );
 
     },
-    { once: true }
+    {
+      once: true
+    }
   );
 
 
   /* =================================================
-     VISHNU TARGET
+     START MINDAR
   ================================================= */
 
-  const target =
-    document.getElementById("vishnuTarget");
+  const startMindAR = () => {
+
+    const mindar =
+      scene.systems[
+        "mindar-image-system"
+      ];
 
 
-  if (!target) {
+    if (!mindar) {
 
-    console.error(
-      "Vishnu target not found."
-    );
+      console.error(
+        "MindAR image system not found."
+      );
 
-    return;
+      return;
+
+    }
+
+
+    if (arStarted) {
+
+      return;
+
+    }
+
+
+    try {
+
+      mindar.start();
+
+      arStarted = true;
+
+
+      console.log(
+        "MindAR camera started."
+      );
+
+    }
+
+    catch (error) {
+
+      console.error(
+        "Could not start MindAR:",
+        error
+      );
+
+    }
+
+  };
+
+
+  /* ---------------------------------------------
+     A-FRAME ALREADY LOADED
+  --------------------------------------------- */
+
+  if (scene.hasLoaded) {
+
+    startMindAR();
 
   }
 
 
-  /* =================================================
-     TARGET FOUND
-  ================================================= */
+  /* ---------------------------------------------
+     A-FRAME STILL LOADING
+  --------------------------------------------- */
 
-  target.addEventListener(
-    "targetFound",
-    () => {
+  else {
 
-      console.log(
-        "VISHNU FOUND"
-      );
+    scene.addEventListener(
+      "loaded",
+      startMindAR,
+      {
+        once: true
+      }
+    );
 
-
-      artifactDetected = true;
-
-      hotspotMode = false;
-
-
-      /*
-         IMPORTANT:
-
-         Do NOT show hotspots yet.
-
-         First show the artifact information
-         screen.
-      */
-
-      showArtifactFound();
-
-    }
-  );
-
-
-  /* =================================================
-     TARGET LOST
-  ================================================= */
-
-  target.addEventListener(
-    "targetLost",
-    () => {
-
-      console.log(
-        "VISHNU LOST"
-      );
-
-
-      artifactDetected = false;
-
-      hotspotMode = false;
-
-
-      /*
-         Hide hotspot UI
-         because the artifact is no longer tracked.
-      */
-
-      hideHotspots();
-
-
-      /*
-         Return to scanning state.
-      */
-
-      showScanning();
-
-    }
-  );
-
-
-  /* =================================================
-     HOTSPOT EVENTS
-  ================================================= */
-
-  setupHotspots();
+  }
 
 }
 
@@ -442,6 +504,10 @@ function showScanning() {
     document.getElementById("artifactTapLayer");
 
 
+  /* ---------------------------------------------
+     SHOW SCANNING MESSAGE
+  --------------------------------------------- */
+
   if (message) {
 
     message.style.display =
@@ -449,6 +515,10 @@ function showScanning() {
 
   }
 
+
+  /* ---------------------------------------------
+     SHOW SCAN FRAME
+  --------------------------------------------- */
 
   if (frame) {
 
@@ -458,6 +528,10 @@ function showScanning() {
   }
 
 
+  /* ---------------------------------------------
+     SHOW STATUS
+  --------------------------------------------- */
+
   if (status) {
 
     status.style.display =
@@ -466,6 +540,10 @@ function showScanning() {
   }
 
 
+  /* ---------------------------------------------
+     SHOW SEARCH ICON
+  --------------------------------------------- */
+
   if (search) {
 
     search.style.display =
@@ -473,6 +551,10 @@ function showScanning() {
 
   }
 
+
+  /* ---------------------------------------------
+     HIDE ARTIFACT CARD
+  --------------------------------------------- */
 
   if (found) {
 
@@ -483,6 +565,10 @@ function showScanning() {
   }
 
 
+  /* ---------------------------------------------
+     DISABLE TAP LAYER
+  --------------------------------------------- */
+
   if (tapLayer) {
 
     tapLayer.style.display =
@@ -490,6 +576,10 @@ function showScanning() {
 
   }
 
+
+  /* ---------------------------------------------
+     HIDE HOTSPOTS
+  --------------------------------------------- */
 
   hideHotspots();
 
@@ -521,9 +611,9 @@ function showArtifactFound() {
     document.getElementById("artifactTapLayer");
 
 
-  /*
-     Hide scanning UI.
-  */
+  /* ---------------------------------------------
+     HIDE SCANNING UI
+  --------------------------------------------- */
 
   if (message) {
 
@@ -557,9 +647,9 @@ function showArtifactFound() {
   }
 
 
-  /*
-     Show artifact information.
-  */
+  /* ---------------------------------------------
+     SHOW ARTIFACT INFORMATION
+  --------------------------------------------- */
 
   if (found) {
 
@@ -570,10 +660,9 @@ function showArtifactFound() {
   }
 
 
-  /*
-     Enable the invisible
-     screen-wide tap area.
-  */
+  /* ---------------------------------------------
+     ENABLE TAP LAYER
+  --------------------------------------------- */
 
   if (tapLayer) {
 
@@ -583,10 +672,9 @@ function showArtifactFound() {
   }
 
 
-  /*
-     Make sure hotspots
-     are NOT visible yet.
-  */
+  /* ---------------------------------------------
+     KEEP HOTSPOTS HIDDEN
+  --------------------------------------------- */
 
   hideHotspots();
 
@@ -594,8 +682,7 @@ function showArtifactFound() {
 
 
 /* =====================================================
-   USER TOUCHES SCREEN AFTER
-   ARTIFACT IS FOUND
+   ENTER HOTSPOT MODE
 ===================================================== */
 
 function enterHotspotMode() {
@@ -619,16 +706,38 @@ function enterHotspotMode() {
   );
 
 
+  showHotspots();
+
+}
+
+
+/* =====================================================
+   SHOW HOTSPOTS
+===================================================== */
+
+function showHotspots() {
+
+  console.log(
+    "SHOWING HOTSPOTS"
+  );
+
+
   hotspotMode = true;
 
-
-  /*
-     Hide artifact information card.
-  */
 
   const found =
     document.getElementById("artifactFound");
 
+  const tapLayer =
+    document.getElementById("artifactTapLayer");
+
+  const hotspotUI =
+    document.getElementById("hotspotUI");
+
+
+  /* ---------------------------------------------
+     HIDE ARTIFACT CARD
+  --------------------------------------------- */
 
   if (found) {
 
@@ -639,13 +748,9 @@ function enterHotspotMode() {
   }
 
 
-  /*
-     Disable tap layer.
-  */
-
-  const tapLayer =
-    document.getElementById("artifactTapLayer");
-
+  /* ---------------------------------------------
+     DISABLE TAP LAYER
+  --------------------------------------------- */
 
   if (tapLayer) {
 
@@ -655,24 +760,9 @@ function enterHotspotMode() {
   }
 
 
-  /*
-     Show hotspot UI.
-  */
-
-  showHotspots();
-
-}
-
-
-/* =====================================================
-   HOTSPOT UI
-===================================================== */
-
-function showHotspots() {
-
-  const hotspotUI =
-    document.getElementById("hotspotUI");
-
+  /* ---------------------------------------------
+     SHOW "EXPLORE THE ARTIFACT"
+  --------------------------------------------- */
 
   if (hotspotUI) {
 
@@ -683,16 +773,70 @@ function showHotspots() {
   }
 
 
-  document
-    .querySelectorAll(".hotspot")
-    .forEach(hotspot => {
+  /* ---------------------------------------------
+     FIND ALL 3D HOTSPOTS
+  --------------------------------------------- */
+
+  const hotspots =
+    document.querySelectorAll(
+      "#vishnuTarget .hotspot"
+    );
+
+
+  console.log(
+    "Number of hotspots:",
+    hotspots.length
+  );
+
+
+  /* ---------------------------------------------
+     MAKE HOTSPOTS VISIBLE
+  --------------------------------------------- */
+
+  hotspots.forEach(
+    (hotspot, index) => {
+
+
+      /*
+         Force visibility.
+      */
 
       hotspot.setAttribute(
         "visible",
         "true"
       );
 
-    });
+
+      /*
+         Make them larger so they are
+         definitely visible during testing.
+      */
+
+      hotspot.setAttribute(
+        "radius",
+        "0.065"
+      );
+
+
+      /*
+         Force the material.
+      */
+
+      hotspot.setAttribute(
+        "material",
+        "shader: flat; color: #F4D35E; opacity: 1; transparent: false; side: double;"
+      );
+
+
+      console.log(
+        `Hotspot ${index + 1} visible`,
+        hotspot.getAttribute(
+          "position"
+        )
+      );
+
+    }
+  );
 
 }
 
@@ -716,16 +860,22 @@ function hideHotspots() {
   }
 
 
-  document
-    .querySelectorAll(".hotspot")
-    .forEach(hotspot => {
+  const hotspots =
+    document.querySelectorAll(
+      "#vishnuTarget .hotspot"
+    );
+
+
+  hotspots.forEach(
+    hotspot => {
 
       hotspot.setAttribute(
         "visible",
         "false"
       );
 
-    });
+    }
+  );
 
 
   const hotspotInfo =
@@ -749,6 +899,18 @@ function hideHotspots() {
 
 function setupHotspots() {
 
+  /*
+     Don't attach the same listeners
+     repeatedly.
+  */
+
+  if (hotspotsBound) {
+
+    return;
+
+  }
+
+
   const hotspot1 =
     document.getElementById("hotspot1");
 
@@ -759,58 +921,105 @@ function setupHotspots() {
     document.getElementById("hotspot3");
 
 
-  if (hotspot1) {
+  console.log(
+    "Setting up hotspots:",
+    hotspot1,
+    hotspot2,
+    hotspot3
+  );
 
-    hotspot1.addEventListener(
+
+  /* ---------------------------------------------
+     GENERIC HOTSPOT BINDER
+  --------------------------------------------- */
+
+  const bindHotspot = (
+    element,
+    number,
+    title,
+    description
+  ) => {
+
+    if (!element) {
+
+      return;
+
+    }
+
+
+    const handler = event => {
+
+      event.stopPropagation();
+
+
+      console.log(
+        `HOTSPOT ${number} CLICKED`
+      );
+
+
+      openHotspot(
+        number,
+        title,
+        description
+      );
+
+    };
+
+
+    element.addEventListener(
       "click",
-      () => {
+      handler
+    );
 
-        openHotspot(
-          1,
-          "Vishnu's Crown",
-          "The crown and head ornaments emphasize Vishnu's divine status and royal presence."
-        );
 
+    element.addEventListener(
+      "touchend",
+      handler,
+      {
+        passive: false
       }
     );
 
-  }
+  };
 
 
-  if (hotspot2) {
+  /* ---------------------------------------------
+     HOTSPOT 1
+  --------------------------------------------- */
 
-    hotspot2.addEventListener(
-      "click",
-      () => {
-
-        openHotspot(
-          2,
-          "Divine Attributes",
-          "The objects held by Vishnu are symbolic attributes that help identify and understand the deity."
-        );
-
-      }
-    );
-
-  }
+  bindHotspot(
+    hotspot1,
+    1,
+    "Vishnu's Crown",
+    "The crown and head ornaments emphasize Vishnu's divine status and royal presence."
+  );
 
 
-  if (hotspot3) {
+  /* ---------------------------------------------
+     HOTSPOT 2
+  --------------------------------------------- */
 
-    hotspot3.addEventListener(
-      "click",
-      () => {
+  bindHotspot(
+    hotspot2,
+    2,
+    "Divine Attributes",
+    "The objects held by Vishnu are symbolic attributes that help identify and understand the deity."
+  );
 
-        openHotspot(
-          3,
-          "Ornamental Frame",
-          "The carved frame surrounding the figure adds depth and decorative detail to the sculpture."
-        );
 
-      }
-    );
+  /* ---------------------------------------------
+     HOTSPOT 3
+  --------------------------------------------- */
 
-  }
+  bindHotspot(
+    hotspot3,
+    3,
+    "Ornamental Frame",
+    "The carved frame surrounding the figure adds depth and decorative detail to the sculpture."
+  );
+
+
+  hotspotsBound = true;
 
 }
 
@@ -835,16 +1044,29 @@ function openHotspot(
     document.getElementById("hotspotTitle");
 
   const descriptionElement =
-    document.getElementById("hotspotDescription");
+    document.getElementById(
+      "hotspotDescription"
+    );
 
+
+  /* ---------------------------------------------
+     NUMBER
+  --------------------------------------------- */
 
   if (numberElement) {
 
     numberElement.textContent =
-      String(number).padStart(2, "0");
+      String(number).padStart(
+        2,
+        "0"
+      );
 
   }
 
+
+  /* ---------------------------------------------
+     TITLE
+  --------------------------------------------- */
 
   if (titleElement) {
 
@@ -854,6 +1076,10 @@ function openHotspot(
   }
 
 
+  /* ---------------------------------------------
+     DESCRIPTION
+  --------------------------------------------- */
+
   if (descriptionElement) {
 
     descriptionElement.textContent =
@@ -861,6 +1087,10 @@ function openHotspot(
 
   }
 
+
+  /* ---------------------------------------------
+     SHOW CARD
+  --------------------------------------------- */
 
   if (info) {
 
@@ -906,17 +1136,21 @@ function exitAR() {
 
 
   const scene =
-    document.getElementById("mindarScene");
+    document.getElementById(
+      "mindarScene"
+    );
 
 
-  /*
-     Stop MindAR camera.
-  */
+  /* ---------------------------------------------
+     STOP MINDAR CAMERA
+  --------------------------------------------- */
 
   if (
     scene &&
     scene.systems &&
-    scene.systems["mindar-image-system"]
+    scene.systems[
+      "mindar-image-system"
+    ]
   ) {
 
     try {
@@ -939,6 +1173,10 @@ function exitAR() {
   }
 
 
+  /* ---------------------------------------------
+     RESET STATE
+  --------------------------------------------- */
+
   arStarted = false;
 
   artifactDetected = false;
@@ -949,7 +1187,9 @@ function exitAR() {
   hideHotspots();
 
 
-  showScreen("howRekh");
+  showScreen(
+    "howRekh"
+  );
 
 }
 
@@ -970,24 +1210,31 @@ function openAccessibilityFromAR() {
 ===================================================== */
 
 /*
-   THIS is the key change.
+   FLOW:
 
-   When the artifact has been found,
-   the FIRST user touch anywhere on the AR
-   screen moves from:
+   Artifact detected
+        ↓
+   Artifact information shown
+        ↓
+   User taps
+        ↓
+   Hotspots appear
 
-      ARTIFACT FOUND
+   IMPORTANT:
 
-   to:
-
-      HOTSPOTS
-
-   We ignore the back and accessibility buttons.
+   We only respond when the
+   invisible artifact tap layer
+   is active.
 */
 
 document.addEventListener(
   "pointerup",
   event => {
+
+
+    /* ---------------------------------------------
+       ARTIFACT MUST BE DETECTED
+    --------------------------------------------- */
 
     if (!artifactDetected) {
 
@@ -996,6 +1243,10 @@ document.addEventListener(
     }
 
 
+    /* ---------------------------------------------
+       DON'T RE-ENTER HOTSPOT MODE
+    --------------------------------------------- */
+
     if (hotspotMode) {
 
       return;
@@ -1003,20 +1254,62 @@ document.addEventListener(
     }
 
 
+    /* ---------------------------------------------
+       GET TAP LAYER
+    --------------------------------------------- */
+
+    const tapLayer =
+      document.getElementById(
+        "artifactTapLayer"
+      );
+
+
+    if (!tapLayer) {
+
+      return;
+
+    }
+
+
     /*
-       Don't treat the top controls
-       as the "continue" tap.
+       Only continue if the
+       tap layer is actually active.
     */
 
     if (
-      event.target.closest(".ar-back") ||
-      event.target.closest(".ar-accessibility") ||
-      event.target.closest("#accessibilityOverlay")
+      tapLayer.style.display !==
+      "block"
     ) {
 
       return;
 
     }
+
+
+    /* ---------------------------------------------
+       IGNORE TOP BUTTONS
+    --------------------------------------------- */
+
+    if (
+      event.target.closest(
+        ".ar-back"
+      ) ||
+      event.target.closest(
+        ".ar-accessibility"
+      ) ||
+      event.target.closest(
+        "#accessibilityOverlay"
+      )
+    ) {
+
+      return;
+
+    }
+
+
+    console.log(
+      "USER TAPPED — ENTERING HOTSPOT MODE"
+    );
 
 
     enterHotspotMode();
