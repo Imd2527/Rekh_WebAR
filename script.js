@@ -688,6 +688,158 @@ function enterHotspotMode() {
 
 
 /* =====================================================
+   FORCE A-FRAME HOTSPOT VISIBILITY
+===================================================== */
+
+function forceHotspotVisible(hotspot) {
+
+  if (!hotspot) {
+    return;
+  }
+
+
+  console.log(
+    "FORCING HOTSPOT VISIBLE:",
+    hotspot.id
+  );
+
+
+  /*
+     First use the normal A-Frame
+     visible attribute.
+  */
+
+  hotspot.setAttribute(
+    "visible",
+    true
+  );
+
+
+  /*
+     Force the underlying Three.js
+     object to be visible too.
+
+     This is important because an
+     A-Frame entity can have
+     visible="true" while its
+     underlying object3D is still
+     invisible.
+  */
+
+  if (hotspot.object3D) {
+
+    hotspot.object3D.visible = true;
+
+  }
+
+
+  /*
+     Force all children of the
+     hotspot object to be visible.
+  */
+
+  if (
+    hotspot.object3D &&
+    hotspot.object3D.traverse
+  ) {
+
+    hotspot.object3D.traverse(
+      (object) => {
+
+        object.visible = true;
+
+      }
+    );
+
+  }
+
+
+  /*
+     Make the material fully visible.
+  */
+
+  hotspot.setAttribute(
+    "material",
+    "opacity",
+    1
+  );
+
+
+  /*
+     If the entity has not finished
+     loading yet, run the same
+     visibility fix once it loads.
+  */
+
+  if (!hotspot.hasLoaded) {
+
+    if (
+      hotspot.dataset.hotspotVisibilityListener !==
+      "true"
+    ) {
+
+      hotspot.dataset.hotspotVisibilityListener =
+        "true";
+
+
+      hotspot.addEventListener(
+        "loaded",
+        () => {
+
+          hotspot.setAttribute(
+            "visible",
+            true
+          );
+
+
+          if (hotspot.object3D) {
+
+            hotspot.object3D.visible =
+              true;
+
+
+            if (
+              hotspot.object3D.traverse
+            ) {
+
+              hotspot.object3D.traverse(
+                (object) => {
+
+                  object.visible = true;
+
+                }
+              );
+
+            }
+
+          }
+
+
+          hotspot.setAttribute(
+            "material",
+            "opacity",
+            1
+          );
+
+
+          console.log(
+            "HOTSPOT LOADED AND MADE VISIBLE:",
+            hotspot.id
+          );
+
+        },
+        { once: true }
+      );
+
+    }
+
+  }
+
+}
+
+
+
+/* =====================================================
    SHOW HOTSPOTS
 ===================================================== */
 
@@ -698,63 +850,44 @@ function showHotspots() {
   );
 
 
-  const hotspot1 =
-    document.getElementById("hotspot1");
+  const hotspots = [
 
-  const hotspot2 =
-    document.getElementById("hotspot2");
+    document.getElementById(
+      "hotspot1"
+    ),
 
-  const hotspot3 =
-    document.getElementById("hotspot3");
+    document.getElementById(
+      "hotspot2"
+    ),
 
+    document.getElementById(
+      "hotspot3"
+    )
 
-
-  if (hotspot1) {
-
-    hotspot1.setAttribute(
-      "visible",
-      "true"
-    );
-
-    hotspot1.setAttribute(
-      "material",
-      "opacity",
-      1
-    );
-
-  }
+  ];
 
 
-  if (hotspot2) {
+  hotspots.forEach(
+    (hotspot, index) => {
 
-    hotspot2.setAttribute(
-      "visible",
-      "true"
-    );
+      if (!hotspot) {
 
-    hotspot2.setAttribute(
-      "material",
-      "opacity",
-      1
-    );
+        console.error(
+          "HOTSPOT NOT FOUND:",
+          index + 1
+        );
 
-  }
+        return;
+
+      }
 
 
-  if (hotspot3) {
+      forceHotspotVisible(
+        hotspot
+      );
 
-    hotspot3.setAttribute(
-      "visible",
-      "true"
-    );
-
-    hotspot3.setAttribute(
-      "material",
-      "opacity",
-      1
-    );
-
-  }
+    }
+  );
 
 }
 
@@ -766,45 +899,53 @@ function showHotspots() {
 
 function hideHotspots() {
 
-  const hotspot1 =
-    document.getElementById("hotspot1");
+  const hotspots = [
 
-  const hotspot2 =
-    document.getElementById("hotspot2");
+    document.getElementById(
+      "hotspot1"
+    ),
 
-  const hotspot3 =
-    document.getElementById("hotspot3");
+    document.getElementById(
+      "hotspot2"
+    ),
 
+    document.getElementById(
+      "hotspot3"
+    )
 
-
-  if (hotspot1) {
-
-    hotspot1.setAttribute(
-      "visible",
-      "false"
-    );
-
-  }
+  ];
 
 
-  if (hotspot2) {
+  hotspots.forEach(
+    (hotspot) => {
 
-    hotspot2.setAttribute(
-      "visible",
-      "false"
-    );
-
-  }
+      if (!hotspot) {
+        return;
+      }
 
 
-  if (hotspot3) {
+      hotspot.setAttribute(
+        "visible",
+        false
+      );
 
-    hotspot3.setAttribute(
-      "visible",
-      "false"
-    );
 
-  }
+      /*
+         Also hide the underlying
+         Three.js object so that
+         the hotspot is definitely
+         invisible when scanning.
+      */
+
+      if (hotspot.object3D) {
+
+        hotspot.object3D.visible =
+          false;
+
+      }
+
+    }
+  );
 
 }
 
@@ -878,6 +1019,10 @@ function setupHotspotEvents() {
       "click",
       () => {
 
+        if (!hotspotMode) {
+          return;
+        }
+
         openHotspot("hotspot1");
 
       }
@@ -892,6 +1037,10 @@ function setupHotspotEvents() {
       "click",
       () => {
 
+        if (!hotspotMode) {
+          return;
+        }
+
         openHotspot("hotspot2");
 
       }
@@ -905,6 +1054,10 @@ function setupHotspotEvents() {
     hotspot3.addEventListener(
       "click",
       () => {
+
+        if (!hotspotMode) {
+          return;
+        }
 
         openHotspot("hotspot3");
 
