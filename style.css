@@ -1,35 +1,25 @@
 /* =====================================================
-   RESET
+   GLOBAL
 ===================================================== */
 
 * {
   box-sizing: border-box;
-  margin: 0;
-  padding: 0;
 }
-
 
 html,
 body {
+  margin: 0;
+  padding: 0;
   width: 100%;
   height: 100%;
   overflow: hidden;
+  background: #1b0d05;
+  color: #f7ead9;
+  font-family: Arial, Helvetica, sans-serif;
 }
-
 
 body {
-  font-family: Arial, Helvetica, sans-serif;
-
-  background: #17130f;
-
-  color: #fff4e8;
-}
-
-
-button {
-  border: none;
-  cursor: pointer;
-  font: inherit;
+  position: relative;
 }
 
 
@@ -38,444 +28,45 @@ button {
 ===================================================== */
 
 .screen {
+  position: fixed;
+  inset: 0;
+
+  width: 100%;
+  height: 100%;
 
   display: none;
 
-  width: 100%;
-  height: 100dvh;
+  opacity: 0;
 
-  min-height: 100vh;
+  transition:
+    opacity 0.35s ease;
 
-  position: relative;
-
-  overflow: hidden;
-
-  background:
-    radial-gradient(
-      circle at 50% 20%,
-      rgba(100, 83, 61, 0.25),
-      transparent 35%
-    ),
-    linear-gradient(
-      145deg,
-      #181410 0%,
-      #211a14 55%,
-      #120f0c 100%
-    );
+  z-index: 1;
 }
-
 
 .screen.active {
-
   display: flex;
-
-  flex-direction: column;
-
-  align-items: center;
-
-  justify-content: center;
-
+  opacity: 1;
 }
 
 
 /* =====================================================
-   TYPOGRAPHY
+   COMMON BACKGROUND
 ===================================================== */
 
-h1 {
-
-  font-size: clamp(34px, 5vw, 64px);
-
-  font-weight: 600;
-
-  letter-spacing: -1.5px;
-
-}
-
-
-p {
-
-  line-height: 1.5;
-
-}
-
-
-/* =====================================================
-   LOGO
-===================================================== */
-
-.logo {
-
-  width: clamp(55px, 8vw, 95px);
-
-  height: auto;
-
-  object-fit: contain;
-
-  margin-bottom: 18px;
-
-}
-
-
-/* =====================================================
-   LOADING
-===================================================== */
-
-#loading > p {
-
-  color: #d8c9b9;
-
-  font-size: 16px;
-
-  text-align: center;
-
-  margin-bottom: 40px;
-
-}
-
-
-.loading-line {
-
-  width: min(320px, 55vw);
-
-  height: 4px;
-
-  background: #756149;
-
-  border-radius: 10px;
-
-  overflow: hidden;
-
-  margin-bottom: 14px;
-
-}
-
-
-.loading-line::after {
-
-  content: "";
-
-  display: block;
-
-  height: 100%;
-
-  width: 0;
-
-  background: #e4a84c;
-
-  border-radius: 10px;
-
-  animation: loading 2.5s ease-in-out forwards;
-
-}
-
-
-#loading > span {
-
-  font-size: 11px;
-
-  letter-spacing: 4px;
-
-  color: #c8b8a5;
-
-}
-
-
-@keyframes loading {
-
-  from {
-    width: 0;
-  }
-
-  to {
-    width: 100%;
-  }
-
-}
-
-
-/* =====================================================
-   WELCOME
-===================================================== */
-
-#welcome {
-
-  gap: 12px;
-
-}
-
-
-#welcome h1 {
-
-  margin-bottom: 35px;
-
-}
-
-
-.welcome-card {
-
-  width: min(520px, 82vw);
-
-  padding: 35px 30px;
-
-  border-radius: 24px;
-
-  background:
-    linear-gradient(
-      145deg,
-      rgba(119, 82, 47, 0.9),
-      rgba(80, 57, 38, 0.9)
-    );
-
-  border:
-    1px solid rgba(
-      255,
-      222,
-      180,
-      0.15
-    );
-
-  text-align: center;
-
-  margin-bottom: 25px;
-
-}
-
-
-.welcome-card h2 {
-
-  font-size: 25px;
-
-  font-weight: 500;
-
-  margin-bottom: 15px;
-
-}
-
-
-.welcome-card p {
-
-  font-size: 17px;
-
-}
-
-
-.small-line {
-
-  width: 55px;
-
-  height: 3px;
-
-  background: #e5bd42;
-
-  margin: 20px auto 0;
-
-  border-radius: 5px;
-
-}
-
-
-#welcome > button,
-#howRekh > button {
-
-  min-height: 52px;
-
-  padding: 14px 30px;
-
-  border-radius: 30px;
-
-  background: #f4e9dc;
-
-  color: #35271c;
-
-  font-weight: 600;
-
-  font-size: 16px;
-
-}
-
-
-/* =====================================================
-   HOW REKH
-===================================================== */
-
-#howRekh {
-
-  text-align: center;
-
-  padding: 35px;
-
-  gap: 20px;
-
-}
-
-
-.story-carousel {
+.screen-content {
+  position: relative;
 
   width: 100%;
-
-  display: flex;
-
-  flex-direction: column;
-
-  align-items: center;
-
-}
-
-
-.story-image {
-
-  width: min(500px, 80vw);
-
-  height: min(300px, 42vh);
-
-  border-radius: 28px;
-
-  overflow: hidden;
-
-  border:
-    1px solid rgba(
-      255,
-      255,
-      255,
-      0.15
-    );
-
-  background: #211b16;
-
-}
-
-
-.story-image img {
-
-  width: 100%;
-
   height: 100%;
-
-  object-fit: cover;
-
-  display: block;
-
-}
-
-
-#howRekh h1 {
-
-  font-size: clamp(
-    30px,
-    4vw,
-    52px
-  );
-
-}
-
-
-#howRekh > p {
-
-  width: min(600px, 80vw);
-
-  color: #d4c5b5;
-
-  font-size: 18px;
-
-}
-
-
-.story-dots {
-
-  display: flex;
-
-  gap: 8px;
-
-  margin-top: 18px;
-
-}
-
-
-.dot {
-
-  width: 8px;
-
-  height: 8px;
-
-  min-height: 8px;
-
-  padding: 0;
-
-  border-radius: 50%;
-
-  background: #777;
-
-}
-
-
-.dot.active {
-
-  width: 24px;
-
-  border-radius: 10px;
-
-  background: #f4eadb;
-
-}
-
-
-/* =====================================================
-   SETUP
-===================================================== */
-
-.setup-screen {
 
   background:
     radial-gradient(
-      circle at 50% 20%,
-      rgba(100, 65, 30, 0.22),
-      transparent 40%
-    ),
-    linear-gradient(
-      145deg,
-      #21150b 0%,
-      #301b08 55%,
-      #1b1007 100%
+      circle at center,
+      #321b0b 0%,
+      #1b0d05 65%,
+      #120803 100%
     );
-
-}
-
-
-.setup-content {
-
-  display: flex;
-
-  flex-direction: column;
-
-  align-items: center;
-
-  text-align: center;
-
-}
-
-
-.setup-content h1 {
-
-  font-size: clamp(
-    34px,
-    5vw,
-    58px
-  );
-
-  margin-bottom: 8px;
-
-}
-
-
-.setup-content > p {
-
-  color: #d8c9b9;
-
-  font-size: 18px;
-
-  margin-bottom: 62px;
-
 }
 
 
@@ -483,28 +74,36 @@ p {
    BACK BUTTON
 ===================================================== */
 
-.top-back {
-
+.back-button {
   position: absolute;
 
-  top: 24px;
+  top: 20px;
+  left: 22px;
 
-  left: 24px;
-
-  width: 44px;
-
-  height: 44px;
+  width: 48px;
+  height: 48px;
 
   border-radius: 50%;
 
-  background: #5b3a1a;
+  border: none;
 
-  color: #fff4e8;
+  background: #4a280d;
 
-  font-size: 27px;
+  color: #f7ead9;
 
-  z-index: 10;
+  font-size: 28px;
 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+
+  z-index: 100;
+}
+
+.back-button:active {
+  transform: scale(0.94);
 }
 
 
@@ -513,97 +112,177 @@ p {
 ===================================================== */
 
 .accessibility-button {
+  position: absolute;
 
-  width: min(
-    370px,
-    82vw
-  );
-
-  height: 78px;
-
-  display: flex;
-
-  align-items: center;
-
-  justify-content: flex-start;
-
-  gap: 18px;
-
-  padding: 10px 28px;
-
-  border-radius: 45px;
-
-  background: #604421;
-
-  border:
-    1px solid rgba(
-      255,
-      220,
-      170,
-      0.35
-    );
-
-  color: #fff4e8;
-
-  font-size: 22px;
-
-  font-weight: 500;
-
-}
-
-
-.button-icon {
+  top: 20px;
+  right: 22px;
 
   width: 48px;
-
   height: 48px;
 
+  border-radius: 50%;
+
+  border: none;
+
+  background: #4a280d;
+
   display: flex;
-
   align-items: center;
-
   justify-content: center;
 
-  border-radius: 10px;
+  cursor: pointer;
 
-  background: #261608;
-
+  z-index: 100;
 }
 
-
-.button-icon img {
-
-  width: 30px;
-
-  height: 30px;
+.accessibility-button img {
+  width: 25px;
+  height: 25px;
 
   object-fit: contain;
-
 }
 
 
 /* =====================================================
-   CONTINUE
+   BUTTONS
 ===================================================== */
 
-.setup-continue {
+button {
+  font-family: inherit;
+}
 
-  margin-top: 28px;
+.primary-button {
+  border: none;
 
-  width: 220px;
+  background: #f4dcc2;
 
-  height: 68px;
+  color: #241207;
 
-  border-radius: 35px;
+  padding: 16px 42px;
 
-  background: #f4e9dc;
+  border-radius: 40px;
 
-  color: #35271c;
+  font-size: 18px;
+  font-weight: 600;
 
-  font-size: 20px;
+  cursor: pointer;
+}
 
-  font-weight: 500;
+.primary-button:active {
+  transform: scale(0.97);
+}
 
+
+/* =====================================================
+   WELCOME
+===================================================== */
+
+#welcome {
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+#welcome .content {
+  width: min(90%, 700px);
+}
+
+
+/* =====================================================
+   HOW REKH WORKS
+===================================================== */
+
+#howItWorks {
+  align-items: center;
+  justify-content: center;
+
+  overflow-y: auto;
+}
+
+.how-content {
+  width: min(90%, 700px);
+
+  text-align: center;
+
+  padding: 50px 20px;
+}
+
+.story-container {
+  position: relative;
+
+  width: min(100%, 560px);
+
+  margin: 0 auto 25px;
+
+  overflow: hidden;
+
+  border-radius: 28px;
+}
+
+.story-container img {
+  width: 100%;
+  height: auto;
+
+  display: block;
+}
+
+.story-dots {
+  display: flex;
+
+  justify-content: center;
+
+  gap: 12px;
+
+  margin: 20px 0;
+}
+
+.dot {
+  width: 12px;
+  height: 12px;
+
+  border-radius: 50%;
+
+  background: #b6a18d;
+
+  cursor: pointer;
+}
+
+.dot.active {
+  width: 42px;
+
+  border-radius: 20px;
+
+  background: #f1d9bb;
+}
+
+
+/* =====================================================
+   SETUP SCREEN
+===================================================== */
+
+#setup {
+  align-items: center;
+  justify-content: center;
+
+  text-align: center;
+}
+
+.setup-content {
+  width: min(90%, 700px);
+}
+
+.setup-content h1 {
+  font-size: clamp(32px, 5vw, 54px);
+
+  margin-bottom: 15px;
+}
+
+.setup-content p {
+  font-size: 18px;
+
+  line-height: 1.5;
+
+  color: #d7c2ad;
 }
 
 
@@ -611,29 +290,17 @@ p {
    ACCESSIBILITY OVERLAY
 ===================================================== */
 
-.accessibility-overlay {
-
-  position: fixed;
+#accessibilityOverlay {
+  position: absolute;
 
   inset: 0;
-
-  z-index: 1000;
 
   display: flex;
 
   align-items: center;
-
   justify-content: center;
 
-  padding: 25px;
-
-  background:
-    rgba(
-      0,
-      0,
-      0,
-      0.55
-    );
+  background: rgba(15, 7, 2, 0.72);
 
   opacity: 0;
 
@@ -642,194 +309,83 @@ p {
   pointer-events: none;
 
   transition:
-    opacity 0.2s ease,
-    visibility 0.2s ease;
+    opacity 0.3s ease,
+    visibility 0.3s ease;
 
+  z-index: 500;
 }
 
-
-.accessibility-overlay.open {
-
+#accessibilityOverlay.open {
   opacity: 1;
 
   visibility: visible;
 
   pointer-events: auto;
-
 }
 
 
 /* =====================================================
-   ACCESSIBILITY CARD
+   ACCESSIBILITY PANEL
 ===================================================== */
 
-.accessibility-card {
+.accessibility-panel {
+  position: relative;
 
-  width: min(
-    540px,
-    90vw
-  );
+  width: min(90%, 540px);
 
-  max-height: 88vh;
+  max-height: 90vh;
 
   overflow-y: auto;
 
-  padding: 22px 36px 10px;
+  background: #694a27;
+
+  border: 1px solid #9b6d32;
 
   border-radius: 28px;
 
-  background: #604421;
-
-  border:
-    1px solid rgba(
-      255,
-      220,
-      170,
-      0.35
-    );
+  padding: 32px;
 
   box-shadow:
-    0 20px 80px
-    rgba(
-      0,
-      0,
-      0,
-      0.5
-    );
+    0 20px 60px rgba(0, 0, 0, 0.45);
+}
 
+.accessibility-panel h2 {
+  margin: 0 0 8px;
+
+  font-size: 30px;
+}
+
+.accessibility-panel .subtitle {
+  margin-bottom: 25px;
+
+  color: #dfcbb5;
 }
 
 
 /* =====================================================
-   HANDLE
-===================================================== */
-
-.drag-handle {
-
-  width: 60px;
-
-  height: 6px;
-
-  margin: 0 auto 22px;
-
-  border-radius: 10px;
-
-  background: #3e2917;
-
-}
-
-
-/* =====================================================
-   ACCESSIBILITY HEADER
-===================================================== */
-
-.accessibility-header {
-
-  display: flex;
-
-  align-items: center;
-
-  justify-content: space-between;
-
-  padding-bottom: 24px;
-
-  border-bottom:
-    1px solid
-    rgba(
-      255,
-      240,
-      220,
-      0.18
-    );
-
-}
-
-
-.accessibility-title {
-
-  display: flex;
-
-  align-items: center;
-
-  gap: 18px;
-
-}
-
-
-.accessibility-main-icon {
-
-  width: 50px;
-
-  height: 50px;
-
-  display: flex;
-
-  align-items: center;
-
-  justify-content: center;
-
-  border-radius: 12px;
-
-  background: #261608;
-
-}
-
-
-.accessibility-main-icon img {
-
-  width: 32px;
-
-  height: 32px;
-
-  object-fit: contain;
-
-}
-
-
-.accessibility-title h1 {
-
-  font-size: 31px;
-
-  line-height: 1.1;
-
-  margin-bottom: 5px;
-
-}
-
-
-.accessibility-title p {
-
-  color: #d9c5ad;
-
-  font-size: 16px;
-
-}
-
-
-/* =====================================================
-   CLOSE
+   ACCESSIBILITY CLOSE
 ===================================================== */
 
 .accessibility-close {
+  position: absolute;
 
-  width: 48px;
+  top: 20px;
+  right: 20px;
 
-  height: 48px;
+  width: 42px;
+  height: 42px;
 
-  min-height: 48px;
-
-  flex-shrink: 0;
+  border: none;
 
   border-radius: 50%;
 
-  background: #321f0e;
+  background: #321b0b;
 
-  color: #fff4e8;
+  color: #f7ead9;
 
-  font-size: 30px;
+  font-size: 22px;
 
-  line-height: 1;
-
+  cursor: pointer;
 }
 
 
@@ -838,1043 +394,107 @@ p {
 ===================================================== */
 
 .accessibility-row {
+  display: flex;
 
-  display: grid;
+  align-items: center;
 
-  grid-template-columns:
-    52px
-    1fr
-    auto;
+  justify-content: space-between;
+
+  gap: 20px;
+
+  padding: 18px 0;
+
+  border-top: 1px solid rgba(244, 220, 194, 0.2);
+}
+
+.accessibility-row-left {
+  display: flex;
 
   align-items: center;
 
   gap: 16px;
-
-  min-height: 94px;
-
-  padding: 14px 0;
-
-  border-bottom:
-    1px solid
-    rgba(
-      255,
-      240,
-      220,
-      0.15
-    );
-
 }
 
-
-.accessibility-row.last {
-
-  border-bottom: none;
-
-}
-
-
-.accessibility-icon {
-
-  width: 44px;
-
-  height: 44px;
-
-  padding: 9px;
+.accessibility-row img {
+  width: 38px;
+  height: 38px;
 
   object-fit: contain;
-
-  border-radius: 50%;
-
-  background: #4a2c12;
-
 }
 
+.accessibility-row h3 {
+  margin: 0 0 5px;
 
-.accessibility-label h2 {
-
-  margin-bottom: 5px;
-
-  font-size: 18px;
-
-  font-weight: 500;
-
+  font-size: 17px;
 }
 
+.accessibility-row p {
+  margin: 0;
 
-.accessibility-label p {
-
-  color: #d9c5ad;
-
-  font-family: monospace;
+  color: #d8c4ad;
 
   font-size: 14px;
-
-  line-height: 1.5;
-
 }
 
 
 /* =====================================================
-   LANGUAGE
-===================================================== */
-
-.language-selector {
-
-  display: flex;
-
-  align-items: center;
-
-  gap: 10px;
-
-  min-height: 48px;
-
-  padding: 8px 14px;
-
-  border-radius: 25px;
-
-  background: #4a2c12;
-
-  color: #f8eadc;
-
-}
-
-
-.language-selector img {
-
-  width: 20px;
-
-  height: 20px;
-
-  object-fit: contain;
-
-}
-
-
-/* =====================================================
-   TEXT SIZE
-===================================================== */
-
-.text-size-selector {
-
-  display: flex;
-
-  align-items: center;
-
-  padding: 4px;
-
-  border-radius: 25px;
-
-  background: #4a2c12;
-
-}
-
-
-.text-size-selector button {
-
-  width: 42px;
-
-  height: 40px;
-
-  min-height: 40px;
-
-  border-radius: 50%;
-
-  background: transparent;
-
-  color: #d9c5ad;
-
-}
-
-
-.text-size-selector button.selected {
-
-  background: #ffe0c1;
-
-  color: #392412;
-
-}
-
-
-/* =====================================================
-   TOGGLE
+   ACCESSIBILITY TOGGLE
 ===================================================== */
 
 .toggle {
+  width: 58px;
+  height: 32px;
+
+  border: none;
+
+  border-radius: 30px;
+
+  background: #321b0b;
 
   position: relative;
 
-  width: 58px;
-
-  height: 32px;
-
-  min-height: 32px;
-
-  padding: 0;
-
-  border-radius: 20px;
-
-  background: #321f0e;
-
+  cursor: pointer;
 }
 
-
-.toggle span {
+.toggle::after {
+  content: "";
 
   position: absolute;
-
-  top: 4px;
-
-  left: 4px;
 
   width: 24px;
-
   height: 24px;
 
+  top: 4px;
+  left: 4px;
+
   border-radius: 50%;
 
-  background: #d8cdc2;
+  background: #d7d0ca;
 
-  transition:
-    transform 0.2s ease;
-
+  transition: 0.2s ease;
 }
-
 
 .toggle.active {
+  background: #f4dcc2;
+}
 
-  background: #ffe0c1;
+.toggle.active::after {
+  left: 30px;
 
+  background: #5a3215;
 }
 
 
-.toggle.active span {
-
-  transform:
-    translateX(26px);
-
-  background: #51351f;
-
-}
-
-
-/* =====================================================
-   AR SCREEN
-===================================================== */
-
-.ar-screen {
-
-  position: fixed;
-
-  inset: 0;
-
-  display: none;
-
-  width: 100vw;
-
-  height: 100dvh;
-
-  overflow: hidden;
-
-  background: #000;
-
-}
-
-
-.ar-screen.active {
-
-  display: block;
-
-}
-
-
-/* =====================================================
-   A-FRAME
-===================================================== */
-
-#mindarScene {
-
-  position: absolute;
-
-  inset: 0;
-
-  width: 100% !important;
-
-  height: 100% !important;
-
-  z-index: 1;
-
-}
-
-
-/* Remove A-Frame UI */
-
-.a-enter-vr,
-.a-orientation-modal {
-
-  display: none !important;
-
-}
-
-
-/* =====================================================
-   AR UI
-===================================================== */
-
-.ar-back,
-.ar-accessibility {
-
-  position: fixed;
-
-  z-index: 20;
-
-  top: 20px;
-
-  width: 50px;
-
-  height: 50px;
-
-  border-radius: 50%;
-
-  background: #3b2108;
-
-  color: #fff4e8;
-
-}
-
-
-.ar-back {
-
-  left: 22px;
-
-  font-size: 29px;
-
-}
-
-
-.ar-accessibility {
-
-  right: 22px;
-
-  display: flex;
-
-  align-items: center;
-
-  justify-content: center;
-
-}
-
-
-.ar-accessibility img {
-
-  width: 29px;
-
-  height: 29px;
-
-  object-fit: contain;
-
-}
-
-
-/* =====================================================
-   SCAN MESSAGE
-===================================================== */
-
-.scan-message {
-
-  position: fixed;
-
-  z-index: 20;
-
-  top: 105px;
-
-  left: 50%;
-
-  transform: translateX(-50%);
-
-  padding: 14px 26px;
-
-  border-radius: 30px;
-
-  background: #3b2108;
-
-  color: #f4dfc8;
-
-  font-size: 19px;
-
-  white-space: nowrap;
-
-}
-
-
-/* =====================================================
-   SCAN FRAME
-===================================================== */
-
-.scan-frame {
-
-  position: fixed;
-
-  z-index: 15;
-
-  top: 50%;
-
-  left: 50%;
-
-  width: min(
-    320px,
-    60vw
-  );
-
-  height: min(
-    430px,
-    60vh
-  );
-
-  transform: translate(
-    -50%,
-    -50%
-  );
-
-  pointer-events: none;
-
-}
-
-
-.corner {
-
-  position: absolute;
-
-  width: 60px;
-
-  height: 60px;
-
-  border-color: #3b2108;
-
-  border-style: solid;
-
-}
-
-
-.top-left {
-
-  top: 0;
-  left: 0;
-
-  border-width:
-    6px 0 0 6px;
-
-  border-radius:
-    18px 0 0 0;
-
-}
-
-
-.top-right {
-
-  top: 0;
-  right: 0;
-
-  border-width:
-    6px 6px 0 0;
-
-  border-radius:
-    0 18px 0 0;
-
-}
-
-
-.bottom-left {
-
-  bottom: 0;
-  left: 0;
-
-  border-width:
-    0 0 6px 6px;
-
-  border-radius:
-    0 0 0 18px;
-
-}
-
-
-.bottom-right {
-
-  bottom: 0;
-  right: 0;
-
-  border-width:
-    0 6px 6px 0;
-
-  border-radius:
-    0 0 18px 0;
-
-}
-
-
-/* =====================================================
-   SEARCH ICON
-===================================================== */
-
-.search-icon {
-
-  position: fixed;
-
-  z-index: 20;
-
-  top: 50%;
-
-  left: 50%;
-
-  transform:
-    translate(
-      -50%,
-      -50%
-    );
-
-  width: 68px;
-
-  height: 68px;
-
-  display: flex;
-
-  align-items: center;
-
-  justify-content: center;
-
-  border-radius: 50%;
-
-  background: #5b3600;
-
-  color: #e7bb3d;
-
-  font-size: 42px;
-
-}
-
-
-/* =====================================================
-   SCAN STATUS
-===================================================== */
-
-.scan-status {
-
-  position: fixed;
-
-  z-index: 20;
-
-  bottom: 78px;
-
-  left: 50%;
-
-  transform:
-    translateX(-50%);
-
-  color: #3b2108;
-
-  font-family: monospace;
-
-  font-size: 12px;
-
-  letter-spacing: 4px;
-
-  white-space: nowrap;
-
-}
-
-
-/* =====================================================
-   ARTIFACT FOUND
-===================================================== */
-
-.artifact-found {
-
-  position: fixed;
-
-  inset: 0;
-
-  z-index: 30;
-
-  pointer-events: none;
-
-  opacity: 0;
-
-  visibility: hidden;
-
-  transition:
-    opacity 0.25s ease;
-
-}
-
-
-.artifact-found.visible {
-
-  opacity: 1;
-
-  visibility: visible;
-
-}
-
-
-.found-pill {
-
-  position: absolute;
-
-  top: 105px;
-
-  left: 50%;
-
-  transform:
-    translateX(-50%);
-
-  padding: 13px 27px;
-
-  border-radius: 30px;
-
-  background: #3b2108;
-
-  color: #f4dfc8;
-
-  font-size: 18px;
-
-}
-
-
-.artifact-info {
-
-  position: absolute;
-
-  left: 55px;
-
-  bottom: 34px;
-
-  width: 300px;
-
-  padding: 20px 18px;
-
-  border-radius: 24px;
-
-  background: #3b2108;
-
-  color: #fff4e8;
-
-}
-
-
-.artifact-info h2 {
-
-  font-size: 20px;
-
-  margin-bottom: 3px;
-
-}
-
-
-.artifact-info h3 {
-
-  font-size: 12px;
-
-  font-weight: 400;
-
-  margin-bottom: 20px;
-
-}
-
-
-.artifact-info p {
-
-  font-size: 13px;
-
-  line-height: 1.4;
-
-}
-
-
-/* =====================================================
-   MOBILE
-===================================================== */
-
-@media (max-width: 600px) {
-
-  .setup-content h1 {
-
-    font-size: 36px;
-
-  }
-
-
-  .setup-content > p {
-
-    font-size: 18px;
-
-    margin-bottom: 58px;
-
-  }
-
-
-  .accessibility-button {
-
-    width: 342px;
-
-    height: 72px;
-
-  }
-
-
-  .accessibility-card {
-
-    width: 100%;
-
-    max-height: 92vh;
-
-    padding:
-      18px 20px 5px;
-
-  }
-
-
-  .accessibility-title {
-
-    gap: 12px;
-
-  }
-
-
-  .accessibility-title h1 {
-
-    font-size: 25px;
-
-  }
-
-
-  .accessibility-title p {
-
-    font-size: 13px;
-
-  }
-
-
-  .accessibility-row {
-
-    grid-template-columns:
-      44px
-      1fr
-      auto;
-
-    gap: 12px;
-
-  }
-
-
-  .accessibility-label h2 {
-
-    font-size: 16px;
-
-  }
-
-
-  .accessibility-label p {
-
-    font-size: 12px;
-
-  }
-
-
-  .scan-message {
-
-    top: 110px;
-
-    font-size: 16px;
-
-    padding:
-      13px 20px;
-
-  }
-
-
-  .scan-frame {
-
-    width: 62vw;
-
-    height: 55vh;
-
-  }
-
-
-  .artifact-info {
-
-    left: 20px;
-
-    bottom: 25px;
-
-    width: 178px;
-
-    padding: 16px;
-
-  }
-
-
-  .artifact-info h2 {
-
-    font-size: 17px;
-
-  }
-
-
-  .artifact-info p {
-
-    font-size: 11px;
-
-  }
-
-}
-/* =====================================================
-   AR HOTSPOTS
-===================================================== */
-
-.hotspot {
-
-  cursor: pointer;
-
-  transition:
-    transform 0.2s ease;
-
-}
-
-
-.hotspot:active {
-
-  transform: scale(1.25);
-
-}
-
-
-/* =====================================================
-   HOTSPOT INFORMATION CARD
-===================================================== */
-
-.hotspot-info {
-
-  position: fixed;
-
-  z-index: 50;
-
-  left: 50%;
-
-  bottom: 28px;
-
-  transform:
-    translateX(-50%)
-    translateY(30px);
-
-  width: min(
-    340px,
-    calc(100vw - 40px)
-  );
-
-  padding: 22px;
-
-  border-radius: 24px;
-
-  background: #3b2108;
-
-  color: #fff4e8;
-
-  box-shadow:
-    0 15px 50px
-    rgba(
-      0,
-      0,
-      0,
-      0.45
-    );
-
-  opacity: 0;
-
-  visibility: hidden;
-
-  pointer-events: none;
-
-  transition:
-    opacity 0.25s ease,
-    transform 0.25s ease;
-
-}
-
-
-.hotspot-info.visible {
-
-  opacity: 1;
-
-  visibility: visible;
-
-  pointer-events: auto;
-
-  transform:
-    translateX(-50%)
-    translateY(0);
-
-}
-
-
-/* =====================================================
-   CLOSE
-===================================================== */
-
-.hotspot-close {
-
-  position: absolute;
-
-  top: 12px;
-
-  right: 12px;
-
-  width: 34px;
-
-  height: 34px;
-
-  min-height: 34px;
-
-  padding: 0;
-
-  border-radius: 50%;
-
-  background: #261608;
-
-  color: #fff4e8;
-
-  font-size: 23px;
-
-}
-
-
-/* =====================================================
-   NUMBER
-===================================================== */
-
-.hotspot-number {
-
-  margin-bottom: 6px;
-
-  color: #e7bb3d;
-
-  font-family: monospace;
-
-  font-size: 11px;
-
-  letter-spacing: 3px;
-
-}
-
-
-/* =====================================================
-   TITLE
-===================================================== */
-
-.hotspot-info h2 {
-
-  margin-bottom: 8px;
-
-  font-size: 22px;
-
-  font-weight: 500;
-
-}
-
-
-.hotspot-info p {
-
-  color: #e0cdb8;
-
-  font-size: 14px;
-
-  line-height: 1.5;
-
-}
-
-
-/* =====================================================
-   AUDIO / ANIMATION / WRITTEN
-===================================================== */
-
-.hotspot-actions {
-
-  display: flex;
-
-  gap: 8px;
-
-  margin-top: 18px;
-
-}
-
-
-.hotspot-actions button {
-
-  flex: 1;
-
-  min-height: 38px;
-
-  padding: 8px 10px;
-
-  border-radius: 20px;
-
-  background: #604421;
-
-  color: #fff4e8;
-
-  font-size: 12px;
-
-}
-
-
-.hotspot-actions button:hover {
-
-  background: #76552c;
-
-}
-
-
-/* =====================================================
-   MOBILE
-===================================================== */
-
-@media (max-width: 600px) {
-
-  .hotspot-info {
-
-    bottom: 20px;
-
-    width: calc(100vw - 40px);
-
-    padding: 20px;
-
-  }
-
-
-  .hotspot-actions button {
-
-    font-size: 11px;
-
-  }
-
-}
 /* =====================================================
    AR SCREEN
 ===================================================== */
 
 #arScreen {
-  position: fixed;
-  inset: 0;
-
-  width: 100%;
-  height: 100dvh;
-
-  padding: 0 !important;
+  background: transparent;
 
   display: none;
 
   overflow: hidden;
-
-  background: #000;
 }
 
 #arScreen.active {
@@ -1887,7 +507,24 @@ p {
 ===================================================== */
 
 #mindarScene {
-  position: absolute !important;
+  position: fixed;
+
+  inset: 0;
+
+  width: 100%;
+  height: 100%;
+
+  z-index: 1;
+}
+
+
+/*
+   Keep A-Frame camera output
+   behind the UI.
+*/
+
+a-scene {
+  position: fixed !important;
 
   inset: 0 !important;
 
@@ -1898,9 +535,21 @@ p {
 }
 
 
-#mindarScene canvas {
-  width: 100% !important;
-  height: 100% !important;
+/* =====================================================
+   AR UI LAYER
+===================================================== */
+
+.ar-ui {
+  position: fixed;
+
+  inset: 0;
+
+  width: 100%;
+  height: 100%;
+
+  pointer-events: none;
+
+  z-index: 50;
 }
 
 
@@ -1909,33 +558,27 @@ p {
 ===================================================== */
 
 .ar-back {
+  position: absolute;
 
-  position: fixed;
+  top: 20px;
+  left: 22px;
 
-  top: 24px;
-  left: 24px;
+  width: 50px;
+  height: 50px;
 
-  z-index: 50;
-
-  width: 52px;
-  height: 52px;
-
-  min-height: 52px;
-
-  padding: 0;
+  border: none;
 
   border-radius: 50%;
 
-  background: rgba(55, 30, 8, 0.92);
+  background: #4a280d;
 
-  color: #fff0dc;
+  color: #f7ead9;
 
   font-size: 28px;
 
-  display: flex;
+  pointer-events: auto;
 
-  align-items: center;
-  justify-content: center;
+  cursor: pointer;
 }
 
 
@@ -1944,39 +587,28 @@ p {
 ===================================================== */
 
 .ar-accessibility {
+  position: absolute;
 
-  position: fixed;
+  top: 20px;
+  right: 22px;
 
-  top: 24px;
-  right: 24px;
+  width: 50px;
+  height: 50px;
 
-  z-index: 50;
-
-  width: 52px;
-  height: 52px;
-
-  min-height: 52px;
-
-  padding: 10px;
+  border: none;
 
   border-radius: 50%;
 
-  background: rgba(55, 30, 8, 0.92);
+  background: #4a280d;
 
-  display: flex;
+  pointer-events: auto;
 
-  align-items: center;
-  justify-content: center;
+  cursor: pointer;
 }
 
-
 .ar-accessibility img {
-
-  width: 28px;
-  height: 28px;
-
-  object-fit: contain;
-
+  width: 26px;
+  height: 26px;
 }
 
 
@@ -1984,11 +616,285 @@ p {
    SCAN MESSAGE
 ===================================================== */
 
-.scan-message {
+#scanMessage {
+  position: absolute;
 
-  position: fixed;
+  top: 105px;
+  left: 50%;
 
-  z-index: 30;
+  transform: translateX(-50%);
+
+  padding: 13px 25px;
+
+  border-radius: 30px;
+
+  background: #4a280d;
+
+  color: #f7ead9;
+
+  font-size: 18px;
+
+  white-space: nowrap;
+
+  text-align: center;
+}
+
+
+/* =====================================================
+   SCAN FRAME
+===================================================== */
+
+#scanFrame {
+  position: absolute;
+
+  width: min(58vw, 360px);
+
+  aspect-ratio: 0.62;
+
+  left: 50%;
+  top: 50%;
+
+  transform: translate(-50%, -50%);
+
+  border: none;
+}
+
+
+/*
+   Four corner brackets
+*/
+
+#scanFrame::before,
+#scanFrame::after {
+  content: "";
+
+  position: absolute;
+
+  inset: 0;
+
+  pointer-events: none;
+}
+
+#scanFrame::before {
+  border-left: 6px solid #4a280d;
+  border-top: 6px solid #4a280d;
+
+  border-radius: 22px 0 0 0;
+
+  width: 55px;
+  height: 55px;
+}
+
+#scanFrame::after {
+  border-right: 6px solid #4a280d;
+  border-bottom: 6px solid #4a280d;
+
+  border-radius: 0 0 22px 0;
+
+  width: 55px;
+  height: 55px;
+
+  right: 0;
+  bottom: 0;
+
+  left: auto;
+  top: auto;
+}
+
+
+/* =====================================================
+   SEARCH ICON
+===================================================== */
+
+#searchIcon {
+  position: absolute;
+
+  top: 50%;
+  left: 50%;
+
+  transform: translate(-50%, -50%);
+
+  width: 64px;
+  height: 64px;
+
+  border-radius: 50%;
+
+  background: #4a280d;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  color: #f0c84b;
+
+  font-size: 30px;
+}
+
+
+/* =====================================================
+   SCAN STATUS
+===================================================== */
+
+#scanStatus {
+  position: absolute;
+
+  bottom: 90px;
+
+  left: 50%;
+
+  transform: translateX(-50%);
+
+  font-size: 12px;
+
+  letter-spacing: 4px;
+
+  color: #4a280d;
+
+  white-space: nowrap;
+}
+
+
+/* =====================================================
+   ARTIFACT FOUND
+===================================================== */
+
+#artifactFound {
+  position: absolute;
+
+  inset: 0;
+
+  pointer-events: none;
+
+  opacity: 0;
+
+  visibility: hidden;
+
+  transition:
+    opacity 0.3s ease,
+    visibility 0.3s ease;
+}
+
+#artifactFound.visible {
+  opacity: 1;
+
+  visibility: visible;
+}
+
+
+/* =====================================================
+   ARTIFACT FOUND TITLE
+===================================================== */
+
+.artifact-found-title {
+  position: absolute;
+
+  top: 105px;
+
+  left: 50%;
+
+  transform: translateX(-50%);
+
+  padding: 15px 30px;
+
+  border-radius: 35px;
+
+  background: #321b0b;
+
+  color: #f7ead9;
+
+  font-size: 21px;
+
+  white-space: nowrap;
+}
+
+
+/* =====================================================
+   ARTIFACT INFO CARD
+===================================================== */
+
+.artifact-info {
+  position: absolute;
+
+  left: 32px;
+
+  bottom: 35px;
+
+  width: min(82vw, 340px);
+
+  padding: 25px;
+
+  border-radius: 26px;
+
+  background: rgba(48, 19, 5, 0.96);
+
+  color: #f7ead9;
+
+  pointer-events: auto;
+}
+
+.artifact-info h2 {
+  margin: 0 0 5px;
+
+  font-size: 25px;
+}
+
+.artifact-info .date {
+  margin-bottom: 22px;
+
+  font-size: 16px;
+
+  color: #e0c8b0;
+}
+
+.artifact-info p {
+  margin: 0;
+
+  font-size: 15px;
+
+  line-height: 1.5;
+
+  color: #f0dfcf;
+}
+
+
+/* =====================================================
+   EXPLORE BUTTON
+===================================================== */
+
+.explore-button {
+  position: absolute;
+
+  right: 30px;
+
+  bottom: 35px;
+
+  padding: 15px 27px;
+
+  border: none;
+
+  border-radius: 30px;
+
+  background: #f4dcc2;
+
+  color: #301705;
+
+  font-size: 16px;
+
+  font-weight: 600;
+
+  pointer-events: auto;
+
+  cursor: pointer;
+}
+
+
+/* =====================================================
+   HOTSPOT MODE
+===================================================== */
+
+#hotspotUI {
+  position: absolute;
 
   top: 105px;
 
@@ -2000,401 +906,13 @@ p {
 
   border-radius: 30px;
 
-  background: #3b1e00;
+  background: #4a280d;
 
-  color: #f6dfc4;
-
-  font-size: 18px;
-
-  white-space: nowrap;
-
-  pointer-events: none;
-
-}
-
-
-/* =====================================================
-   SCAN FRAME
-===================================================== */
-
-.scan-frame {
-
-  position: fixed;
-
-  z-index: 20;
-
-  top: 50%;
-
-  left: 50%;
-
-  transform: translate(-50%, -50%);
-
-  width: min(330px, 65vw);
-
-  height: min(430px, 65vh);
-
-  pointer-events: none;
-
-}
-
-
-.corner {
-
-  position: absolute;
-
-  width: 58px;
-  height: 58px;
-
-  border-color: #3b1e00;
-
-  border-style: solid;
-
-}
-
-
-.corner.top-left {
-
-  top: 0;
-  left: 0;
-
-  border-width: 7px 0 0 7px;
-
-  border-radius: 18px 0 0 0;
-
-}
-
-
-.corner.top-right {
-
-  top: 0;
-  right: 0;
-
-  border-width: 7px 7px 0 0;
-
-  border-radius: 0 18px 0 0;
-
-}
-
-
-.corner.bottom-left {
-
-  bottom: 0;
-  left: 0;
-
-  border-width: 0 0 7px 7px;
-
-  border-radius: 0 0 0 18px;
-
-}
-
-
-.corner.bottom-right {
-
-  bottom: 0;
-  right: 0;
-
-  border-width: 0 7px 7px 0;
-
-  border-radius: 0 0 18px 0;
-
-}
-
-
-/* =====================================================
-   SEARCH ICON
-===================================================== */
-
-.search-icon {
-
-  position: fixed;
-
-  z-index: 30;
-
-  top: 50%;
-  left: 50%;
-
-  transform: translate(-50%, -50%);
-
-  width: 68px;
-  height: 68px;
-
-  border-radius: 50%;
-
-  background: #5a3500;
-
-  color: #f4d35e;
-
-  font-size: 48px;
-
-  display: flex;
-
-  align-items: center;
-  justify-content: center;
-
-  pointer-events: none;
-
-}
-
-
-/* =====================================================
-   SCAN STATUS
-===================================================== */
-
-.scan-status {
-
-  position: fixed;
-
-  z-index: 30;
-
-  bottom: 90px;
-
-  left: 50%;
-
-  transform: translateX(-50%);
-
-  color: #3b1e00;
-
-  font-family: monospace;
-
-  font-size: 12px;
-
-  letter-spacing: 4px;
-
-  pointer-events: none;
-
-}
-
-
-/* =====================================================
-   ARTIFACT FOUND
-===================================================== */
-
-.artifact-found {
-
-  position: fixed;
-
-  inset: 0;
-
-  z-index: 40;
-
-  pointer-events: none;
-
-  opacity: 0;
-
-  visibility: hidden;
-
-  transition: opacity 0.25s ease;
-
-}
-
-
-.artifact-found.visible {
-
-  opacity: 1;
-
-  visibility: visible;
-
-}
-
-
-/* =====================================================
-   FOUND PILL
-===================================================== */
-
-.found-pill {
-
-  position: absolute;
-
-  top: 105px;
-
-  left: 50%;
-
-  transform: translateX(-50%);
-
-  padding: 14px 28px;
-
-  border-radius: 30px;
-
-  background: #210000;
-
-  color: #f7e3ce;
-
-  font-size: 18px;
-
-  white-space: nowrap;
-
-}
-
-
-/* =====================================================
-   ARTIFACT INFO CARD
-===================================================== */
-
-.artifact-info {
-
-  position: absolute;
-
-  left: 36px;
-
-  bottom: 55px;
-
-  width: min(300px, 72vw);
-
-  padding: 25px 28px;
-
-  border-radius: 28px;
-
-  background: #210000;
-
-  color: #fff2e5;
-
-}
-
-
-.artifact-info h2 {
-
-  margin: 0 0 4px;
-
-  font-size: 26px;
-
-}
-
-
-.artifact-info h3 {
-
-  margin: 0 0 26px;
-
-  font-size: 17px;
-
-  font-weight: 400;
-
-}
-
-
-.artifact-info p {
-
-  margin: 0;
-
-  font-size: 16px;
-
-  line-height: 1.5;
-
-}
-
-
-/* =====================================================
-   INVISIBLE TAP LAYER
-===================================================== */
-
-.artifact-tap-layer {
-
-  position: fixed;
-
-  inset: 0;
-
-  z-index: 35;
-
-  display: none;
-
-  background: transparent;
-
-  cursor: pointer;
-
-}
-
-
-/* =====================================================
-   HOTSPOT UI
-===================================================== */
-
-.hotspot-ui {
-
-  position: fixed;
-
-  inset: 0;
-
-  z-index: 25;
-
-  pointer-events: none;
-
-  opacity: 0;
-
-  visibility: hidden;
-
-}
-
-
-.hotspot-ui.visible {
-
-  opacity: 1;
-
-  visibility: visible;
-
-}
-
-
-.hotspot-hint {
-
-  position: absolute;
-
-  top: 105px;
-
-  left: 50%;
-
-  transform: translateX(-50%);
-
-  padding: 13px 24px;
-
-  border-radius: 30px;
-
-  background: #3b1e00;
-
-  color: #f6dfc4;
+  color: #f7ead9;
 
   font-size: 17px;
 
   white-space: nowrap;
-
-}
-
-
-/* =====================================================
-   HOTSPOTS
-===================================================== */
-
-.hotspot {
-
-  cursor: pointer;
-
-}
-
-
-/* =====================================================
-   HOTSPOT INFORMATION
-===================================================== */
-
-.hotspot-info {
-
-  position: fixed;
-
-  z-index: 60;
-
-  left: 50%;
-
-  bottom: 30px;
-
-  transform:
-    translate(-50%, 20px);
-
-  width: min(420px, 86vw);
-
-  padding: 25px;
-
-  border-radius: 25px;
-
-  background: #210000;
-
-  color: #fff2e5;
 
   opacity: 0;
 
@@ -2402,98 +920,185 @@ p {
 
   transition:
     opacity 0.25s ease,
-    transform 0.25s ease;
+    visibility 0.25s ease;
+}
 
+#hotspotUI.visible {
+  opacity: 1;
+
+  visibility: visible;
 }
 
 
-.hotspot-info.visible {
+/* =====================================================
+   HOTSPOT IMAGE OVERLAYS
+===================================================== */
 
+.hotspot {
+  position: absolute;
+
+  width: 42px;
+  height: 42px;
+
+  object-fit: contain;
+
+  pointer-events: auto;
+
+  cursor: pointer;
+
+  z-index: 80;
+
+  opacity: 0;
+
+  visibility: hidden;
+
+  transition:
+    opacity 0.25s ease,
+    transform 0.2s ease;
+}
+
+.hotspot.visible {
+  opacity: 1;
+
+  visibility: visible;
+}
+
+.hotspot:active {
+  transform: scale(0.88);
+}
+
+
+/*
+   Crown hotspot
+*/
+
+#hotspot1 {
+  top: 25%;
+  left: 50%;
+
+  transform: translateX(-50%);
+}
+
+
+/*
+   Right-hand hotspot
+*/
+
+#hotspot2 {
+  top: 48%;
+  right: 24%;
+}
+
+
+/*
+   Arch hotspot
+*/
+
+#hotspot3 {
+  top: 35%;
+  left: 25%;
+}
+
+
+/* =====================================================
+   HOTSPOT INFORMATION CARD
+===================================================== */
+
+#hotspotInfo {
+  position: absolute;
+
+  left: 30px;
+
+  bottom: 30px;
+
+  width: min(82vw, 360px);
+
+  padding: 25px;
+
+  border-radius: 26px;
+
+  background: rgba(48, 19, 5, 0.97);
+
+  color: #f7ead9;
+
+  pointer-events: auto;
+
+  opacity: 0;
+
+  visibility: hidden;
+
+  transform: translateY(20px);
+
+  transition:
+    opacity 0.25s ease,
+    visibility 0.25s ease,
+    transform 0.25s ease;
+
+  z-index: 90;
+}
+
+#hotspotInfo.visible {
   opacity: 1;
 
   visibility: visible;
 
-  transform:
-    translate(-50%, 0);
-
+  transform: translateY(0);
 }
 
 
-.hotspot-close {
+#hotspotNumber {
+  font-size: 12px;
 
-  position: absolute;
+  letter-spacing: 3px;
 
-  top: 12px;
-  right: 12px;
-
-  width: 38px;
-  height: 38px;
-
-  min-height: 38px;
-
-  padding: 0;
-
-  border-radius: 50%;
-
-  background: rgba(255,255,255,0.1);
-
-  color: white;
-
-  font-size: 24px;
-
-}
-
-
-.hotspot-number {
-
-  color: #f4d35e;
-
-  font-family: monospace;
-
-  letter-spacing: 2px;
+  color: #cfae7a;
 
   margin-bottom: 8px;
-
 }
 
 
-.hotspot-info h2 {
+#hotspotTitle {
+  margin: 0 0 12px;
 
-  margin-bottom: 10px;
-
+  font-size: 25px;
 }
 
 
-.hotspot-info p {
+#hotspotDescription {
+  margin: 0;
 
-  color: #e8d5c1;
+  font-size: 15px;
 
   line-height: 1.5;
 
+  color: #ead9c8;
 }
 
 
-.hotspot-actions {
+/* =====================================================
+   HOTSPOT CLOSE
+===================================================== */
 
-  display: flex;
+.hotspot-close {
+  position: absolute;
 
-  gap: 8px;
+  top: 14px;
+  right: 14px;
 
-  margin-top: 18px;
+  width: 34px;
+  height: 34px;
 
-}
+  border: none;
 
+  border-radius: 50%;
 
-.hotspot-actions button {
+  background: #4a280d;
 
-  flex: 1;
+  color: #f7ead9;
 
-  min-height: 42px;
+  font-size: 18px;
 
-  padding: 8px 12px;
-
-  font-size: 13px;
-
+  cursor: pointer;
 }
 
 
@@ -2503,95 +1108,120 @@ p {
 
 @media (max-width: 600px) {
 
+  .back-button,
+  .accessibility-button,
   .ar-back,
   .ar-accessibility {
 
-    top: 20px;
-
-    width: 52px;
-    height: 52px;
+    width: 48px;
+    height: 48px;
 
   }
 
 
-  .ar-back {
+  #scanMessage,
+  #hotspotUI,
+  .artifact-found-title {
 
-    left: 20px;
-
-  }
-
-
-  .ar-accessibility {
-
-    right: 20px;
-
-  }
-
-
-  .scan-message {
-
-    top: 105px;
-
-    font-size: 16px;
+    font-size: 15px;
 
     padding: 12px 20px;
 
   }
 
 
+  #scanStatus {
+
+    bottom: 70px;
+
+    font-size: 10px;
+
+    letter-spacing: 3px;
+
+  }
+
+
   .artifact-info {
 
-    left: 36px;
+    left: 20px;
 
-    bottom: 55px;
+    bottom: 25px;
 
-    width: 300px;
+    width: calc(100% - 40px);
 
-    max-width: 75vw;
-
-    padding: 25px;
+    padding: 22px;
 
   }
 
 
   .artifact-info h2 {
 
-    font-size: 25px;
+    font-size: 23px;
 
   }
 
 
-  .artifact-info h3 {
+  .explore-button {
 
-    font-size: 16px;
+    left: 20px;
 
-    margin-bottom: 25px;
+    right: 20px;
 
-  }
+    bottom: 25px;
 
-
-  .artifact-info p {
-
-    font-size: 15px;
+    text-align: center;
 
   }
 
 
-  .found-pill {
+  #hotspotInfo {
 
-    top: 105px;
+    left: 20px;
 
-    font-size: 17px;
+    bottom: 25px;
 
-  }
-
-
-  .hotspot-hint {
-
-    top: 105px;
-
-    font-size: 16px;
+    width: calc(100% - 40px);
 
   }
 
+
+  .hotspot {
+
+    width: 38px;
+
+    height: 38px;
+
+  }
+
+}
+
+
+/* =====================================================
+   HIDE A-FRAME VR UI
+===================================================== */
+
+.a-enter-vr {
+  display: none !important;
+}
+
+.a-enter-ar {
+  display: none !important;
+}
+
+
+/* =====================================================
+   PREVENT A-FRAME UI FROM BLOCKING TOUCH
+===================================================== */
+
+.a-canvas {
+  touch-action: none;
+}
+
+
+/* =====================================================
+   UTILITY
+===================================================== */
+
+.hidden {
+  display: none !important;
 }
