@@ -1,5 +1,5 @@
 /* =====================================================
-   REKH WEBAR — REVISED SCRIPT
+   REKH WEBAR — SCRIPT
    One-hotspot stable version
 ===================================================== */
 
@@ -132,6 +132,26 @@ let arReady = false;
 let artifactIsFound = false;
 let hotspotMode = false;
 let selectedHotspot = null;
+
+let hotspotListenersAttached = false;
+let hotspotUIListenerAttached = false;
+
+
+/* =====================================================
+   HOTSPOT CONTENT
+===================================================== */
+
+const hotspot1Content = {
+
+  number: 1,
+
+  title: "THE CROWN & FACE",
+
+  subtitle: "How the vessel was held",
+
+  description:
+    "The calm face and elaborate crown give Vishnu a composed, authoritative presence. In sacred sculpture, such details communicate the deity's divine and royal character."
+};
 
 
 /* =====================================================
@@ -296,10 +316,6 @@ function setupARTarget() {
   }
 
 
-  /*
-     Prevent duplicate listeners.
-  */
-
   if (
     target.dataset.listenersAttached === "true"
   ) {
@@ -366,20 +382,7 @@ function setupARTarget() {
       );
 
 
-      /*
-         THIS IS IMPORTANT.
-
-         Artifact found = true.
-         This allows Explore to work.
-      */
-
       artifactIsFound = true;
-
-
-      /*
-         Always start from
-         normal artifact-found state.
-      */
 
       hotspotMode = false;
 
@@ -388,10 +391,6 @@ function setupARTarget() {
 
       showArtifactFound();
 
-
-      /*
-         Hide hotspot.
-      */
 
       hideHotspots();
 
@@ -415,11 +414,6 @@ function setupARTarget() {
       artifactIsFound = false;
 
 
-      /*
-         Don't destroy hotspot UI
-         while user is viewing it.
-      */
-
       if (!hotspotMode) {
 
         showScanning();
@@ -429,10 +423,6 @@ function setupARTarget() {
     }
   );
 
-
-  /*
-     Prepare hotspot click.
-  */
 
   setupHotspots();
 }
@@ -563,9 +553,6 @@ function showArtifactFound() {
    HOTSPOT SETUP
 ===================================================== */
 
-let hotspotListenersAttached = false;
-
-
 function setupHotspots() {
 
   if (hotspotListenersAttached) {
@@ -589,13 +576,6 @@ function setupHotspots() {
   }
 
 
-  /*
-     ONE HOTSPOT ONLY.
-
-     This is deliberately the only
-     hotspot we activate for now.
-  */
-
   const hotspotHandler = event => {
 
     event.preventDefault();
@@ -608,17 +588,15 @@ function setupHotspots() {
 
 
     selectHotspot(
-      1,
-      "THE CROWN & FACE",
-      "The calm face and elaborate crown give Vishnu a composed, authoritative presence. In sacred sculpture, such details communicate the deity's divine and royal character."
+      hotspot1Content.number,
+      hotspot1Content.title,
+      hotspot1Content.description
     );
 
   };
 
 
-  /*
-     Mouse / desktop
-  */
+  /* Desktop */
 
   hotspot1.addEventListener(
     "click",
@@ -626,9 +604,7 @@ function setupHotspots() {
   );
 
 
-  /*
-     Mobile touch
-  */
+  /* Mobile */
 
   hotspot1.addEventListener(
     "touchend",
@@ -644,6 +620,102 @@ function setupHotspots() {
 
   console.log(
     "ONE HOTSPOT LISTENER ATTACHED"
+  );
+}
+
+
+/* =====================================================
+   IMPORTANT NEW PART
+   TAP A HOTSPOT TO EXPLORE UI
+===================================================== */
+
+function setupHotspotUI() {
+
+  if (hotspotUIListenerAttached) {
+    return;
+  }
+
+
+  const hotspotUI =
+    document.getElementById(
+      "hotspotUI"
+    );
+
+
+  if (!hotspotUI) {
+
+    console.warn(
+      "hotspotUI not found."
+    );
+
+    return;
+  }
+
+
+  /*
+     Make the UI itself clickable.
+  */
+
+  hotspotUI.style.pointerEvents =
+    "auto";
+
+  hotspotUI.style.cursor =
+    "pointer";
+
+
+  /*
+     CLICK / TAP
+  */
+
+  hotspotUI.addEventListener(
+    "click",
+    event => {
+
+      event.preventDefault();
+
+      event.stopPropagation();
+
+
+      /*
+         Only work after the user has
+         entered hotspot mode.
+      */
+
+      if (!hotspotMode) {
+
+        console.log(
+          "HOTSPOT UI CLICK IGNORED — NOT IN HOTSPOT MODE"
+        );
+
+        return;
+      }
+
+
+      console.log(
+        "TAP A HOTSPOT TO EXPLORE CLICKED"
+      );
+
+
+      /*
+         Open the same card as the
+         actual yellow hotspot.
+      */
+
+      selectHotspot(
+        hotspot1Content.number,
+        hotspot1Content.title,
+        hotspot1Content.description
+      );
+
+    }
+  );
+
+
+  hotspotUIListenerAttached = true;
+
+
+  console.log(
+    "HOTSPOT UI LISTENER ATTACHED"
   );
 }
 
@@ -673,13 +745,11 @@ function enterHotspotMode() {
 
 
   /*
-     IMPORTANT:
+     Do not block this because of
+     artifactIsFound.
 
-     Do NOT block the button because
-     of a state variable.
-
-     The button is only visible after
-     the artifact was found anyway.
+     The button is only shown after
+     artifact detection anyway.
   */
 
   hotspotMode = true;
@@ -757,7 +827,7 @@ function enterHotspotMode() {
 
 
   /* =================================================
-     SHOW "TAP A HOTSPOT"
+     SHOW TAP HOTSPOT UI
   ================================================= */
 
   const hotspotUI =
@@ -770,6 +840,14 @@ function enterHotspotMode() {
     hotspotUI.classList.add(
       "visible"
     );
+
+    hotspotUI.style.display = "block";
+
+    hotspotUI.style.pointerEvents =
+      "auto";
+
+    hotspotUI.style.cursor =
+      "pointer";
 
   }
 
@@ -803,33 +881,39 @@ function showOneHotspot() {
 
 
   /*
-     First hide EVERYTHING.
+     Hide everything first.
   */
 
   if (hotspot1) {
+
     hotspot1.setAttribute(
       "visible",
       "false"
     );
+
   }
 
   if (hotspot2) {
+
     hotspot2.setAttribute(
       "visible",
       "false"
     );
+
   }
 
   if (hotspot3) {
+
     hotspot3.setAttribute(
       "visible",
       "false"
     );
+
   }
 
 
   /*
-     Then show ONLY hotspot 1.
+     Show ONLY hotspot 1.
   */
 
   if (hotspot1) {
@@ -844,11 +928,6 @@ function showOneHotspot() {
       "true"
     );
 
-
-    /*
-       Make sure it can receive
-       interaction.
-    */
 
     hotspot1.setAttribute(
       "class",
@@ -926,6 +1005,9 @@ function hideHotspots() {
       "visible"
     );
 
+    hotspotUI.style.pointerEvents =
+      "none";
+
   }
 }
 
@@ -949,9 +1031,9 @@ function selectHotspot(
   selectedHotspot = number;
 
 
-  /*
-     Change hotspot image.
-  */
+  /* =================================================
+     CHANGE HOTSPOT TO SELECTED
+  ================================================= */
 
   const selected =
     document.getElementById(
@@ -969,9 +1051,9 @@ function selectHotspot(
   }
 
 
-  /*
-     Title
-  */
+  /* =================================================
+     TITLE
+  ================================================= */
 
   const titleElement =
     document.getElementById(
@@ -987,9 +1069,9 @@ function selectHotspot(
   }
 
 
-  /*
-     Subtitle
-  */
+  /* =================================================
+     SUBTITLE
+  ================================================= */
 
   const subtitleElement =
     document.getElementById(
@@ -1000,15 +1082,14 @@ function selectHotspot(
   if (subtitleElement) {
 
     subtitleElement.textContent =
-      "How the vessel was held";
+      hotspot1Content.subtitle;
 
   }
 
 
-  /*
-     Old description element
-     is still supported.
-  */
+  /* =================================================
+     DESCRIPTION
+  ================================================= */
 
   const descriptionElement =
     document.getElementById(
@@ -1024,9 +1105,9 @@ function selectHotspot(
   }
 
 
-  /*
-     Show story card.
-  */
+  /* =================================================
+     SHOW STORY CARD
+  ================================================= */
 
   const hotspotInfo =
     document.getElementById(
@@ -1043,9 +1124,9 @@ function selectHotspot(
   }
 
 
-  /*
-     Hide instruction.
-  */
+  /* =================================================
+     HIDE TAP HOTSPOT INSTRUCTION
+  ================================================= */
 
   const hotspotUI =
     document.getElementById(
@@ -1059,12 +1140,15 @@ function selectHotspot(
       "visible"
     );
 
+    hotspotUI.style.pointerEvents =
+      "none";
+
   }
 
 
-  /*
-     Prepare audio.
-  */
+  /* =================================================
+     PREPARE AUDIO
+  ================================================= */
 
   setupStoryAudio();
 
@@ -1110,6 +1194,7 @@ function closeHotspot() {
         "hotspot1"
       );
 
+
     if (hotspot1) {
 
       hotspot1.setAttribute(
@@ -1130,20 +1215,30 @@ function closeHotspot() {
         "hotspotUI"
       );
 
+
     if (hotspotUI) {
 
       hotspotUI.classList.add(
         "visible"
       );
 
+      hotspotUI.style.display =
+        "block";
+
+      hotspotUI.style.pointerEvents =
+        "auto";
+
+      hotspotUI.style.cursor =
+        "pointer";
+
     }
 
   }
 
 
-  /*
-     Stop audio.
-  */
+  /* =================================================
+     STOP AUDIO
+  ================================================= */
 
   const audio =
     document.getElementById(
@@ -1195,9 +1290,9 @@ function setupStoryAudio() {
   storyAudioReady = true;
 
 
-  /*
-     Metadata loaded
-  */
+  /* =================================================
+     METADATA LOADED
+  ================================================= */
 
   audio.addEventListener(
     "loadedmetadata",
@@ -1209,9 +1304,9 @@ function setupStoryAudio() {
   );
 
 
-  /*
-     Audio playing
-  */
+  /* =================================================
+     AUDIO PLAYING
+  ================================================= */
 
   audio.addEventListener(
     "play",
@@ -1222,17 +1317,21 @@ function setupStoryAudio() {
           "playPauseButton"
         );
 
+
       if (button) {
-        button.textContent = "Ⅱ";
+
+        button.textContent =
+          "Ⅱ";
+
       }
 
     }
   );
 
 
-  /*
-     Audio paused
-  */
+  /* =================================================
+     AUDIO PAUSED
+  ================================================= */
 
   audio.addEventListener(
     "pause",
@@ -1243,17 +1342,21 @@ function setupStoryAudio() {
           "playPauseButton"
         );
 
+
       if (button) {
-        button.textContent = "▶";
+
+        button.textContent =
+          "▶";
+
       }
 
     }
   );
 
 
-  /*
-     Audio finished
-  */
+  /* =================================================
+     AUDIO FINISHED
+  ================================================= */
 
   audio.addEventListener(
     "ended",
@@ -1264,17 +1367,21 @@ function setupStoryAudio() {
           "playPauseButton"
         );
 
+
       if (button) {
-        button.textContent = "▶";
+
+        button.textContent =
+          "▶";
+
       }
 
     }
   );
 
 
-  /*
-     Update progress.
-  */
+  /* =================================================
+     UPDATE PROGRESS
+  ================================================= */
 
   audio.addEventListener(
     "timeupdate",
@@ -1282,9 +1389,9 @@ function setupStoryAudio() {
   );
 
 
-  /*
-     Progress slider.
-  */
+  /* =================================================
+     PROGRESS SLIDER
+  ================================================= */
 
   const progress =
     document.getElementById(
@@ -1302,8 +1409,11 @@ function setupStoryAudio() {
           return;
         }
 
+
         audio.currentTime =
-          (progress.value / 100) *
+          (
+            progress.value / 100
+          ) *
           audio.duration;
 
       }
@@ -1344,7 +1454,9 @@ function updateAudioDuration() {
 
 
   duration.textContent =
-    formatTime(audio.duration);
+    formatTime(
+      audio.duration
+    );
 }
 
 
@@ -1378,7 +1490,9 @@ function updateAudioProgress() {
   if (current) {
 
     current.textContent =
-      formatTime(audio.currentTime);
+      formatTime(
+        audio.currentTime
+      );
 
   }
 
@@ -1415,10 +1529,14 @@ function formatTime(seconds) {
 
 
   const minutes =
-    Math.floor(seconds / 60);
+    Math.floor(
+      seconds / 60
+    );
 
   const secs =
-    Math.floor(seconds % 60);
+    Math.floor(
+      seconds % 60
+    );
 
 
   return (
@@ -1594,11 +1712,24 @@ document.addEventListener(
     );
 
 
+    /*
+       Prepare actual AR hotspot.
+    */
+
     setupHotspots();
 
 
     /*
-       Make sure audio is prepared.
+       IMPORTANT:
+       Prepare the "Tap a hotspot to explore"
+       UI as a clickable element.
+    */
+
+    setupHotspotUI();
+
+
+    /*
+       Prepare audio.
     */
 
     setupStoryAudio();
