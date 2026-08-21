@@ -1857,3 +1857,741 @@ p {
   }
 
 }
+/* =====================================================
+   AR SCREEN
+===================================================== */
+
+#arScreen {
+  position: fixed;
+  inset: 0;
+
+  width: 100%;
+  height: 100dvh;
+
+  padding: 0 !important;
+
+  display: none;
+
+  overflow: hidden;
+
+  background: #000;
+}
+
+#arScreen.active {
+  display: block;
+}
+
+
+/* =====================================================
+   MINDAR / A-FRAME
+===================================================== */
+
+#mindarScene {
+  position: absolute !important;
+
+  inset: 0 !important;
+
+  width: 100% !important;
+  height: 100% !important;
+
+  z-index: 1;
+}
+
+
+#mindarScene canvas {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+
+/* =====================================================
+   AR BACK BUTTON
+===================================================== */
+
+.ar-back {
+
+  position: fixed;
+
+  top: 24px;
+  left: 24px;
+
+  z-index: 50;
+
+  width: 52px;
+  height: 52px;
+
+  min-height: 52px;
+
+  padding: 0;
+
+  border-radius: 50%;
+
+  background: rgba(55, 30, 8, 0.92);
+
+  color: #fff0dc;
+
+  font-size: 28px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+}
+
+
+/* =====================================================
+   AR ACCESSIBILITY
+===================================================== */
+
+.ar-accessibility {
+
+  position: fixed;
+
+  top: 24px;
+  right: 24px;
+
+  z-index: 50;
+
+  width: 52px;
+  height: 52px;
+
+  min-height: 52px;
+
+  padding: 10px;
+
+  border-radius: 50%;
+
+  background: rgba(55, 30, 8, 0.92);
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+}
+
+
+.ar-accessibility img {
+
+  width: 28px;
+  height: 28px;
+
+  object-fit: contain;
+
+}
+
+
+/* =====================================================
+   SCAN MESSAGE
+===================================================== */
+
+.scan-message {
+
+  position: fixed;
+
+  z-index: 30;
+
+  top: 105px;
+
+  left: 50%;
+
+  transform: translateX(-50%);
+
+  padding: 13px 25px;
+
+  border-radius: 30px;
+
+  background: #3b1e00;
+
+  color: #f6dfc4;
+
+  font-size: 18px;
+
+  white-space: nowrap;
+
+  pointer-events: none;
+
+}
+
+
+/* =====================================================
+   SCAN FRAME
+===================================================== */
+
+.scan-frame {
+
+  position: fixed;
+
+  z-index: 20;
+
+  top: 50%;
+
+  left: 50%;
+
+  transform: translate(-50%, -50%);
+
+  width: min(330px, 65vw);
+
+  height: min(430px, 65vh);
+
+  pointer-events: none;
+
+}
+
+
+.corner {
+
+  position: absolute;
+
+  width: 58px;
+  height: 58px;
+
+  border-color: #3b1e00;
+
+  border-style: solid;
+
+}
+
+
+.corner.top-left {
+
+  top: 0;
+  left: 0;
+
+  border-width: 7px 0 0 7px;
+
+  border-radius: 18px 0 0 0;
+
+}
+
+
+.corner.top-right {
+
+  top: 0;
+  right: 0;
+
+  border-width: 7px 7px 0 0;
+
+  border-radius: 0 18px 0 0;
+
+}
+
+
+.corner.bottom-left {
+
+  bottom: 0;
+  left: 0;
+
+  border-width: 0 0 7px 7px;
+
+  border-radius: 0 0 0 18px;
+
+}
+
+
+.corner.bottom-right {
+
+  bottom: 0;
+  right: 0;
+
+  border-width: 0 7px 7px 0;
+
+  border-radius: 0 0 18px 0;
+
+}
+
+
+/* =====================================================
+   SEARCH ICON
+===================================================== */
+
+.search-icon {
+
+  position: fixed;
+
+  z-index: 30;
+
+  top: 50%;
+  left: 50%;
+
+  transform: translate(-50%, -50%);
+
+  width: 68px;
+  height: 68px;
+
+  border-radius: 50%;
+
+  background: #5a3500;
+
+  color: #f4d35e;
+
+  font-size: 48px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  pointer-events: none;
+
+}
+
+
+/* =====================================================
+   SCAN STATUS
+===================================================== */
+
+.scan-status {
+
+  position: fixed;
+
+  z-index: 30;
+
+  bottom: 90px;
+
+  left: 50%;
+
+  transform: translateX(-50%);
+
+  color: #3b1e00;
+
+  font-family: monospace;
+
+  font-size: 12px;
+
+  letter-spacing: 4px;
+
+  pointer-events: none;
+
+}
+
+
+/* =====================================================
+   ARTIFACT FOUND
+===================================================== */
+
+.artifact-found {
+
+  position: fixed;
+
+  inset: 0;
+
+  z-index: 40;
+
+  pointer-events: none;
+
+  opacity: 0;
+
+  visibility: hidden;
+
+  transition: opacity 0.25s ease;
+
+}
+
+
+.artifact-found.visible {
+
+  opacity: 1;
+
+  visibility: visible;
+
+}
+
+
+/* =====================================================
+   FOUND PILL
+===================================================== */
+
+.found-pill {
+
+  position: absolute;
+
+  top: 105px;
+
+  left: 50%;
+
+  transform: translateX(-50%);
+
+  padding: 14px 28px;
+
+  border-radius: 30px;
+
+  background: #210000;
+
+  color: #f7e3ce;
+
+  font-size: 18px;
+
+  white-space: nowrap;
+
+}
+
+
+/* =====================================================
+   ARTIFACT INFO CARD
+===================================================== */
+
+.artifact-info {
+
+  position: absolute;
+
+  left: 36px;
+
+  bottom: 55px;
+
+  width: min(300px, 72vw);
+
+  padding: 25px 28px;
+
+  border-radius: 28px;
+
+  background: #210000;
+
+  color: #fff2e5;
+
+}
+
+
+.artifact-info h2 {
+
+  margin: 0 0 4px;
+
+  font-size: 26px;
+
+}
+
+
+.artifact-info h3 {
+
+  margin: 0 0 26px;
+
+  font-size: 17px;
+
+  font-weight: 400;
+
+}
+
+
+.artifact-info p {
+
+  margin: 0;
+
+  font-size: 16px;
+
+  line-height: 1.5;
+
+}
+
+
+/* =====================================================
+   INVISIBLE TAP LAYER
+===================================================== */
+
+.artifact-tap-layer {
+
+  position: fixed;
+
+  inset: 0;
+
+  z-index: 35;
+
+  display: none;
+
+  background: transparent;
+
+  cursor: pointer;
+
+}
+
+
+/* =====================================================
+   HOTSPOT UI
+===================================================== */
+
+.hotspot-ui {
+
+  position: fixed;
+
+  inset: 0;
+
+  z-index: 25;
+
+  pointer-events: none;
+
+  opacity: 0;
+
+  visibility: hidden;
+
+}
+
+
+.hotspot-ui.visible {
+
+  opacity: 1;
+
+  visibility: visible;
+
+}
+
+
+.hotspot-hint {
+
+  position: absolute;
+
+  top: 105px;
+
+  left: 50%;
+
+  transform: translateX(-50%);
+
+  padding: 13px 24px;
+
+  border-radius: 30px;
+
+  background: #3b1e00;
+
+  color: #f6dfc4;
+
+  font-size: 17px;
+
+  white-space: nowrap;
+
+}
+
+
+/* =====================================================
+   HOTSPOTS
+===================================================== */
+
+.hotspot {
+
+  cursor: pointer;
+
+}
+
+
+/* =====================================================
+   HOTSPOT INFORMATION
+===================================================== */
+
+.hotspot-info {
+
+  position: fixed;
+
+  z-index: 60;
+
+  left: 50%;
+
+  bottom: 30px;
+
+  transform:
+    translate(-50%, 20px);
+
+  width: min(420px, 86vw);
+
+  padding: 25px;
+
+  border-radius: 25px;
+
+  background: #210000;
+
+  color: #fff2e5;
+
+  opacity: 0;
+
+  visibility: hidden;
+
+  transition:
+    opacity 0.25s ease,
+    transform 0.25s ease;
+
+}
+
+
+.hotspot-info.visible {
+
+  opacity: 1;
+
+  visibility: visible;
+
+  transform:
+    translate(-50%, 0);
+
+}
+
+
+.hotspot-close {
+
+  position: absolute;
+
+  top: 12px;
+  right: 12px;
+
+  width: 38px;
+  height: 38px;
+
+  min-height: 38px;
+
+  padding: 0;
+
+  border-radius: 50%;
+
+  background: rgba(255,255,255,0.1);
+
+  color: white;
+
+  font-size: 24px;
+
+}
+
+
+.hotspot-number {
+
+  color: #f4d35e;
+
+  font-family: monospace;
+
+  letter-spacing: 2px;
+
+  margin-bottom: 8px;
+
+}
+
+
+.hotspot-info h2 {
+
+  margin-bottom: 10px;
+
+}
+
+
+.hotspot-info p {
+
+  color: #e8d5c1;
+
+  line-height: 1.5;
+
+}
+
+
+.hotspot-actions {
+
+  display: flex;
+
+  gap: 8px;
+
+  margin-top: 18px;
+
+}
+
+
+.hotspot-actions button {
+
+  flex: 1;
+
+  min-height: 42px;
+
+  padding: 8px 12px;
+
+  font-size: 13px;
+
+}
+
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+@media (max-width: 600px) {
+
+  .ar-back,
+  .ar-accessibility {
+
+    top: 20px;
+
+    width: 52px;
+    height: 52px;
+
+  }
+
+
+  .ar-back {
+
+    left: 20px;
+
+  }
+
+
+  .ar-accessibility {
+
+    right: 20px;
+
+  }
+
+
+  .scan-message {
+
+    top: 105px;
+
+    font-size: 16px;
+
+    padding: 12px 20px;
+
+  }
+
+
+  .artifact-info {
+
+    left: 36px;
+
+    bottom: 55px;
+
+    width: 300px;
+
+    max-width: 75vw;
+
+    padding: 25px;
+
+  }
+
+
+  .artifact-info h2 {
+
+    font-size: 25px;
+
+  }
+
+
+  .artifact-info h3 {
+
+    font-size: 16px;
+
+    margin-bottom: 25px;
+
+  }
+
+
+  .artifact-info p {
+
+    font-size: 15px;
+
+  }
+
+
+  .found-pill {
+
+    top: 105px;
+
+    font-size: 17px;
+
+  }
+
+
+  .hotspot-hint {
+
+    top: 105px;
+
+    font-size: 16px;
+
+  }
+
+}
