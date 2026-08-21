@@ -836,3 +836,202 @@ function exitAR() {
   showScreen("setup");
 
 }
+/* =====================================================
+   HOTSPOTS
+===================================================== */
+
+const hotspotData = {
+
+  hotspot1: {
+
+    number: "01",
+
+    title: "Vishnu",
+
+    description:
+      "The central figure represents Vishnu, the preserver in the Hindu trinity. His composed posture and elaborate adornments emphasize his divine presence."
+
+  },
+
+
+  hotspot2: {
+
+    number: "02",
+
+    title: "Divine Attributes",
+
+    description:
+      "Vishnu is traditionally depicted with symbolic attributes that represent his divine powers and role as the preserver."
+
+  },
+
+
+  hotspot3: {
+
+    number: "03",
+
+    title: "Ornamental Frame",
+
+    description:
+      "The intricate carving surrounding Vishnu adds depth to the sculpture and frames the central divine figure."
+
+  }
+
+};
+
+
+/* =====================================================
+   OPEN HOTSPOT
+===================================================== */
+
+function openHotspot(id) {
+
+  const data =
+    hotspotData[id];
+
+
+  if (!data) {
+
+    return;
+
+  }
+
+
+  const card =
+    document.getElementById(
+      "hotspotInfo"
+    );
+
+
+  const number =
+    document.getElementById(
+      "hotspotNumber"
+    );
+
+
+  const title =
+    document.getElementById(
+      "hotspotTitle"
+    );
+
+
+  const description =
+    document.getElementById(
+      "hotspotDescription"
+    );
+
+
+  if (number) {
+
+    number.textContent =
+      data.number;
+
+  }
+
+
+  if (title) {
+
+    title.textContent =
+      data.title;
+
+  }
+
+
+  if (description) {
+
+    description.textContent =
+      data.description;
+
+  }
+
+
+  if (card) {
+
+    card.classList.add(
+      "visible"
+    );
+
+  }
+
+}
+
+
+/* =====================================================
+   CLOSE HOTSPOT
+===================================================== */
+
+function closeHotspot() {
+
+  const card =
+    document.getElementById(
+      "hotspotInfo"
+    );
+
+
+  if (card) {
+
+    card.classList.remove(
+      "visible"
+    );
+
+  }
+
+}
+
+
+/* =====================================================
+   CONNECT HOTSPOTS TO MINDAR
+===================================================== */
+
+document.addEventListener(
+  "DOMContentLoaded",
+  () => {
+
+    const hotspots = [
+
+      "hotspot1",
+
+      "hotspot2",
+
+      "hotspot3"
+
+    ];
+
+
+    hotspots.forEach(id => {
+
+      const hotspot =
+        document.getElementById(id);
+
+
+      if (!hotspot) {
+
+        console.error(
+          "Hotspot not found:",
+          id
+        );
+
+        return;
+
+      }
+
+
+      hotspot.addEventListener(
+        "click",
+        () => {
+
+          console.log(
+            "Hotspot clicked:",
+            id
+          );
+
+
+          openHotspot(id);
+
+        }
+      );
+
+    });
+
+  }
+);
