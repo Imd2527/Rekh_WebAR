@@ -488,7 +488,7 @@ function exploreArtifact() {
      Show ONE hotspot.
   */
 
-  showHotspots();
+  showOneHotspot();
 
 }
 
@@ -497,71 +497,297 @@ function exploreArtifact() {
    CREATE ONE HOTSPOT
 ===================================================== */
 
-function showHotspots() {
-  console.log("Showing 3D model and first hotspot...");
-  
-  // Show the 3D model
-  const artifactContainer = document.getElementById('artifact3DContainer');
-  if (artifactContainer) {
-    artifactContainer.setAttribute('visible', 'true');
+function showOneHotspot() {
+
+  const target =
+    document.getElementById("vishnuTarget");
+
+  if (!target) {
+
+    console.error(
+      "Cannot create hotspot: vishnuTarget not found."
+    );
+
+    return;
+
   }
 
-  // As requested, just show ONE clickable circle
-  const hotspot = document.getElementById('hotspot1');
-  
-  if (hotspot) {
-    hotspot.setAttribute('visible', 'true');
-    hotspot.setAttribute('opacity', '1');
-    
-    if (!hotspot.dataset.listenersAttached) {
-      hotspot.dataset.listenersAttached = "true";
-      
-      hotspot.addEventListener("click", (event) => {
+
+  /*
+     If hotspot already exists,
+     simply show it.
+  */
+
+  let hotspot =
+    document.getElementById("vishnuHotspot");
+
+
+  if (!hotspot) {
+
+    console.log(
+      "Creating Vishnu hotspot..."
+    );
+
+
+    hotspot =
+      document.createElement("a-image");
+
+
+    hotspot.id =
+      "vishnuHotspot";
+
+
+    /*
+       IMPORTANT:
+       This path matches your GitHub folder.
+
+       assets/images/Hotspot.png
+    */
+
+    hotspot.setAttribute(
+      "src",
+      "assets/images/Hotspot.png"
+    );
+
+
+    /*
+       Position:
+       Right-hand area of Vishnu.
+
+       Because this image is a child of
+       vishnuTarget, it stays attached to
+       the tracked artifact.
+    */
+
+    hotspot.setAttribute(
+      "position",
+      "0.18 0.05 0.08"
+    );
+
+
+    /*
+       Size of hotspot.
+    */
+
+    hotspot.setAttribute(
+      "width",
+      "0.12"
+    );
+
+    hotspot.setAttribute(
+      "height",
+      "0.12"
+    );
+
+
+    /*
+       Make it render clearly.
+    */
+
+    hotspot.setAttribute(
+      "material",
+      "transparent: true; opacity: 1; shader: flat; side: double;"
+    );
+
+
+    /*
+       Make it clickable.
+    */
+
+    hotspot.setAttribute(
+      "class",
+      "hotspot-button"
+    );
+
+
+    /*
+       Cursor / interaction.
+    */
+
+    hotspot.setAttribute(
+      "geometry",
+      "primitive: plane"
+    );
+
+
+    /*
+       Add hotspot to the actual
+       MindAR target.
+    */
+
+    target.appendChild(
+      hotspot
+    );
+
+
+    /*
+       Wait until A-Frame has processed
+       the entity before adding click.
+    */
+
+    hotspot.addEventListener(
+      "loaded",
+      () => {
+
+        console.log(
+          "HOTSPOT LOADED"
+        );
+
+      }
+    );
+
+
+    /*
+       CLICK
+    */
+
+    hotspot.addEventListener(
+      "click",
+      (event) => {
+
         event.stopPropagation();
-        console.log("HOTSPOT CLICKED");
-        openHotspotUI();
-      });
-      
-      hotspot.addEventListener("touchstart", (event) => {
+
+        console.log(
+          "HOTSPOT CLICKED"
+        );
+
+        openHandleUI();
+
+      }
+    );
+
+
+    /*
+       TOUCH
+    */
+
+    hotspot.addEventListener(
+      "touchstart",
+      (event) => {
+
         event.preventDefault();
         event.stopPropagation();
-        console.log("HOTSPOT TOUCHED");
-        openHotspotUI();
-      }, { passive: false });
-    }
+
+        console.log(
+          "HOTSPOT TOUCHED"
+        );
+
+        openHandleUI();
+
+      },
+      {
+        passive: false
+      }
+    );
+
   }
 
+
+  /*
+     Make hotspot visible.
+  */
+
+  hotspot.setAttribute(
+    "visible",
+    "true"
+  );
+
+
+  hotspot.setAttribute(
+    "opacity",
+    "1"
+  );
+
+
   hotspotCreated = true;
-  console.log("ONE HOTSPOT IS NOW VISIBLE.");
+
+
+  console.log(
+    "ONE HOTSPOT IS NOW VISIBLE."
+  );
+
 }
+
 
 /* =====================================================
    HIDE HOTSPOTS
 ===================================================== */
+
 function hideHotspots() {
-  const hotspots = document.querySelectorAll('.hotspot');
-  hotspots.forEach(hotspot => {
-    hotspot.setAttribute('visible', 'false');
-  });
+
+  const hotspot =
+    document.getElementById(
+      "vishnuHotspot"
+    );
+
+  if (hotspot) {
+
+    hotspot.setAttribute(
+      "visible",
+      "false"
+    );
+
+  }
+
 }
+
 
 /* =====================================================
    OPEN HANDLE UI
 ===================================================== */
 
-function openHotspotUI() {
-  console.log("Opening HOTSPOT UI");
+function openHandleUI() {
 
-  const hotspotInfo = document.getElementById("hotspotInfo");
-  if (hotspotInfo) {
-    hotspotInfo.classList.add("visible");
-    hotspotInfo.style.display = "block";
+  console.log(
+    "Opening THE HANDLE UI"
+  );
+
+
+  /*
+     First try to use an existing UI
+     from your HTML.
+
+     This means your existing design
+     is not replaced.
+  */
+
+  const handleUI =
+    document.getElementById(
+      "handleUI"
+    );
+
+
+  if (handleUI) {
+
+    handleUI.classList.add(
+      "visible"
+    );
+
+    handleUI.style.display =
+      "block";
+
+    return;
+
   }
+
+
+  /*
+     If handleUI doesn't exist in the HTML,
+     create a simple fallback card.
+
+     This prevents the hotspot from appearing
+     to do "nothing".
+  */
+
+  createHandleFallback();
+
 }
+
 
 /* =====================================================
    FALLBACK HANDLE UI
 ===================================================== */
+
 function createHandleFallback() {
 
   /*
@@ -866,13 +1092,39 @@ function createHandleFallback() {
    CLOSE HANDLE UI
 ===================================================== */
 
-function closeHotspot() {
-  const hotspotInfo = document.getElementById("hotspotInfo");
-  if (hotspotInfo) {
-    hotspotInfo.classList.remove("visible");
-    hotspotInfo.style.display = "none";
+function closeHandleUI() {
+
+  const handleUI =
+    document.getElementById(
+      "handleUI"
+    );
+
+  if (handleUI) {
+
+    handleUI.classList.remove(
+      "visible"
+    );
+
+    handleUI.style.display =
+      "none";
+
   }
+
+
+  const fallback =
+    document.getElementById(
+      "handleFallback"
+    );
+
+  if (fallback) {
+
+    fallback.style.display =
+      "none";
+
+  }
+
 }
+
 
 /* =====================================================
    ENABLE MOBILE AR CLICKING
@@ -970,44 +1222,16 @@ document.addEventListener(
 */
 
 window.showHotspot =
-  showHotspots;
+  showOneHotspot;
 
 window.hideHotspot =
   hideHotspots;
 
-window.openHotspotUI =
-  openHotspotUI;
+window.openHandle =
+  openHandleUI;
 
-window.closeHotspotUI =
-  closeHotspot;
+window.closeHandle =
+  closeHandleUI;
 
 window.exploreArtifact =
   exploreArtifact;
-
-/* =====================================================
-   EXIT AR
-===================================================== */
-function exitAR() {
-  console.log("EXIT AR CLICKED");
-  
-  const scene = document.getElementById("mindarScene");
-  if (scene && scene.systems["mindar-image-system"]) {
-    scene.systems["mindar-image-system"].stop();
-  }
-  
-  arStarted = false;
-  showScreen("setup");
-}
-window.exitAR = exitAR;
-
-document.addEventListener('DOMContentLoaded', () => {
-  const artifact3D = document.getElementById('artifact3D');
-  if (artifact3D) {
-    artifact3D.addEventListener('model-loaded', () => {
-      console.log('3D MODEL LOADED SUCCESSFULLY!');
-    });
-    artifact3D.addEventListener('model-error', (err) => {
-      console.error('ERROR LOADING 3D MODEL:', err);
-    });
-  }
-});

@@ -1,0 +1,14 @@
+{
+  "name": "rekh-webar",
+  "version": "1.0.0",
+  "description": "Rekh - WebAR",
+  "type": "module",
+  "scripts": {
+    "dev": "node server.js",
+    "build": "echo \"No build step required\"",
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.21.0"
+  }
+}
