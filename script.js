@@ -1,4 +1,10 @@
 /* =====================================================
+   REKH WEBAR — REVISED SCRIPT
+   One-hotspot stable version
+===================================================== */
+
+
+/* =====================================================
    SCREEN NAVIGATION
 ===================================================== */
 
@@ -17,7 +23,7 @@ function showScreen(screenId) {
 
 
 /* =====================================================
-   LOADING
+   LOADING SCREEN
 ===================================================== */
 
 setTimeout(() => {
@@ -47,17 +53,15 @@ function showStory(index) {
     document.getElementById("storyFrame");
 
   if (image) {
-    image.src = storyFrames[index];
+    image.src = storyFrames[currentStory];
   }
 
   document.querySelectorAll(".dot").forEach(
     (dot, i) => {
-
       dot.classList.toggle(
         "active",
-        i === index
+        i === currentStory
       );
-
     }
   );
 }
@@ -70,10 +74,14 @@ function showStory(index) {
 function openAccessibility() {
 
   const overlay =
-    document.getElementById("accessibilityOverlay");
+    document.getElementById(
+      "accessibilityOverlay"
+    );
 
   const continueButton =
-    document.getElementById("setupContinue");
+    document.getElementById(
+      "setupContinue"
+    );
 
   if (overlay) {
     overlay.classList.add("open");
@@ -88,10 +96,14 @@ function openAccessibility() {
 function closeAccessibility() {
 
   const overlay =
-    document.getElementById("accessibilityOverlay");
+    document.getElementById(
+      "accessibilityOverlay"
+    );
 
   const continueButton =
-    document.getElementById("setupContinue");
+    document.getElementById(
+      "setupContinue"
+    );
 
   if (overlay) {
     overlay.classList.remove("open");
@@ -103,15 +115,23 @@ function closeAccessibility() {
 }
 
 
-/* =====================================================
-   ACCESSIBILITY TOGGLES
-===================================================== */
-
 function toggleSetting(button) {
 
-  button.classList.toggle("active");
-
+  if (button) {
+    button.classList.toggle("active");
+  }
 }
+
+
+/* =====================================================
+   AR STATE
+===================================================== */
+
+let arStarted = false;
+let arReady = false;
+let artifactIsFound = false;
+let hotspotMode = false;
+let selectedHotspot = null;
 
 
 /* =====================================================
@@ -120,133 +140,180 @@ function toggleSetting(button) {
 
 function continueSetup() {
 
-  console.log("CONTINUE → AR");
+  console.log(
+    "CONTINUE CLICKED — STARTING AR"
+  );
 
   showScreen("arScreen");
 
-  /*
-     Give the browser a moment to make
-     the AR screen visible.
-  */
-
-  setTimeout(() => {
-
-    startAR();
-
-  }, 100);
-
+  startAR();
 }
 
 
 /* =====================================================
-   AR VARIABLES
-===================================================== */
-
-let arStarted = false;
-let hotspotCreated = false;
-
-
-/* =====================================================
-   START AR
+   START MINDAR
 ===================================================== */
 
 function startAR() {
 
   const scene =
-    document.getElementById("mindarScene");
+    document.getElementById(
+      "mindarScene"
+    );
 
   if (!scene) {
 
     console.error(
-      "ERROR: mindarScene not found."
+      "MindAR scene not found."
     );
 
     return;
-
   }
 
 
-  /*
-     We DO NOT force-start MindAR here if it is
-     already configured with autoStart:true.
+  if (arStarted) {
 
-     This prevents the camera from being started
-     twice.
-  */
+    console.log(
+      "MindAR already started."
+    );
 
-  const setupAR = () => {
+    return;
+  }
 
-    console.log("A-Frame scene loaded.");
 
-    const mindarSystem =
-      scene.systems["mindar-image-system"];
-
-    if (!mindarSystem) {
-
-      console.error(
-        "ERROR: MindAR image system not found."
-      );
-
-      return;
-
-    }
-
-    console.log("MindAR system found.");
-
-    /*
-       If the HTML has autoStart disabled,
-       start MindAR manually.
-    */
-
-    const mindarAttribute =
-      scene.getAttribute("mindar-image");
-
-    if (
-      mindarAttribute &&
-      mindarAttribute.autoStart === false
-    ) {
-
-      try {
-
-        mindarSystem.start();
-
-        console.log(
-          "MindAR manually started."
-        );
-
-      } catch (error) {
-
-        console.error(
-          "Could not start MindAR:",
-          error
-        );
-
-      }
-
-    }
-
-    arStarted = true;
-
-  };
+  setupARTarget();
 
 
   if (scene.hasLoaded) {
 
-    setupAR();
+    launchMindAR();
 
   } else {
 
     scene.addEventListener(
       "loaded",
-      setupAR,
-      { once: true }
+      launchMindAR,
+      {
+        once: true
+      }
+    );
+  }
+}
+
+
+/* =====================================================
+   LAUNCH MINDAR
+===================================================== */
+
+function launchMindAR() {
+
+  const scene =
+    document.getElementById(
+      "mindarScene"
+    );
+
+  if (!scene) {
+    return;
+  }
+
+
+  const mindar =
+    scene.systems[
+      "mindar-image-system"
+    ];
+
+
+  if (!mindar) {
+
+    console.error(
+      "MindAR image system not found."
+    );
+
+    return;
+  }
+
+
+  if (arStarted) {
+    return;
+  }
+
+
+  console.log(
+    "MindAR system found."
+  );
+
+
+  try {
+
+    mindar.start();
+
+    arStarted = true;
+
+    console.log(
+      "MindAR camera starting..."
     );
 
   }
 
+  catch (error) {
+
+    console.error(
+      "Could not start MindAR:",
+      error
+    );
+
+    alert(
+      "Camera could not start. Please allow camera access and reload the page."
+    );
+  }
+}
+
+
+/* =====================================================
+   AR TARGET SETUP
+===================================================== */
+
+function setupARTarget() {
+
+  const scene =
+    document.getElementById(
+      "mindarScene"
+    );
+
+  const target =
+    document.getElementById(
+      "vishnuTarget"
+    );
+
+
+  if (!scene || !target) {
+
+    console.error(
+      "AR scene or Vishnu target not found."
+    );
+
+    return;
+  }
+
+
+  /*
+     Prevent duplicate listeners.
+  */
+
+  if (
+    target.dataset.listenersAttached === "true"
+  ) {
+
+    return;
+  }
+
+
+  target.dataset.listenersAttached =
+    "true";
+
 
   /* =================================================
-     AR READY
+     CAMERA READY
   ================================================= */
 
   scene.addEventListener(
@@ -254,113 +321,120 @@ function startAR() {
     () => {
 
       console.log(
-        "CAMERA READY"
+        "MindAR READY — CAMERA IS RUNNING"
       );
+
+      arReady = true;
 
       showScanning();
 
-    },
-    { once: true }
+    }
   );
 
 
   /* =================================================
-     AR ERROR
+     CAMERA ERROR
   ================================================= */
 
   scene.addEventListener(
     "arError",
-    (event) => {
+    event => {
 
       console.error(
-        "MINDAR ERROR:",
+        "MindAR ERROR:",
         event
       );
 
-    },
-    { once: true }
+      alert(
+        "Camera could not start. Please allow camera access and reload the page."
+      );
+
+    }
   );
 
 
   /* =================================================
-     VISHNU TARGET
+     ARTIFACT FOUND
   ================================================= */
 
-  const target =
-    document.getElementById("vishnuTarget");
+  target.addEventListener(
+    "targetFound",
+    () => {
 
-  if (!target) {
-
-    console.error(
-      "ERROR: vishnuTarget not found."
-    );
-
-    return;
-
-  }
+      console.log(
+        "VISHNU ARTIFACT FOUND"
+      );
 
 
-  /*
-     Prevent duplicate listeners if startAR()
-     somehow gets called again.
-  */
+      /*
+         THIS IS IMPORTANT.
 
-  if (
-    !target.dataset.rekhListenersAdded
-  ) {
+         Artifact found = true.
+         This allows Explore to work.
+      */
 
-    target.dataset.rekhListenersAdded =
-      "true";
+      artifactIsFound = true;
 
 
-    /* =============================================
-       VISHNU FOUND
-    ============================================= */
+      /*
+         Always start from
+         normal artifact-found state.
+      */
 
-    target.addEventListener(
-      "targetFound",
-      () => {
+      hotspotMode = false;
 
-        console.log(
-          "VISHNU FOUND"
-        );
-
-        showArtifactFound();
-
-        /*
-           Hotspots should NOT appear immediately.
-
-           They appear only after the user taps
-           "Explore the artifact".
-        */
-
-        hideHotspots();
-
-      }
-    );
+      selectedHotspot = null;
 
 
-    /* =============================================
-       VISHNU LOST
-    ============================================= */
+      showArtifactFound();
 
-    target.addEventListener(
-      "targetLost",
-      () => {
 
-        console.log(
-          "VISHNU LOST"
-        );
+      /*
+         Hide hotspot.
+      */
 
-        hideHotspots();
+      hideHotspots();
+
+    }
+  );
+
+
+  /* =================================================
+     ARTIFACT LOST
+  ================================================= */
+
+  target.addEventListener(
+    "targetLost",
+    () => {
+
+      console.log(
+        "VISHNU ARTIFACT LOST"
+      );
+
+
+      artifactIsFound = false;
+
+
+      /*
+         Don't destroy hotspot UI
+         while user is viewing it.
+      */
+
+      if (!hotspotMode) {
 
         showScanning();
 
       }
-    );
 
-  }
+    }
+  );
 
+
+  /*
+     Prepare hotspot click.
+  */
+
+  setupHotspots();
 }
 
 
@@ -371,16 +445,29 @@ function startAR() {
 function showScanning() {
 
   const message =
-    document.getElementById("scanMessage");
+    document.getElementById(
+      "scanMessage"
+    );
 
   const frame =
-    document.getElementById("scanFrame");
+    document.getElementById(
+      "scanFrame"
+    );
+
+  const search =
+    document.getElementById(
+      "searchIcon"
+    );
 
   const status =
-    document.getElementById("scanStatus");
+    document.getElementById(
+      "scanStatus"
+    );
 
   const found =
-    document.getElementById("artifactFound");
+    document.getElementById(
+      "artifactFound"
+    );
 
 
   if (message) {
@@ -391,6 +478,10 @@ function showScanning() {
     frame.style.display = "block";
   }
 
+  if (search) {
+    search.style.display = "flex";
+  }
+
   if (status) {
     status.style.display = "block";
   }
@@ -399,28 +490,41 @@ function showScanning() {
     found.classList.remove("visible");
   }
 
-  hideHotspots();
 
+  hideHotspots();
 }
 
 
 /* =====================================================
-   ARTIFACT FOUND
+   ARTIFACT FOUND UI
 ===================================================== */
 
 function showArtifactFound() {
 
   const message =
-    document.getElementById("scanMessage");
+    document.getElementById(
+      "scanMessage"
+    );
 
   const frame =
-    document.getElementById("scanFrame");
+    document.getElementById(
+      "scanFrame"
+    );
+
+  const search =
+    document.getElementById(
+      "searchIcon"
+    );
 
   const status =
-    document.getElementById("scanStatus");
+    document.getElementById(
+      "scanStatus"
+    );
 
   const found =
-    document.getElementById("artifactFound");
+    document.getElementById(
+      "artifactFound"
+    );
 
 
   if (message) {
@@ -431,49 +535,166 @@ function showArtifactFound() {
     frame.style.display = "none";
   }
 
+  if (search) {
+    search.style.display = "none";
+  }
+
   if (status) {
     status.style.display = "none";
   }
 
+
   if (found) {
-    found.classList.add("visible");
+
+    found.classList.add(
+      "visible"
+    );
+
   }
 
-  /*
-     Make sure hotspots are hidden until
-     Explore is pressed.
-  */
+
+  hotspotMode = false;
 
   hideHotspots();
-
 }
 
 
 /* =====================================================
-   EXPLORE THE ARTIFACT
+   HOTSPOT SETUP
 ===================================================== */
 
-/*
-   Your Explore button should call:
+let hotspotListenersAttached = false;
 
-       exploreArtifact()
 
-   This is the important new step.
-*/
+function setupHotspots() {
 
-function exploreArtifact() {
+  if (hotspotListenersAttached) {
+    return;
+  }
+
+
+  const hotspot1 =
+    document.getElementById(
+      "hotspot1"
+    );
+
+
+  if (!hotspot1) {
+
+    console.error(
+      "hotspot1 not found."
+    );
+
+    return;
+  }
+
+
+  /*
+     ONE HOTSPOT ONLY.
+
+     This is deliberately the only
+     hotspot we activate for now.
+  */
+
+  const hotspotHandler = event => {
+
+    event.preventDefault();
+
+    event.stopPropagation();
+
+    console.log(
+      "HOTSPOT 1 CLICKED"
+    );
+
+
+    selectHotspot(
+      1,
+      "THE CROWN & FACE",
+      "The calm face and elaborate crown give Vishnu a composed, authoritative presence. In sacred sculpture, such details communicate the deity's divine and royal character."
+    );
+
+  };
+
+
+  /*
+     Mouse / desktop
+  */
+
+  hotspot1.addEventListener(
+    "click",
+    hotspotHandler
+  );
+
+
+  /*
+     Mobile touch
+  */
+
+  hotspot1.addEventListener(
+    "touchend",
+    hotspotHandler,
+    {
+      passive: false
+    }
+  );
+
+
+  hotspotListenersAttached = true;
+
+
+  console.log(
+    "ONE HOTSPOT LISTENER ATTACHED"
+  );
+}
+
+
+/* =====================================================
+   ENTER HOTSPOT MODE
+===================================================== */
+
+function enterHotspotMode() {
+
+  console.log(
+    "================================="
+  );
 
   console.log(
     "EXPLORE ARTIFACT CLICKED"
   );
 
+  console.log(
+    "artifactIsFound:",
+    artifactIsFound
+  );
+
+  console.log(
+    "================================="
+  );
+
 
   /*
-     Hide the Artifact Found card.
+     IMPORTANT:
+
+     Do NOT block the button because
+     of a state variable.
+
+     The button is only visible after
+     the artifact was found anyway.
   */
 
+  hotspotMode = true;
+
+  selectedHotspot = null;
+
+
+  /* =================================================
+     HIDE ARTIFACT FOUND CARD
+  ================================================= */
+
   const found =
-    document.getElementById("artifactFound");
+    document.getElementById(
+      "artifactFound"
+    );
 
   if (found) {
 
@@ -481,784 +702,906 @@ function exploreArtifact() {
       "visible"
     );
 
+    found.style.display = "none";
+
   }
 
 
-  /*
-     Show ONE hotspot.
-  */
+  /* =================================================
+     HIDE SCANNING UI
+  ================================================= */
 
-  showHotspots();
-
-}
-
-
-/* =====================================================
-   CREATE ONE HOTSPOT
-===================================================== */
-
-function showHotspots() {
-  console.log("Showing 3D model and first hotspot...");
-  
-  // Show the 3D model
-  const artifactContainer = document.getElementById('artifact3DContainer');
-  if (artifactContainer) {
-    artifactContainer.setAttribute('visible', 'true');
-  }
-
-  // As requested, just show ONE clickable circle
-  const hotspot = document.getElementById('hotspot1');
-  
-  if (hotspot) {
-    hotspot.setAttribute('visible', 'true');
-    hotspot.setAttribute('opacity', '1');
-    
-    if (!hotspot.dataset.listenersAttached) {
-      hotspot.dataset.listenersAttached = "true";
-      
-      hotspot.addEventListener("click", (event) => {
-        event.stopPropagation();
-        console.log("HOTSPOT CLICKED");
-        openHotspotUI();
-      });
-      
-      hotspot.addEventListener("touchstart", (event) => {
-        event.preventDefault();
-        event.stopPropagation();
-        console.log("HOTSPOT TOUCHED");
-        openHotspotUI();
-      }, { passive: false });
-    }
-  }
-
-  hotspotCreated = true;
-  console.log("ONE HOTSPOT IS NOW VISIBLE.");
-}
-
-/* =====================================================
-   HIDE HOTSPOTS
-===================================================== */
-function hideHotspots() {
-  const hotspots = document.querySelectorAll('.hotspot');
-  hotspots.forEach(hotspot => {
-    hotspot.setAttribute('visible', 'false');
-  });
-}
-
-/* =====================================================
-   OPEN HANDLE UI
-===================================================== */
-
-function openHotspotUI() {
-  console.log("Opening HOTSPOT UI");
-
-  const hotspotInfo = document.getElementById("hotspotInfo");
-  if (hotspotInfo) {
-    hotspotInfo.classList.add("visible");
-    hotspotInfo.style.display = "block";
-  }
-}
-
-/* =====================================================
-   FALLBACK HANDLE UI
-===================================================== */
-function createHandleFallback() {
-
-  /*
-     Don't create it twice.
-  */
-
-  let card =
+  const message =
     document.getElementById(
-      "handleFallback"
+      "scanMessage"
+    );
+
+  const frame =
+    document.getElementById(
+      "scanFrame"
+    );
+
+  const search =
+    document.getElementById(
+      "searchIcon"
+    );
+
+  const status =
+    document.getElementById(
+      "scanStatus"
     );
 
 
-  if (card) {
+  if (message) {
+    message.style.display = "none";
+  }
 
-    card.style.display =
-      "block";
+  if (frame) {
+    frame.style.display = "none";
+  }
 
-    return;
+  if (search) {
+    search.style.display = "none";
+  }
+
+  if (status) {
+    status.style.display = "none";
+  }
+
+
+  /* =================================================
+     SHOW ONE HOTSPOT
+  ================================================= */
+
+  showOneHotspot();
+
+
+  /* =================================================
+     SHOW "TAP A HOTSPOT"
+  ================================================= */
+
+  const hotspotUI =
+    document.getElementById(
+      "hotspotUI"
+    );
+
+  if (hotspotUI) {
+
+    hotspotUI.classList.add(
+      "visible"
+    );
 
   }
 
 
-  card =
-    document.createElement("div");
+  console.log(
+    "HOTSPOT MODE ACTIVE"
+  );
+}
 
 
-  card.id =
-    "handleFallback";
+/* =====================================================
+   SHOW ONE HOTSPOT
+===================================================== */
+
+function showOneHotspot() {
+
+  const hotspot1 =
+    document.getElementById(
+      "hotspot1"
+    );
+
+  const hotspot2 =
+    document.getElementById(
+      "hotspot2"
+    );
+
+  const hotspot3 =
+    document.getElementById(
+      "hotspot3"
+    );
 
 
-  card.innerHTML = `
+  /*
+     First hide EVERYTHING.
+  */
 
-    <div class="handle-category">
-      Craft
-    </div>
+  if (hotspot1) {
+    hotspot1.setAttribute(
+      "visible",
+      "false"
+    );
+  }
 
-    <div class="handle-title">
-      THE HANDLE
-    </div>
+  if (hotspot2) {
+    hotspot2.setAttribute(
+      "visible",
+      "false"
+    );
+  }
 
-    <div class="handle-subtitle">
-      How the vessel was held
-    </div>
-
-    <div class="handle-placeholder">
-    </div>
-
-    <div class="handle-waveform">
-      ▂ ▅ ▃ ▆ ▂ ▄ ▇ ▃ ▅ ▂ ▆ ▄ ▇ ▃ ▅
-    </div>
-
-    <div class="handle-controls">
-
-      <span>
-        00:02
-      </span>
-
-      <span>
-        ▶
-      </span>
-
-      <span>
-        00:24
-      </span>
-
-    </div>
-
-    <div class="handle-caption-title">
-      CAPTIONS
-    </div>
-
-    <div class="handle-caption-text">
-
-      More than a functional element,
-      the handle reveals how this object
-      was designed to be held and used
-      in daily ritual.
-
-    </div>
-
-  `;
+  if (hotspot3) {
+    hotspot3.setAttribute(
+      "visible",
+      "false"
+    );
+  }
 
 
-  document.body.appendChild(
-    card
+  /*
+     Then show ONLY hotspot 1.
+  */
+
+  if (hotspot1) {
+
+    hotspot1.setAttribute(
+      "src",
+      "assets/images/Hotspot.png"
+    );
+
+    hotspot1.setAttribute(
+      "visible",
+      "true"
+    );
+
+
+    /*
+       Make sure it can receive
+       interaction.
+    */
+
+    hotspot1.setAttribute(
+      "class",
+      "hotspot"
+    );
+
+
+    console.log(
+      "HOTSPOT 1 IS NOW VISIBLE"
+    );
+
+  }
+
+  else {
+
+    console.error(
+      "HOTSPOT 1 DOES NOT EXIST"
+    );
+
+  }
+}
+
+
+/* =====================================================
+   HIDE ALL HOTSPOTS
+===================================================== */
+
+function hideHotspots() {
+
+  const hotspots = [
+    document.getElementById("hotspot1"),
+    document.getElementById("hotspot2"),
+    document.getElementById("hotspot3")
+  ];
+
+
+  hotspots.forEach(
+    hotspot => {
+
+      if (hotspot) {
+
+        hotspot.setAttribute(
+          "visible",
+          "false"
+        );
+
+      }
+
+    }
   );
 
 
-  /*
-     Basic fallback styling.
-     Your existing CSS can override this.
-  */
-
-  card.style.position =
-    "fixed";
-
-  card.style.zIndex =
-    "99999";
-
-  card.style.left =
-    "8%";
-
-  card.style.bottom =
-    "8%";
-
-  card.style.width =
-    "84%";
-
-  card.style.maxWidth =
-    "360px";
-
-  card.style.maxHeight =
-    "70vh";
-
-  card.style.overflowY =
-    "auto";
-
-  card.style.boxSizing =
-    "border-box";
-
-  card.style.padding =
-    "22px";
-
-  card.style.borderRadius =
-    "24px";
-
-  card.style.background =
-    "#4b321c";
-
-  card.style.color =
-    "#f5e9d8";
-
-  card.style.fontFamily =
-    "Arial, sans-serif";
-
-
-  /*
-     Category
-  */
-
-  const category =
-    card.querySelector(
-      ".handle-category"
+  const hotspotInfo =
+    document.getElementById(
+      "hotspotInfo"
     );
 
-  category.style.display =
-    "inline-block";
+  if (hotspotInfo) {
 
-  category.style.padding =
-    "6px 14px";
+    hotspotInfo.classList.remove(
+      "visible"
+    );
 
-  category.style.borderRadius =
-    "20px";
+  }
 
-  category.style.background =
-    "rgba(255,255,255,.15)";
 
-  category.style.fontSize =
-    "13px";
+  const hotspotUI =
+    document.getElementById(
+      "hotspotUI"
+    );
+
+  if (hotspotUI) {
+
+    hotspotUI.classList.remove(
+      "visible"
+    );
+
+  }
+}
+
+
+/* =====================================================
+   SELECT HOTSPOT
+===================================================== */
+
+function selectHotspot(
+  number,
+  title,
+  description
+) {
+
+  console.log(
+    "SELECTING HOTSPOT:",
+    number
+  );
+
+
+  selectedHotspot = number;
+
+
+  /*
+     Change hotspot image.
+  */
+
+  const selected =
+    document.getElementById(
+      "hotspot" + number
+    );
+
+
+  if (selected) {
+
+    selected.setAttribute(
+      "src",
+      "assets/images/Hotspot Selected.png"
+    );
+
+  }
 
 
   /*
      Title
   */
 
-  const title =
-    card.querySelector(
-      ".handle-title"
+  const titleElement =
+    document.getElementById(
+      "hotspotTitle"
     );
 
-  title.style.fontSize =
-    "25px";
 
-  title.style.fontWeight =
-    "600";
+  if (titleElement) {
 
-  title.style.marginTop =
-    "12px";
+    titleElement.textContent =
+      title;
+
+  }
 
 
   /*
      Subtitle
   */
 
-  const subtitle =
-    card.querySelector(
-      ".handle-subtitle"
+  const subtitleElement =
+    document.getElementById(
+      "hotspotSubtitle"
     );
 
-  subtitle.style.marginTop =
-    "5px";
 
-  subtitle.style.opacity =
-    "0.75";
+  if (subtitleElement) {
+
+    subtitleElement.textContent =
+      "How the vessel was held";
+
+  }
 
 
   /*
-     Placeholder
+     Old description element
+     is still supported.
   */
 
-  const placeholder =
-    card.querySelector(
-      ".handle-placeholder"
+  const descriptionElement =
+    document.getElementById(
+      "hotspotDescription"
     );
 
-  placeholder.style.height =
-    "120px";
 
-  placeholder.style.marginTop =
-    "18px";
+  if (descriptionElement) {
 
-  placeholder.style.borderRadius =
-    "16px";
+    descriptionElement.textContent =
+      description;
 
-  placeholder.style.background =
-    "#39230e";
+  }
 
 
   /*
-     Waveform
+     Show story card.
   */
 
-  const waveform =
-    card.querySelector(
-      ".handle-waveform"
+  const hotspotInfo =
+    document.getElementById(
+      "hotspotInfo"
     );
 
-  waveform.style.marginTop =
-    "14px";
 
-  waveform.style.letterSpacing =
-    "4px";
+  if (hotspotInfo) {
 
-  waveform.style.fontSize =
-    "18px";
+    hotspotInfo.classList.add(
+      "visible"
+    );
+
+  }
 
 
   /*
-     Controls
+     Hide instruction.
   */
 
-  const controls =
-    card.querySelector(
-      ".handle-controls"
+  const hotspotUI =
+    document.getElementById(
+      "hotspotUI"
     );
 
-  controls.style.display =
-    "flex";
 
-  controls.style.justifyContent =
-    "space-between";
+  if (hotspotUI) {
 
-  controls.style.alignItems =
-    "center";
+    hotspotUI.classList.remove(
+      "visible"
+    );
 
-  controls.style.marginTop =
-    "12px";
+  }
 
 
   /*
-     Caption box
+     Prepare audio.
   */
 
-  const captionTitle =
-    card.querySelector(
-      ".handle-caption-title"
-    );
-
-  captionTitle.style.marginTop =
-    "20px";
-
-  captionTitle.style.fontSize =
-    "12px";
-
-  captionTitle.style.letterSpacing =
-    "2px";
+  setupStoryAudio();
 
 
-  const captionText =
-    card.querySelector(
-      ".handle-caption-text"
-    );
-
-  captionText.style.marginTop =
-    "10px";
-
-  captionText.style.lineHeight =
-    "1.5";
-
-
-  /*
-     Show it.
-  */
-
-  card.style.display =
-    "block";
-
+  console.log(
+    "HOTSPOT STORY CARD OPENED"
+  );
 }
 
 
 /* =====================================================
-   CLOSE HANDLE UI
+   CLOSE HOTSPOT
 ===================================================== */
 
 function closeHotspot() {
-  const hotspotInfo = document.getElementById("hotspotInfo");
+
+  const hotspotInfo =
+    document.getElementById(
+      "hotspotInfo"
+    );
+
+
   if (hotspotInfo) {
-    hotspotInfo.classList.remove("visible");
-    hotspotInfo.style.display = "none";
+
+    hotspotInfo.classList.remove(
+      "visible"
+    );
+
+  }
+
+
+  selectedHotspot = null;
+
+
+  /*
+     Return to hotspot mode.
+  */
+
+  if (hotspotMode) {
+
+    const hotspot1 =
+      document.getElementById(
+        "hotspot1"
+      );
+
+    if (hotspot1) {
+
+      hotspot1.setAttribute(
+        "src",
+        "assets/images/Hotspot.png"
+      );
+
+      hotspot1.setAttribute(
+        "visible",
+        "true"
+      );
+
+    }
+
+
+    const hotspotUI =
+      document.getElementById(
+        "hotspotUI"
+      );
+
+    if (hotspotUI) {
+
+      hotspotUI.classList.add(
+        "visible"
+      );
+
+    }
+
+  }
+
+
+  /*
+     Stop audio.
+  */
+
+  const audio =
+    document.getElementById(
+      "storyAudio"
+    );
+
+
+  if (audio) {
+
+    audio.pause();
+
   }
 }
 
+
 /* =====================================================
-   ENABLE MOBILE AR CLICKING
+   STORY AUDIO
+===================================================== */
+
+let storyAudioReady = false;
+
+
+function setupStoryAudio() {
+
+  const audio =
+    document.getElementById(
+      "storyAudio"
+    );
+
+
+  if (!audio) {
+
+    console.warn(
+      "storyAudio element not found."
+    );
+
+    return;
+  }
+
+
+  if (storyAudioReady) {
+
+    updateAudioDuration();
+
+    return;
+  }
+
+
+  storyAudioReady = true;
+
+
+  /*
+     Metadata loaded
+  */
+
+  audio.addEventListener(
+    "loadedmetadata",
+    () => {
+
+      updateAudioDuration();
+
+    }
+  );
+
+
+  /*
+     Audio playing
+  */
+
+  audio.addEventListener(
+    "play",
+    () => {
+
+      const button =
+        document.getElementById(
+          "playPauseButton"
+        );
+
+      if (button) {
+        button.textContent = "Ⅱ";
+      }
+
+    }
+  );
+
+
+  /*
+     Audio paused
+  */
+
+  audio.addEventListener(
+    "pause",
+    () => {
+
+      const button =
+        document.getElementById(
+          "playPauseButton"
+        );
+
+      if (button) {
+        button.textContent = "▶";
+      }
+
+    }
+  );
+
+
+  /*
+     Audio finished
+  */
+
+  audio.addEventListener(
+    "ended",
+    () => {
+
+      const button =
+        document.getElementById(
+          "playPauseButton"
+        );
+
+      if (button) {
+        button.textContent = "▶";
+      }
+
+    }
+  );
+
+
+  /*
+     Update progress.
+  */
+
+  audio.addEventListener(
+    "timeupdate",
+    updateAudioProgress
+  );
+
+
+  /*
+     Progress slider.
+  */
+
+  const progress =
+    document.getElementById(
+      "audioProgress"
+    );
+
+
+  if (progress) {
+
+    progress.addEventListener(
+      "input",
+      () => {
+
+        if (!audio.duration) {
+          return;
+        }
+
+        audio.currentTime =
+          (progress.value / 100) *
+          audio.duration;
+
+      }
+    );
+
+  }
+
+
+  updateAudioDuration();
+}
+
+
+/* =====================================================
+   UPDATE AUDIO DURATION
+===================================================== */
+
+function updateAudioDuration() {
+
+  const audio =
+    document.getElementById(
+      "storyAudio"
+    );
+
+  const duration =
+    document.getElementById(
+      "audioDuration"
+    );
+
+
+  if (
+    !audio ||
+    !duration ||
+    !isFinite(audio.duration)
+  ) {
+
+    return;
+  }
+
+
+  duration.textContent =
+    formatTime(audio.duration);
+}
+
+
+/* =====================================================
+   UPDATE AUDIO PROGRESS
+===================================================== */
+
+function updateAudioProgress() {
+
+  const audio =
+    document.getElementById(
+      "storyAudio"
+    );
+
+  const progress =
+    document.getElementById(
+      "audioProgress"
+    );
+
+  const current =
+    document.getElementById(
+      "audioCurrentTime"
+    );
+
+
+  if (!audio) {
+    return;
+  }
+
+
+  if (current) {
+
+    current.textContent =
+      formatTime(audio.currentTime);
+
+  }
+
+
+  if (
+    progress &&
+    audio.duration
+  ) {
+
+    progress.value =
+      (
+        audio.currentTime /
+        audio.duration
+      ) * 100;
+
+  }
+}
+
+
+/* =====================================================
+   FORMAT TIME
+===================================================== */
+
+function formatTime(seconds) {
+
+  if (
+    !isFinite(seconds) ||
+    seconds < 0
+  ) {
+
+    return "00:00";
+
+  }
+
+
+  const minutes =
+    Math.floor(seconds / 60);
+
+  const secs =
+    Math.floor(seconds % 60);
+
+
+  return (
+    String(minutes).padStart(2, "0") +
+    ":" +
+    String(secs).padStart(2, "0")
+  );
+}
+
+
+/* =====================================================
+   PLAY / PAUSE AUDIO
+===================================================== */
+
+function toggleStoryAudio() {
+
+  const audio =
+    document.getElementById(
+      "storyAudio"
+    );
+
+
+  if (!audio) {
+
+    console.error(
+      "Audio element not found."
+    );
+
+    return;
+  }
+
+
+  if (audio.paused) {
+
+    audio.play()
+      .then(() => {
+
+        console.log(
+          "STORY AUDIO PLAYING"
+        );
+
+      })
+      .catch(error => {
+
+        console.error(
+          "Audio playback failed:",
+          error
+        );
+
+      });
+
+  }
+
+  else {
+
+    audio.pause();
+
+  }
+}
+
+
+/* =====================================================
+   REWIND AUDIO
+===================================================== */
+
+function rewindStoryAudio() {
+
+  const audio =
+    document.getElementById(
+      "storyAudio"
+    );
+
+
+  if (!audio) {
+    return;
+  }
+
+
+  audio.currentTime =
+    Math.max(
+      0,
+      audio.currentTime - 10
+    );
+}
+
+
+/* =====================================================
+   EXIT AR
+===================================================== */
+
+function exitAR() {
+
+  console.log(
+    "EXITING AR"
+  );
+
+
+  const audio =
+    document.getElementById(
+      "storyAudio"
+    );
+
+
+  if (audio) {
+
+    audio.pause();
+
+    audio.currentTime = 0;
+
+  }
+
+
+  const scene =
+    document.getElementById(
+      "mindarScene"
+    );
+
+
+  if (scene) {
+
+    const mindar =
+      scene.systems[
+        "mindar-image-system"
+      ];
+
+
+    if (mindar) {
+
+      try {
+
+        mindar.stop();
+
+      }
+
+      catch (error) {
+
+        console.log(
+          "MindAR stop:",
+          error
+        );
+
+      }
+
+    }
+
+  }
+
+
+  arStarted = false;
+  arReady = false;
+  artifactIsFound = false;
+  hotspotMode = false;
+  selectedHotspot = null;
+
+
+  hideHotspots();
+
+
+  showScreen("setup");
+}
+
+
+/* =====================================================
+   INITIALISE
 ===================================================== */
 
 document.addEventListener(
   "DOMContentLoaded",
   () => {
 
-    const scene =
-      document.getElementById(
-        "mindarScene"
-      );
+    console.log(
+      "Rekh WebAR loaded."
+    );
 
-    if (!scene) {
-      return;
-    }
+
+    setupHotspots();
 
 
     /*
-       Find the A-Frame camera.
+       Make sure audio is prepared.
     */
 
-    const camera =
-      scene.querySelector(
-        "a-camera"
-      );
-
-
-    if (camera) {
-
-      /*
-         Add a cursor if one doesn't
-         already exist.
-      */
-
-      let cursor =
-        camera.querySelector(
-          "a-cursor"
-        );
-
-
-      if (!cursor) {
-
-        cursor =
-          document.createElement(
-            "a-cursor"
-          );
-
-        cursor.setAttribute(
-          "rayOrigin",
-          "mouse"
-        );
-
-        cursor.setAttribute(
-          "fuse",
-          "false"
-        );
-
-        camera.appendChild(
-          cursor
-        );
-
-      }
-
-
-      /*
-         Make the cursor raycaster
-         detect the hotspot.
-      */
-
-      cursor.setAttribute(
-        "raycaster",
-        "objects: .hotspot-button"
-      );
-
-    }
-
-
-    console.log(
-      "Rekh AR interaction system ready."
-    );
+    setupStoryAudio();
 
   }
 );
-
-
-/* =====================================================
-   GLOBAL DEBUG HELPERS
-===================================================== */
-
-/*
-   These can be typed in the browser
-   console while testing.
-*/
-
-window.showHotspot =
-  showHotspots;
-
-window.hideHotspot =
-  hideHotspots;
-
-window.openHotspotUI =
-  openHotspotUI;
-
-window.closeHotspotUI =
-  closeHotspot;
-
-window.exploreArtifact =
-  exploreArtifact;
-
-/* =====================================================
-   EXIT AR
-===================================================== */
-function exitAR() {
-  console.log("EXIT AR CLICKED");
-  
-  const scene = document.getElementById("mindarScene");
-  if (scene && scene.systems["mindar-image-system"]) {
-    scene.systems["mindar-image-system"].stop();
-  }
-  
-  arStarted = false;
-  showScreen("setup");
-}
-window.exitAR = exitAR;
-
-document.addEventListener('DOMContentLoaded', () => {
-  const artifact3D = document.getElementById('artifact3D');
-  if (artifact3D) {
-    artifact3D.addEventListener('model-loaded', () => {
-      console.log('3D MODEL LOADED SUCCESSFULLY!');
-    });
-    artifact3D.addEventListener('model-error', (err) => {
-      console.error('ERROR LOADING 3D MODEL:', err);
-    });
-  }
-});
-/* =====================================================
-   STORY AUDIO
-===================================================== */
-
-const storyAudio =
-  document.getElementById("storyAudio");
-
-const playPauseButton =
-  document.getElementById("playPauseButton");
-
-const audioProgress =
-  document.getElementById("audioProgress");
-
-const audioCurrentTime =
-  document.getElementById("audioCurrentTime");
-
-const audioDuration =
-  document.getElementById("audioDuration");
-
-
-/* -----------------------------------------------------
-   FORMAT TIME
------------------------------------------------------ */
-
-function formatAudioTime(seconds) {
-
-  if (!isFinite(seconds)) {
-    return "00:00";
-  }
-
-  const minutes =
-    Math.floor(seconds / 60);
-
-  const remainingSeconds =
-    Math.floor(seconds % 60);
-
-  return (
-    String(minutes).padStart(2, "0") +
-    ":" +
-    String(remainingSeconds).padStart(2, "0")
-  );
-}
-
-
-/* -----------------------------------------------------
-   PLAY / PAUSE
------------------------------------------------------ */
-
-function toggleStoryAudio() {
-
-  if (!storyAudio) {
-    return;
-  }
-
-  if (storyAudio.paused) {
-
-    storyAudio.play()
-      .then(() => {
-
-        if (playPauseButton) {
-          playPauseButton.textContent = "Ⅱ";
-        }
-
-      })
-      .catch(error => {
-
-        console.error(
-          "Audio could not play:",
-          error
-        );
-
-      });
-
-  } else {
-
-    storyAudio.pause();
-
-    if (playPauseButton) {
-      playPauseButton.textContent = "▶";
-    }
-
-  }
-}
-
-
-/* -----------------------------------------------------
-   REWIND 10 SECONDS
------------------------------------------------------ */
-
-function rewindStoryAudio() {
-
-  if (!storyAudio) {
-    return;
-  }
-
-  storyAudio.currentTime =
-    Math.max(
-      0,
-      storyAudio.currentTime - 10
-    );
-}
-
-
-/* -----------------------------------------------------
-   AUDIO LOADED
------------------------------------------------------ */
-
-if (storyAudio) {
-
-  storyAudio.addEventListener(
-    "loadedmetadata",
-    () => {
-
-      if (audioDuration) {
-
-        audioDuration.textContent =
-          formatAudioTime(
-            storyAudio.duration
-          );
-
-      }
-
-      if (audioProgress) {
-        audioProgress.value = 0;
-      }
-
-    }
-  );
-
-
-  /* ---------------------------------------------------
-     UPDATE PROGRESS
-  --------------------------------------------------- */
-
-  storyAudio.addEventListener(
-    "timeupdate",
-    () => {
-
-      if (!storyAudio.duration) {
-        return;
-      }
-
-      const percentage =
-        (storyAudio.currentTime /
-          storyAudio.duration) * 100;
-
-      if (audioProgress) {
-        audioProgress.value =
-          percentage;
-      }
-
-      if (audioCurrentTime) {
-
-        audioCurrentTime.textContent =
-          formatAudioTime(
-            storyAudio.currentTime
-          );
-
-      }
-
-    }
-  );
-
-
-  /* ---------------------------------------------------
-     AUDIO ENDED
-  --------------------------------------------------- */
-
-  storyAudio.addEventListener(
-    "ended",
-    () => {
-
-      if (playPauseButton) {
-        playPauseButton.textContent = "▶";
-      }
-
-      if (audioProgress) {
-        audioProgress.value = 0;
-      }
-
-    }
-  );
-
-}
-
-
-/* -----------------------------------------------------
-   SCRUB AUDIO
------------------------------------------------------ */
-
-if (audioProgress) {
-
-  audioProgress.addEventListener(
-    "input",
-    () => {
-
-      if (!storyAudio ||
-          !storyAudio.duration) {
-        return;
-      }
-
-      storyAudio.currentTime =
-        (audioProgress.value / 100) *
-        storyAudio.duration;
-
-    }
-  );
-
-}
-
-
-/* =====================================================
-   START AUDIO WHEN HOTSPOT OPENS
-===================================================== */
-
-const originalOpenHotspot =
-  window.openHotspot;
-
-window.openHotspot = function(id) {
-
-  if (typeof originalOpenHotspot === "function") {
-
-    originalOpenHotspot(id);
-
-  }
-
-  /*
-     Reset audio whenever a new hotspot opens.
-  */
-
-  if (storyAudio) {
-
-    storyAudio.pause();
-
-    storyAudio.currentTime = 0;
-
-  }
-
-  if (playPauseButton) {
-    playPauseButton.textContent = "▶";
-  }
-
-  if (audioProgress) {
-    audioProgress.value = 0;
-  }
-
-  if (audioCurrentTime) {
-    audioCurrentTime.textContent = "00:00";
-  }
-
-};
