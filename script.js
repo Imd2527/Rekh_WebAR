@@ -4,25 +4,15 @@
 
 function showScreen(screenId) {
 
-  document
-    .querySelectorAll(".screen")
-    .forEach(screen => {
+  document.querySelectorAll(".screen").forEach(screen => {
+    screen.classList.remove("active");
+  });
 
-      screen.classList.remove("active");
-
-    });
-
-
-  const screen =
-    document.getElementById(screenId);
-
+  const screen = document.getElementById(screenId);
 
   if (screen) {
-
     screen.classList.add("active");
-
   }
-
 }
 
 
@@ -44,15 +34,11 @@ setTimeout(() => {
 const storyFrames = [
 
   "assets/images/Rekh_How_It_Works_Frame_1_HD.png",
-
   "assets/images/Rekh_How_It_Works_Frame_2_HD.png",
-
   "assets/images/Rekh_How_It_Works_Frame_3_HD.png",
-
   "assets/images/Rekh_How_It_Works_Frame_4_HD.png"
 
 ];
-
 
 let currentStory = 0;
 
@@ -61,12 +47,8 @@ function showStory(index) {
 
   currentStory = index;
 
-
   const image =
-    document.getElementById(
-      "storyFrame"
-    );
-
+    document.getElementById("storyFrame");
 
   if (image) {
 
@@ -97,14 +79,22 @@ function showStory(index) {
 function openAccessibility() {
 
   const overlay =
-    document.getElementById(
-      "accessibilityOverlay"
-    );
+    document.getElementById("accessibilityOverlay");
+
+  const continueButton =
+    document.getElementById("setupContinue");
 
 
   if (overlay) {
 
     overlay.classList.add("open");
+
+  }
+
+
+  if (continueButton) {
+
+    continueButton.classList.remove("show");
 
   }
 
@@ -114,9 +104,10 @@ function openAccessibility() {
 function closeAccessibility() {
 
   const overlay =
-    document.getElementById(
-      "accessibilityOverlay"
-    );
+    document.getElementById("accessibilityOverlay");
+
+  const continueButton =
+    document.getElementById("setupContinue");
 
 
   if (overlay) {
@@ -125,24 +116,10 @@ function closeAccessibility() {
 
   }
 
-}
 
+  if (continueButton) {
 
-/* =====================================================
-   ACCESSIBILITY FROM AR
-===================================================== */
-
-function openAccessibilityFromAR() {
-
-  const overlay =
-    document.getElementById(
-      "accessibilityOverlay"
-    );
-
-
-  if (overlay) {
-
-    overlay.classList.add("open");
+    continueButton.classList.add("show");
 
   }
 
@@ -155,138 +132,54 @@ function openAccessibilityFromAR() {
 
 function toggleSetting(button) {
 
-  if (!button) {
-    return;
-  }
-
-
-  button.classList.toggle(
-    "active"
-  );
+  button.classList.toggle("active");
 
 }
 
 
 /* =====================================================
-   AR VARIABLES
+   AR STATE
 ===================================================== */
 
-let mindarStarted = false;
+/*
+   There are THREE states:
 
-let cameraStream = null;
+   1. scanning
+   2. artifact found
+   3. hotspots
+*/
+
+let arStarted = false;
+
+let artifactDetected = false;
+
+let hotspotMode = false;
 
 
 /* =====================================================
    CONTINUE → AR
 ===================================================== */
 
-async function continueSetup() {
+function continueSetup() {
 
   console.log(
-    "CONTINUE CLICKED"
+    "CONTINUE → AR"
   );
-
-
-  /*
-     IMPORTANT:
-
-     Do NOT use setTimeout here.
-
-     The camera permission request
-     happens directly from the user's
-     button click.
-  */
 
 
   showScreen("arScreen");
 
 
   /*
-     Give the AR screen a moment to
-     become visible.
+     Give the browser time to make
+     the AR screen visible.
   */
 
-  await new Promise(resolve => {
+  setTimeout(() => {
 
-    requestAnimationFrame(resolve);
+    startAR();
 
-  });
-
-
-  /*
-     Explicitly request camera access.
-
-     This is the part that forces the
-     browser to show the permission
-     popup if permission has not yet
-     been granted.
-  */
-
-  try {
-
-    console.log(
-      "Requesting camera permission..."
-    );
-
-
-    cameraStream =
-      await navigator.mediaDevices.getUserMedia({
-
-        video: {
-          facingMode: {
-            ideal: "environment"
-          }
-        },
-
-        audio: false
-
-      });
-
-
-    console.log(
-      "Camera permission granted."
-    );
-
-
-    /*
-       Stop this temporary stream.
-
-       MindAR will create and manage
-       its own camera stream.
-    */
-
-    cameraStream
-      .getTracks()
-      .forEach(track => {
-
-        track.stop();
-
-      });
-
-
-    cameraStream = null;
-
-
-    /*
-       Now start MindAR.
-    */
-
-    startMindAR();
-
-
-  }
-
-  catch (error) {
-
-    console.error(
-      "CAMERA PERMISSION ERROR:",
-      error
-    );
-
-
-    showCameraPermissionError();
-
-  }
+  }, 100);
 
 }
 
@@ -295,13 +188,9 @@ async function continueSetup() {
    START MINDAR
 ===================================================== */
 
-function startMindAR() {
+function startAR() {
 
-  if (mindarStarted) {
-
-    console.log(
-      "MindAR already started."
-    );
+  if (arStarted) {
 
     return;
 
@@ -309,9 +198,7 @@ function startMindAR() {
 
 
   const scene =
-    document.getElementById(
-      "mindarScene"
-    );
+    document.getElementById("mindarScene");
 
 
   if (!scene) {
@@ -325,12 +212,10 @@ function startMindAR() {
   }
 
 
-  const start = () => {
+  const startMindAR = () => {
 
     const mindar =
-      scene.systems[
-        "mindar-image-system"
-      ];
+      scene.systems["mindar-image-system"];
 
 
     if (!mindar) {
@@ -349,322 +234,218 @@ function startMindAR() {
     );
 
 
+    /*
+       Start the camera.
+    */
+
+    mindar.start();
+
+
+    arStarted = true;
+
+
     console.log(
-      "Starting MindAR..."
+      "MindAR camera started."
     );
-
-
-    try {
-
-      const result =
-        mindar.start();
-
-
-      mindarStarted = true;
-
-
-      console.log(
-        "MindAR start() called."
-      );
-
-
-      /*
-         Handle promise if returned.
-      */
-
-      if (
-        result &&
-        typeof result.then ===
-        "function"
-      ) {
-
-        result
-          .then(() => {
-
-            console.log(
-              "MindAR started successfully."
-            );
-
-          })
-          .catch(error => {
-
-            console.error(
-              "MindAR start failed:",
-              error
-            );
-
-            mindarStarted = false;
-
-            showCameraPermissionError();
-
-          });
-
-      }
-
-    }
-
-    catch (error) {
-
-      console.error(
-        "MindAR startup error:",
-        error
-      );
-
-      mindarStarted = false;
-
-      showCameraPermissionError();
-
-    }
 
   };
 
 
   /*
-     A-Frame already loaded.
+     A-Frame already loaded
   */
 
   if (scene.hasLoaded) {
 
-    start();
+    startMindAR();
 
   }
 
   /*
-     Wait for A-Frame.
+     A-Frame still loading
   */
 
   else {
 
     scene.addEventListener(
       "loaded",
-      start,
+      startMindAR,
       { once: true }
     );
 
   }
 
+
+  /* =================================================
+     CAMERA READY
+  ================================================= */
+
+  scene.addEventListener(
+    "arReady",
+    () => {
+
+      console.log(
+        "CAMERA READY"
+      );
+
+
+      resetARState();
+
+      showScanning();
+
+    },
+    { once: true }
+  );
+
+
+  /* =================================================
+     CAMERA ERROR
+  ================================================= */
+
+  scene.addEventListener(
+    "arError",
+    event => {
+
+      console.error(
+        "AR ERROR:",
+        event
+      );
+
+      alert(
+        "Camera could not start. Please allow camera access and reload the page."
+      );
+
+    },
+    { once: true }
+  );
+
+
+  /* =================================================
+     VISHNU TARGET
+  ================================================= */
+
+  const target =
+    document.getElementById("vishnuTarget");
+
+
+  if (!target) {
+
+    console.error(
+      "Vishnu target not found."
+    );
+
+    return;
+
+  }
+
+
+  /* =================================================
+     TARGET FOUND
+  ================================================= */
+
+  target.addEventListener(
+    "targetFound",
+    () => {
+
+      console.log(
+        "VISHNU FOUND"
+      );
+
+
+      artifactDetected = true;
+
+      hotspotMode = false;
+
+
+      /*
+         IMPORTANT:
+
+         Do NOT show hotspots yet.
+
+         First show the artifact information
+         screen.
+      */
+
+      showArtifactFound();
+
+    }
+  );
+
+
+  /* =================================================
+     TARGET LOST
+  ================================================= */
+
+  target.addEventListener(
+    "targetLost",
+    () => {
+
+      console.log(
+        "VISHNU LOST"
+      );
+
+
+      artifactDetected = false;
+
+      hotspotMode = false;
+
+
+      /*
+         Hide hotspot UI
+         because the artifact is no longer tracked.
+      */
+
+      hideHotspots();
+
+
+      /*
+         Return to scanning state.
+      */
+
+      showScanning();
+
+    }
+  );
+
+
+  /* =================================================
+     HOTSPOT EVENTS
+  ================================================= */
+
+  setupHotspots();
+
 }
 
 
 /* =====================================================
-   CAMERA PERMISSION ERROR
-===================================================== */
-
-function showCameraPermissionError() {
-
-  const message =
-    document.getElementById(
-      "scanMessage"
-    );
-
-
-  const status =
-    document.getElementById(
-      "scanStatus"
-    );
-
-
-  if (message) {
-
-    message.style.display =
-      "block";
-
-    message.textContent =
-      "Camera access is required";
-
-  }
-
-
-  if (status) {
-
-    status.style.display =
-      "block";
-
-    status.textContent =
-      "ALLOW CAMERA ACCESS AND RELOAD";
-
-  }
-
-}
-
-
-/* =====================================================
-   MINDAR EVENTS
-===================================================== */
-
-document.addEventListener(
-  "DOMContentLoaded",
-  () => {
-
-    const scene =
-      document.getElementById(
-        "mindarScene"
-      );
-
-
-    const target =
-      document.getElementById(
-        "vishnuTarget"
-      );
-
-
-    if (!scene) {
-
-      console.error(
-        "mindarScene not found."
-      );
-
-      return;
-
-    }
-
-
-    if (!target) {
-
-      console.error(
-        "vishnuTarget not found."
-      );
-
-      return;
-
-    }
-
-
-    /* ================================================
-       AR READY
-    ================================================= */
-
-    scene.addEventListener(
-      "arReady",
-      () => {
-
-        console.log(
-          "================================"
-        );
-
-        console.log(
-          "CAMERA READY"
-        );
-
-        console.log(
-          "SCANNING FOR VISHNU"
-        );
-
-        console.log(
-          "================================"
-        );
-
-
-        showScanning();
-
-      }
-    );
-
-
-    /* ================================================
-       AR ERROR
-    ================================================= */
-
-    scene.addEventListener(
-      "arError",
-      event => {
-
-        console.error(
-          "MINDAR ERROR:",
-          event
-        );
-
-
-        showCameraPermissionError();
-
-      }
-    );
-
-
-    /* ================================================
-       TARGET FOUND
-    ================================================= */
-
-    target.addEventListener(
-      "targetFound",
-      () => {
-
-        console.log(
-          "VISHNU TARGET FOUND!"
-        );
-
-
-        showArtifactFound();
-
-      }
-    );
-
-
-    /* ================================================
-       TARGET LOST
-    ================================================= */
-
-    target.addEventListener(
-      "targetLost",
-      () => {
-
-        console.log(
-          "VISHNU TARGET LOST"
-        );
-
-
-        showScanning();
-
-      }
-    );
-
-  }
-);
-
-
-/* =====================================================
-   SCANNING UI
+   SCANNING STATE
 ===================================================== */
 
 function showScanning() {
 
   const message =
-    document.getElementById(
-      "scanMessage"
-    );
-
+    document.getElementById("scanMessage");
 
   const frame =
-    document.getElementById(
-      "scanFrame"
-    );
-
-
-  const search =
-    document.getElementById(
-      "searchIcon"
-    );
-
+    document.getElementById("scanFrame");
 
   const status =
-    document.getElementById(
-      "scanStatus"
-    );
+    document.getElementById("scanStatus");
 
+  const search =
+    document.getElementById("searchIcon");
 
   const found =
-    document.getElementById(
-      "artifactFound"
-    );
+    document.getElementById("artifactFound");
+
+  const tapLayer =
+    document.getElementById("artifactTapLayer");
 
 
   if (message) {
 
     message.style.display =
       "block";
-
-    message.textContent =
-      "Point your camera at the artifact";
 
   }
 
@@ -672,6 +453,14 @@ function showScanning() {
   if (frame) {
 
     frame.style.display =
+      "block";
+
+  }
+
+
+  if (status) {
+
+    status.style.display =
       "block";
 
   }
@@ -685,14 +474,6 @@ function showScanning() {
   }
 
 
-  if (status) {
-
-    status.style.display =
-      "block";
-
-  }
-
-
   if (found) {
 
     found.classList.remove(
@@ -701,44 +482,48 @@ function showScanning() {
 
   }
 
+
+  if (tapLayer) {
+
+    tapLayer.style.display =
+      "none";
+
+  }
+
+
+  hideHotspots();
+
 }
 
 
 /* =====================================================
-   ARTIFACT FOUND
+   ARTIFACT FOUND STATE
 ===================================================== */
 
 function showArtifactFound() {
 
   const message =
-    document.getElementById(
-      "scanMessage"
-    );
-
+    document.getElementById("scanMessage");
 
   const frame =
-    document.getElementById(
-      "scanFrame"
-    );
-
-
-  const search =
-    document.getElementById(
-      "searchIcon"
-    );
-
+    document.getElementById("scanFrame");
 
   const status =
-    document.getElementById(
-      "scanStatus"
-    );
+    document.getElementById("scanStatus");
 
+  const search =
+    document.getElementById("searchIcon");
 
   const found =
-    document.getElementById(
-      "artifactFound"
-    );
+    document.getElementById("artifactFound");
 
+  const tapLayer =
+    document.getElementById("artifactTapLayer");
+
+
+  /*
+     Hide scanning UI.
+  */
 
   if (message) {
 
@@ -756,14 +541,6 @@ function showArtifactFound() {
   }
 
 
-  if (search) {
-
-    search.style.display =
-      "none";
-
-  }
-
-
   if (status) {
 
     status.style.display =
@@ -772,9 +549,343 @@ function showArtifactFound() {
   }
 
 
+  if (search) {
+
+    search.style.display =
+      "none";
+
+  }
+
+
+  /*
+     Show artifact information.
+  */
+
   if (found) {
 
     found.classList.add(
+      "visible"
+    );
+
+  }
+
+
+  /*
+     Enable the invisible
+     screen-wide tap area.
+  */
+
+  if (tapLayer) {
+
+    tapLayer.style.display =
+      "block";
+
+  }
+
+
+  /*
+     Make sure hotspots
+     are NOT visible yet.
+  */
+
+  hideHotspots();
+
+}
+
+
+/* =====================================================
+   USER TOUCHES SCREEN AFTER
+   ARTIFACT IS FOUND
+===================================================== */
+
+function enterHotspotMode() {
+
+  if (!artifactDetected) {
+
+    return;
+
+  }
+
+
+  if (hotspotMode) {
+
+    return;
+
+  }
+
+
+  console.log(
+    "USER TAPPED — ENTERING HOTSPOT MODE"
+  );
+
+
+  hotspotMode = true;
+
+
+  /*
+     Hide artifact information card.
+  */
+
+  const found =
+    document.getElementById("artifactFound");
+
+
+  if (found) {
+
+    found.classList.remove(
+      "visible"
+    );
+
+  }
+
+
+  /*
+     Disable tap layer.
+  */
+
+  const tapLayer =
+    document.getElementById("artifactTapLayer");
+
+
+  if (tapLayer) {
+
+    tapLayer.style.display =
+      "none";
+
+  }
+
+
+  /*
+     Show hotspot UI.
+  */
+
+  showHotspots();
+
+}
+
+
+/* =====================================================
+   HOTSPOT UI
+===================================================== */
+
+function showHotspots() {
+
+  const hotspotUI =
+    document.getElementById("hotspotUI");
+
+
+  if (hotspotUI) {
+
+    hotspotUI.classList.add(
+      "visible"
+    );
+
+  }
+
+
+  document
+    .querySelectorAll(".hotspot")
+    .forEach(hotspot => {
+
+      hotspot.setAttribute(
+        "visible",
+        "true"
+      );
+
+    });
+
+}
+
+
+/* =====================================================
+   HIDE HOTSPOTS
+===================================================== */
+
+function hideHotspots() {
+
+  const hotspotUI =
+    document.getElementById("hotspotUI");
+
+
+  if (hotspotUI) {
+
+    hotspotUI.classList.remove(
+      "visible"
+    );
+
+  }
+
+
+  document
+    .querySelectorAll(".hotspot")
+    .forEach(hotspot => {
+
+      hotspot.setAttribute(
+        "visible",
+        "false"
+      );
+
+    });
+
+
+  const hotspotInfo =
+    document.getElementById("hotspotInfo");
+
+
+  if (hotspotInfo) {
+
+    hotspotInfo.classList.remove(
+      "visible"
+    );
+
+  }
+
+}
+
+
+/* =====================================================
+   HOTSPOT INTERACTIONS
+===================================================== */
+
+function setupHotspots() {
+
+  const hotspot1 =
+    document.getElementById("hotspot1");
+
+  const hotspot2 =
+    document.getElementById("hotspot2");
+
+  const hotspot3 =
+    document.getElementById("hotspot3");
+
+
+  if (hotspot1) {
+
+    hotspot1.addEventListener(
+      "click",
+      () => {
+
+        openHotspot(
+          1,
+          "Vishnu's Crown",
+          "The crown and head ornaments emphasize Vishnu's divine status and royal presence."
+        );
+
+      }
+    );
+
+  }
+
+
+  if (hotspot2) {
+
+    hotspot2.addEventListener(
+      "click",
+      () => {
+
+        openHotspot(
+          2,
+          "Divine Attributes",
+          "The objects held by Vishnu are symbolic attributes that help identify and understand the deity."
+        );
+
+      }
+    );
+
+  }
+
+
+  if (hotspot3) {
+
+    hotspot3.addEventListener(
+      "click",
+      () => {
+
+        openHotspot(
+          3,
+          "Ornamental Frame",
+          "The carved frame surrounding the figure adds depth and decorative detail to the sculpture."
+        );
+
+      }
+    );
+
+  }
+
+}
+
+
+/* =====================================================
+   OPEN HOTSPOT INFORMATION
+===================================================== */
+
+function openHotspot(
+  number,
+  title,
+  description
+) {
+
+  const info =
+    document.getElementById("hotspotInfo");
+
+  const numberElement =
+    document.getElementById("hotspotNumber");
+
+  const titleElement =
+    document.getElementById("hotspotTitle");
+
+  const descriptionElement =
+    document.getElementById("hotspotDescription");
+
+
+  if (numberElement) {
+
+    numberElement.textContent =
+      String(number).padStart(2, "0");
+
+  }
+
+
+  if (titleElement) {
+
+    titleElement.textContent =
+      title;
+
+  }
+
+
+  if (descriptionElement) {
+
+    descriptionElement.textContent =
+      description;
+
+  }
+
+
+  if (info) {
+
+    info.classList.add(
+      "visible"
+    );
+
+  }
+
+}
+
+
+/* =====================================================
+   CLOSE HOTSPOT
+===================================================== */
+
+function closeHotspot() {
+
+  const info =
+    document.getElementById("hotspotInfo");
+
+
+  if (info) {
+
+    info.classList.remove(
       "visible"
     );
 
@@ -790,248 +901,139 @@ function showArtifactFound() {
 function exitAR() {
 
   console.log(
-    "Exiting AR..."
+    "Leaving AR"
   );
 
 
   const scene =
-    document.getElementById(
-      "mindarScene"
-    );
+    document.getElementById("mindarScene");
 
 
-  if (scene) {
+  /*
+     Stop MindAR camera.
+  */
 
-    const mindar =
+  if (
+    scene &&
+    scene.systems &&
+    scene.systems["mindar-image-system"]
+  ) {
+
+    try {
+
       scene.systems[
         "mindar-image-system"
-      ];
+      ].stop();
 
+    }
 
-    if (mindar) {
+    catch (error) {
 
-      try {
-
-        mindar.stop();
-
-      }
-
-      catch (error) {
-
-        console.log(
-          "MindAR stop:",
-          error
-        );
-
-      }
+      console.warn(
+        "Could not stop MindAR:",
+        error
+      );
 
     }
 
   }
 
 
-  mindarStarted = false;
+  arStarted = false;
+
+  artifactDetected = false;
+
+  hotspotMode = false;
 
 
-  showScreen("setup");
-
-}
-/* =====================================================
-   HOTSPOTS
-===================================================== */
-
-const hotspotData = {
-
-  hotspot1: {
-
-    number: "01",
-
-    title: "Vishnu",
-
-    description:
-      "The central figure represents Vishnu, the preserver in the Hindu trinity. His composed posture and elaborate adornments emphasize his divine presence."
-
-  },
+  hideHotspots();
 
 
-  hotspot2: {
-
-    number: "02",
-
-    title: "Divine Attributes",
-
-    description:
-      "Vishnu is traditionally depicted with symbolic attributes that represent his divine powers and role as the preserver."
-
-  },
-
-
-  hotspot3: {
-
-    number: "03",
-
-    title: "Ornamental Frame",
-
-    description:
-      "The intricate carving surrounding Vishnu adds depth to the sculpture and frames the central divine figure."
-
-  }
-
-};
-
-
-/* =====================================================
-   OPEN HOTSPOT
-===================================================== */
-
-function openHotspot(id) {
-
-  const data =
-    hotspotData[id];
-
-
-  if (!data) {
-
-    return;
-
-  }
-
-
-  const card =
-    document.getElementById(
-      "hotspotInfo"
-    );
-
-
-  const number =
-    document.getElementById(
-      "hotspotNumber"
-    );
-
-
-  const title =
-    document.getElementById(
-      "hotspotTitle"
-    );
-
-
-  const description =
-    document.getElementById(
-      "hotspotDescription"
-    );
-
-
-  if (number) {
-
-    number.textContent =
-      data.number;
-
-  }
-
-
-  if (title) {
-
-    title.textContent =
-      data.title;
-
-  }
-
-
-  if (description) {
-
-    description.textContent =
-      data.description;
-
-  }
-
-
-  if (card) {
-
-    card.classList.add(
-      "visible"
-    );
-
-  }
+  showScreen("howRekh");
 
 }
 
 
 /* =====================================================
-   CLOSE HOTSPOT
+   ACCESSIBILITY FROM AR
 ===================================================== */
 
-function closeHotspot() {
+function openAccessibilityFromAR() {
 
-  const card =
-    document.getElementById(
-      "hotspotInfo"
-    );
-
-
-  if (card) {
-
-    card.classList.remove(
-      "visible"
-    );
-
-  }
+  openAccessibility();
 
 }
 
 
 /* =====================================================
-   CONNECT HOTSPOTS TO MINDAR
+   GLOBAL TOUCH HANDLER
+===================================================== */
+
+/*
+   THIS is the key change.
+
+   When the artifact has been found,
+   the FIRST user touch anywhere on the AR
+   screen moves from:
+
+      ARTIFACT FOUND
+
+   to:
+
+      HOTSPOTS
+
+   We ignore the back and accessibility buttons.
+*/
+
+document.addEventListener(
+  "pointerup",
+  event => {
+
+    if (!artifactDetected) {
+
+      return;
+
+    }
+
+
+    if (hotspotMode) {
+
+      return;
+
+    }
+
+
+    /*
+       Don't treat the top controls
+       as the "continue" tap.
+    */
+
+    if (
+      event.target.closest(".ar-back") ||
+      event.target.closest(".ar-accessibility") ||
+      event.target.closest("#accessibilityOverlay")
+    ) {
+
+      return;
+
+    }
+
+
+    enterHotspotMode();
+
+  }
+);
+
+
+/* =====================================================
+   INITIAL AR STATE
 ===================================================== */
 
 document.addEventListener(
   "DOMContentLoaded",
   () => {
 
-    const hotspots = [
-
-      "hotspot1",
-
-      "hotspot2",
-
-      "hotspot3"
-
-    ];
-
-
-    hotspots.forEach(id => {
-
-      const hotspot =
-        document.getElementById(id);
-
-
-      if (!hotspot) {
-
-        console.error(
-          "Hotspot not found:",
-          id
-        );
-
-        return;
-
-      }
-
-
-      hotspot.addEventListener(
-        "click",
-        () => {
-
-          console.log(
-            "Hotspot clicked:",
-            id
-          );
-
-
-          openHotspot(id);
-
-        }
-      );
-
-    });
+    hideHotspots();
 
   }
 );
