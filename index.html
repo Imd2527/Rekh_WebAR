@@ -12,17 +12,33 @@
 
   <title>Rekh — WebAR</title>
 
-  <!-- A-FRAME -->
+
+  <!-- =====================================================
+       A-FRAME
+  ====================================================== -->
+
   <script
     src="https://aframe.io/releases/1.5.0/aframe.min.js">
   </script>
 
-  <!-- MINDAR -->
+
+  <!-- =====================================================
+       MINDAR
+  ====================================================== -->
+
   <script
     src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js">
   </script>
 
-  <link rel="stylesheet" href="style.css">
+
+  <!-- =====================================================
+       CSS
+  ====================================================== -->
+
+  <link
+    rel="stylesheet"
+    href="style.css"
+  >
 
 </head>
 
@@ -31,7 +47,7 @@
 
 
 <!-- =====================================================
-     LOADING
+     LOADING SCREEN
 ===================================================== -->
 
 <section
@@ -47,18 +63,22 @@
 
   <h1>Rekh</h1>
 
-  <p>Loading your experience...</p>
+  <p>
+    Loading your experience...
+  </p>
 
   <div class="loading-line"></div>
 
-  <span>PLEASE WAIT</span>
+  <span>
+    PLEASE WAIT
+  </span>
 
 </section>
 
 
 
 <!-- =====================================================
-     WELCOME
+     WELCOME SCREEN
 ===================================================== -->
 
 <section
@@ -72,11 +92,16 @@
     alt="Rekh"
   >
 
-  <h1>Welcome to Rekh</h1>
+  <h1>
+    Welcome to Rekh
+  </h1>
+
 
   <div class="welcome-card">
 
-    <h2>Discover stories beyond the frame.</h2>
+    <h2>
+      Discover stories beyond the frame.
+    </h2>
 
     <p>
       Point your camera at museum artifacts
@@ -99,7 +124,7 @@
 
 
 <!-- =====================================================
-     HOW REKH
+     HOW REKH WORKS
 ===================================================== -->
 
 <section
@@ -147,7 +172,10 @@
   </div>
 
 
-  <h1>How Rekh Works</h1>
+  <h1>
+    How Rekh Works
+  </h1>
+
 
   <p>
     Scan an artifact to reveal its stories,
@@ -166,7 +194,7 @@
 
 
 <!-- =====================================================
-     SETUP
+     SET UP EXPERIENCE
 ===================================================== -->
 
 <section
@@ -174,7 +202,8 @@
   class="screen setup-screen"
 >
 
-  <!-- BACK -->
+
+  <!-- BACK BUTTON -->
 
   <button
     class="top-back"
@@ -187,7 +216,11 @@
 
   <div class="setup-content">
 
-    <h1>Set Up the Experience</h1>
+
+    <h1>
+      Set Up the Experience
+    </h1>
+
 
     <p>
       Choose what feels right. You can<br>
@@ -195,7 +228,9 @@
     </p>
 
 
-    <!-- ACCESSIBILITY BUTTON -->
+    <!-- =================================================
+         ACCESSIBILITY BUTTON
+    ================================================== -->
 
     <button
       id="accessibilityButton"
@@ -212,12 +247,17 @@
 
       </span>
 
-      <span>Accessibility</span>
+
+      <span>
+        Accessibility
+      </span>
 
     </button>
 
 
-    <!-- CONTINUE -->
+    <!-- =================================================
+         CONTINUE
+    ================================================== -->
 
     <button
       id="setupContinue"
@@ -242,10 +282,11 @@
   class="accessibility-overlay"
 >
 
+
   <div class="accessibility-card">
 
 
-    <!-- DRAG HANDLE -->
+    <!-- HANDLE -->
 
     <div class="drag-handle"></div>
 
@@ -254,7 +295,9 @@
 
     <div class="accessibility-header">
 
+
       <div class="accessibility-title">
+
 
         <div class="accessibility-main-icon">
 
@@ -268,9 +311,13 @@
 
         <div>
 
-          <h1>Accessibility</h1>
+          <h1>
+            Accessibility
+          </h1>
 
-          <p>Make the experience your own</p>
+          <p>
+            Make the experience your own
+          </p>
 
         </div>
 
@@ -289,9 +336,12 @@
 
 
 
-    <!-- LANGUAGE -->
+    <!-- =================================================
+         LANGUAGE
+    ================================================== -->
 
     <div class="accessibility-row">
+
 
       <img
         class="accessibility-icon"
@@ -299,11 +349,16 @@
         alt=""
       >
 
+
       <div class="accessibility-label">
 
-        <h2>Language</h2>
+        <h2>
+          Language
+        </h2>
 
-        <p>Choose your language</p>
+        <p>
+          Choose your language
+        </p>
 
       </div>
 
@@ -325,9 +380,12 @@
 
 
 
-    <!-- TEXT SIZE -->
+    <!-- =================================================
+         TEXT SIZE
+    ================================================== -->
 
     <div class="accessibility-row">
+
 
       <img
         class="accessibility-icon"
@@ -335,22 +393,33 @@
         alt=""
       >
 
+
       <div class="accessibility-label">
 
-        <h2>Text size</h2>
+        <h2>
+          Text size
+        </h2>
 
-        <p>Make words bigger or smaller</p>
+        <p>
+          Make words bigger or smaller
+        </p>
 
       </div>
 
 
       <div class="text-size-selector">
 
-        <button>A</button>
+        <button>
+          A
+        </button>
 
-        <button class="selected">A</button>
+        <button class="selected">
+          A
+        </button>
 
-        <button>A</button>
+        <button>
+          A
+        </button>
 
       </div>
 
@@ -358,9 +427,12 @@
 
 
 
-    <!-- AUDIO -->
+    <!-- =================================================
+         AUDIO
+    ================================================== -->
 
     <div class="accessibility-row">
+
 
       <img
         class="accessibility-icon"
@@ -368,11 +440,16 @@
         alt=""
       >
 
+
       <div class="accessibility-label">
 
-        <h2>Audio</h2>
+        <h2>
+          Audio
+        </h2>
 
-        <p>Narrated stories through earphones</p>
+        <p>
+          Narrated stories through earphones
+        </p>
 
       </div>
 
@@ -390,9 +467,12 @@
 
 
 
-    <!-- CAPTIONS -->
+    <!-- =================================================
+         CAPTIONS
+    ================================================== -->
 
     <div class="accessibility-row">
+
 
       <img
         class="accessibility-icon"
@@ -400,11 +480,16 @@
         alt=""
       >
 
+
       <div class="accessibility-label">
 
-        <h2>Captions</h2>
+        <h2>
+          Captions
+        </h2>
 
-        <p>Show text for every story</p>
+        <p>
+          Show text for every story
+        </p>
 
       </div>
 
@@ -422,9 +507,12 @@
 
 
 
-    <!-- HIGH CONTRAST -->
+    <!-- =================================================
+         HIGH CONTRAST
+    ================================================== -->
 
     <div class="accessibility-row">
+
 
       <img
         class="accessibility-icon"
@@ -432,11 +520,16 @@
         alt=""
       >
 
+
       <div class="accessibility-label">
 
-        <h2>High contrast</h2>
+        <h2>
+          High contrast
+        </h2>
 
-        <p>For easier readability</p>
+        <p>
+          For easier readability
+        </p>
 
       </div>
 
@@ -454,9 +547,12 @@
 
 
 
-    <!-- HAPTICS -->
+    <!-- =================================================
+         HAPTIC FEEDBACK
+    ================================================== -->
 
     <div class="accessibility-row last">
+
 
       <img
         class="accessibility-icon"
@@ -464,11 +560,16 @@
         alt=""
       >
 
+
       <div class="accessibility-label">
 
-        <h2>Haptic feedback</h2>
+        <h2>
+          Haptic feedback
+        </h2>
 
-        <p>Gentle vibrations</p>
+        <p>
+          Gentle vibrations
+        </p>
 
       </div>
 
@@ -501,9 +602,9 @@
 >
 
 
-  <!-- =================================================
+  <!-- ===================================================
        MINDAR SCENE
-  ================================================== -->
+  ==================================================== -->
 
   <a-scene
 
@@ -531,9 +632,10 @@
     device-orientation-permission-ui="enabled: false"
 
     embedded
-
   >
 
+
+    <!-- CAMERA -->
 
     <a-camera
       position="0 0 0"
@@ -541,19 +643,72 @@
     ></a-camera>
 
 
-    <!-- TARGET -->
+    <!-- =================================================
+         VISHNU IMAGE TARGET
+    ================================================== -->
 
     <a-entity
       id="vishnuTarget"
       mindar-image-target="targetIndex: 0"
     >
 
-      <!--
-        The artifact itself is NOT placed here.
 
-        The physical Vishnu artifact/image is what
-        the camera sees and MindAR tracks.
-      -->
+      <!-- ===============================================
+           HOTSPOT 1
+           HEAD / CROWN
+      ================================================ -->
+
+      <a-circle
+        id="hotspot1"
+        class="hotspot"
+        position="0 0.27 0.05"
+        radius="0.045"
+        material="
+          color: #f4d35e;
+          shader: flat;
+          opacity: 1;
+          side: double;
+        "
+      ></a-circle>
+
+
+      <!-- ===============================================
+           HOTSPOT 2
+           LEFT SIDE
+      ================================================ -->
+
+      <a-circle
+        id="hotspot2"
+        class="hotspot"
+        position="-0.27 0.02 0.05"
+        radius="0.045"
+        material="
+          color: #f4d35e;
+          shader: flat;
+          opacity: 1;
+          side: double;
+        "
+      ></a-circle>
+
+
+      <!-- ===============================================
+           HOTSPOT 3
+           RIGHT SIDE
+      ================================================ -->
+
+      <a-circle
+        id="hotspot3"
+        class="hotspot"
+        position="0.27 -0.05 0.05"
+        radius="0.045"
+        material="
+          color: #f4d35e;
+          shader: flat;
+          opacity: 1;
+          side: double;
+        "
+      ></a-circle>
+
 
     </a-entity>
 
@@ -562,12 +717,9 @@
 
 
 
-  <!-- =================================================
-       AR UI LAYER
-  ================================================== -->
-
-
-  <!-- BACK -->
+  <!-- ===================================================
+       AR UI — BACK
+  ==================================================== -->
 
   <button
     class="ar-back"
@@ -578,7 +730,10 @@
   </button>
 
 
-  <!-- ACCESSIBILITY -->
+
+  <!-- ===================================================
+       AR UI — ACCESSIBILITY
+  ==================================================== -->
 
   <button
     class="ar-accessibility"
@@ -594,7 +749,10 @@
   </button>
 
 
-  <!-- SCAN MESSAGE -->
+
+  <!-- ===================================================
+       SCAN MESSAGE
+  ==================================================== -->
 
   <div
     id="scanMessage"
@@ -604,25 +762,39 @@
   </div>
 
 
-  <!-- SCAN FRAME -->
+
+  <!-- ===================================================
+       SCAN FRAME
+  ==================================================== -->
 
   <div
     id="scanFrame"
     class="scan-frame"
   >
 
-    <span class="corner top-left"></span>
+    <span
+      class="corner top-left"
+    ></span>
 
-    <span class="corner top-right"></span>
+    <span
+      class="corner top-right"
+    ></span>
 
-    <span class="corner bottom-left"></span>
+    <span
+      class="corner bottom-left"
+    ></span>
 
-    <span class="corner bottom-right"></span>
+    <span
+      class="corner bottom-right"
+    ></span>
 
   </div>
 
 
-  <!-- SEARCH ICON -->
+
+  <!-- ===================================================
+       SEARCH ICON
+  ==================================================== -->
 
   <div
     id="searchIcon"
@@ -632,7 +804,10 @@
   </div>
 
 
-  <!-- SCANNING STATUS -->
+
+  <!-- ===================================================
+       SCAN STATUS
+  ==================================================== -->
 
   <div
     id="scanStatus"
@@ -642,12 +817,16 @@
   </div>
 
 
-  <!-- ARTIFACT FOUND -->
+
+  <!-- ===================================================
+       ARTIFACT FOUND
+  ==================================================== -->
 
   <div
     id="artifactFound"
     class="artifact-found"
   >
+
 
     <div class="found-pill">
       Artifact found
@@ -656,7 +835,9 @@
 
     <div class="artifact-info">
 
-      <h2>Shri Vishnu</h2>
+      <h2>
+        Shri Vishnu
+      </h2>
 
       <h3>
         South India, 17th Century A.D.
@@ -672,13 +853,97 @@
 
     </div>
 
+
+  </div>
+
+
+
+  <!-- ===================================================
+       HOTSPOT INFORMATION CARD
+  ==================================================== -->
+
+  <div
+    id="hotspotInfo"
+    class="hotspot-info"
+  >
+
+
+    <!-- CLOSE -->
+
+    <button
+      id="hotspotClose"
+      class="hotspot-close"
+      onclick="closeHotspot()"
+      aria-label="Close hotspot information"
+    >
+      ×
+    </button>
+
+
+    <!-- NUMBER -->
+
+    <div
+      id="hotspotNumber"
+      class="hotspot-number"
+    >
+      01
+    </div>
+
+
+    <!-- TITLE -->
+
+    <h2
+      id="hotspotTitle"
+    >
+      Vishnu
+    </h2>
+
+
+    <!-- DESCRIPTION -->
+
+    <p
+      id="hotspotDescription"
+    >
+      Discover the story behind this detail.
+    </p>
+
+
+    <!-- ACTIONS -->
+
+    <div
+      class="hotspot-actions"
+    >
+
+      <button>
+        Audio
+      </button>
+
+      <button>
+        Animation
+      </button>
+
+      <button>
+        Written
+      </button>
+
+    </div>
+
+
   </div>
 
 
 </section>
 
 
-<script src="script.js"></script>
+
+<!-- =====================================================
+     JAVASCRIPT
+===================================================== -->
+
+<script
+  src="script.js">
+</script>
+
 
 </body>
 
