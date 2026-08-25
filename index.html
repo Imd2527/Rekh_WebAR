@@ -1,18 +1,17 @@
 <!DOCTYPE html>
-
 <html lang="en">
 
 <head>
-check
+
   <meta charset="UTF-8">
 
-<meta
-name="viewport"
-content="width=device-width, initial-scale=1.0, viewport-fit=cover"
-
-
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+  >
 
   <title>Rekh — WebAR</title>
+
 
   <!-- =====================================================
        A-FRAME
@@ -22,6 +21,7 @@ content="width=device-width, initial-scale=1.0, viewport-fit=cover"
     src="https://aframe.io/releases/1.5.0/aframe.min.js">
   </script>
 
+
   <!-- =====================================================
        MINDAR
   ====================================================== -->
@@ -30,17 +30,6 @@ content="width=device-width, initial-scale=1.0, viewport-fit=cover"
     src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js">
   </script>
 
-  <!-- =====================================================
-       MEDIAPIPE HAND TRACKING
-  ====================================================== -->
-
-  <script
-    src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js">
-  </script>
-
-  <script
-    src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js">
-  </script>
 
   <!-- =====================================================
        CSS
@@ -51,311 +40,26 @@ content="width=device-width, initial-scale=1.0, viewport-fit=cover"
     href="style.css"
   >
 
-  <!-- =====================================================
-       3D ARTIFACT VIEW CSS
-  ====================================================== -->
-
-  <style>
-
-    /* =====================================================
-       VIEW ARTIFACT IN 3D BUTTON
-    ===================================================== */
-
-    .view-3d-button {
-
-      position: fixed;
-
-      left: 50%;
-      bottom: 32px;
-
-      transform: translateX(-50%);
-
-      display: none;
-
-      align-items: center;
-
-      gap: 14px;
-
-      padding: 14px 22px;
-
-      background: rgba(55, 25, 15, 0.96);
-
-      color: white;
-
-      border: 1px solid rgba(255,255,255,0.15);
-
-      border-radius: 18px;
-
-      z-index: 1000;
-
-      cursor: pointer;
-
-      box-shadow:
-        0 8px 30px rgba(0,0,0,0.25);
-
-      backdrop-filter: blur(8px);
-
-      -webkit-backdrop-filter: blur(8px);
-
-    }
-
-
-    .view-3d-button.visible {
-
-      display: flex;
-
-    }
-
-
-    .view-3d-icon {
-
-      width: 34px;
-      height: 34px;
-
-      display: flex;
-
-      align-items: center;
-      justify-content: center;
-
-      border-radius: 50%;
-
-      background: rgba(255,255,255,0.1);
-
-      font-size: 20px;
-
-    }
-
-
-    .view-3d-button strong {
-
-      display: block;
-
-      font-size: 14px;
-
-      letter-spacing: 0.04em;
-
-      white-space: nowrap;
-
-    }
-
-
-    .view-3d-button small {
-
-      display: block;
-
-      margin-top: 3px;
-
-      font-size: 11px;
-
-      opacity: 0.7;
-
-    }
-
-
-    /* =====================================================
-       3D VIEW INSTRUCTION
-    ===================================================== */
-
-    .artifact-3d-ui {
-
-      position: fixed;
-
-      top: 24px;
-      left: 50%;
-
-      transform: translateX(-50%);
-
-      display: none;
-
-      padding: 14px 54px 14px 20px;
-
-      background: rgba(45, 20, 12, 0.94);
-
-      color: white;
-
-      border-radius: 18px;
-
-      z-index: 1001;
-
-      text-align: center;
-
-      pointer-events: none;
-
-      box-shadow:
-        0 8px 30px rgba(0,0,0,0.2);
-
-      backdrop-filter: blur(8px);
-
-      -webkit-backdrop-filter: blur(8px);
-
-    }
-
-
-    .artifact-3d-ui.visible {
-
-      display: block;
-
-    }
-
-
-    .artifact-3d-title {
-
-      font-size: 14px;
-
-      font-weight: 600;
-
-      letter-spacing: 0.08em;
-
-    }
-
-
-    .artifact-3d-instruction {
-
-      margin-top: 5px;
-
-      font-size: 11px;
-
-      line-height: 1.4;
-
-      opacity: 0.75;
-
-    }
-
-
-    .artifact-3d-close {
-
-      position: absolute;
-
-      top: 7px;
-      right: 9px;
-
-      width: 30px;
-      height: 30px;
-
-      border: none;
-
-      border-radius: 50%;
-
-      background: rgba(255,255,255,0.08);
-
-      color: white;
-
-      font-size: 22px;
-
-      cursor: pointer;
-
-      pointer-events: auto;
-
-      display: flex;
-
-      align-items: center;
-      justify-content: center;
-
-      padding: 0;
-
-    }
-
-
-    /* =====================================================
-       3D LOADING MESSAGE
-    ===================================================== */
-
-    .artifact-3d-loading {
-
-      position: fixed;
-
-      left: 50%;
-      top: 50%;
-
-      transform: translate(-50%, -50%);
-
-      display: none;
-
-      z-index: 1002;
-
-      padding: 12px 20px;
-
-      border-radius: 14px;
-
-      background: rgba(45, 20, 12, 0.9);
-
-      color: white;
-
-      font-size: 13px;
-
-      pointer-events: none;
-
-    }
-
-
-    .artifact-3d-loading.visible {
-
-      display: block;
-
-    }
-
-
-    /* =====================================================
-       MOBILE
-    ===================================================== */
-
-    @media (max-width: 600px) {
-
-      .view-3d-button {
-
-        bottom: 24px;
-
-        width: calc(100% - 40px);
-
-        max-width: 340px;
-
-        justify-content: center;
-
-        padding: 13px 18px;
-
-      }
-
-
-      .view-3d-button strong {
-
-        font-size: 13px;
-
-      }
-
-
-      .artifact-3d-ui {
-
-        top: 18px;
-
-        width: calc(100% - 70px);
-
-        max-width: 300px;
-
-      }
-
-    }
-
-  </style>
-
 </head>
+
 
 <body>
 
+
 <!-- =====================================================
      LOADING SCREEN
-====================================================== -->
+===================================================== -->
 
 <section
   id="loading"
   class="screen active"
 >
 
-<img
-class="logo"
-src="assets/images/Rekh Logo.png"
-alt="Rekh"
-
-
+  <img
+    class="logo"
+    src="assets/images/Rekh Logo.png"
+    alt="Rekh"
+  >
 
   <h1>
     Rekh
@@ -377,45 +81,43 @@ alt="Rekh"
 
 <!-- =====================================================
      WELCOME SCREEN
-====================================================== -->
+===================================================== -->
 
 <section
   id="welcome"
   class="screen"
 >
 
-<img
-class="logo"
-src="assets/images/Rekh Logo.png"
-alt="Rekh"
-
-
+  <img
+    class="logo"
+    src="assets/images/Rekh Logo.png"
+    alt="Rekh"
+  >
 
   <h1>
     Welcome to Rekh
   </h1>
 
+
   <div class="welcome-card">
 
-<h2>
-  Discover stories beyond the frame.
-</h2>
+    <h2>
+      Discover stories beyond the frame.
+    </h2>
 
-<p>
-  Through this experience uncover the stories within.
-</p>
+    <p>
+      Through this experience uncover the stories within.
+    </p>
 
-<div class="small-line"></div>
+    <div class="small-line"></div>
 
   </div>
 
-<button
-onclick="showScreen('howRekh')"
 
-
-
-Get Started
-
+  <button
+    onclick="showScreen('howRekh')"
+  >
+    Get Started
   </button>
 
 </section>
@@ -424,7 +126,7 @@ Get Started
 
 <!-- =====================================================
      HOW REKH WORKS
-====================================================== -->
+===================================================== -->
 
 <section
   id="howRekh"
@@ -433,42 +135,43 @@ Get Started
 
   <div class="story-carousel">
 
-<div class="story-image">
+    <div class="story-image">
 
-  <img
-    id="storyFrame"
-    src="assets/images/Rekh_How_It_Works_Frame_1_HD.png"
-    alt="How Rekh works"
-  >
+      <img
+        id="storyFrame"
+        src="assets/images/Rekh_How_It_Works_Frame_1_HD.png"
+        alt="How Rekh works"
+      >
 
-</div>
+    </div>
 
 
-<div class="story-dots">
+    <div class="story-dots">
 
-  <button
-    class="dot active"
-    onclick="showStory(0)"
-  ></button>
+      <button
+        class="dot active"
+        onclick="showStory(0)"
+      ></button>
 
-  <button
-    class="dot"
-    onclick="showStory(1)"
-  ></button>
+      <button
+        class="dot"
+        onclick="showStory(1)"
+      ></button>
 
-  <button
-    class="dot"
-    onclick="showStory(2)"
-  ></button>
+      <button
+        class="dot"
+        onclick="showStory(2)"
+      ></button>
 
-  <button
-    class="dot"
-    onclick="showStory(3)"
-  ></button>
+      <button
+        class="dot"
+        onclick="showStory(3)"
+      ></button>
 
-</div>
+    </div>
 
   </div>
+
 
   <h1>
     How Rekh Works
@@ -479,13 +182,11 @@ Get Started
     details and hidden moments.
   </p>
 
-<button
-onclick="showScreen('setup')"
 
-
-
-Continue
-
+  <button
+    onclick="showScreen('setup')"
+  >
+    Continue
   </button>
 
 </section>
@@ -494,76 +195,75 @@ Continue
 
 <!-- =====================================================
      SET UP EXPERIENCE
-====================================================== -->
+===================================================== -->
 
 <section
   id="setup"
   class="screen setup-screen"
 >
 
+
   <!-- BACK BUTTON -->
 
-<button
-class="top-back"
-onclick="showScreen('howRekh')"
-aria-label="Back"
-
-
-
-←
-
+  <button
+    class="top-back"
+    onclick="showScreen('howRekh')"
+    aria-label="Back"
+  >
+    ←
   </button>
+
 
   <div class="setup-content">
 
-<h1>
-  Set Up the Experience
-</h1>
+    <h1>
+      Set Up the Experience
+    </h1>
 
-<p>
-  Choose what feels right. You can<br>
-  change anytime.
-</p>
+    <p>
+      Choose what feels right. You can<br>
+      change anytime.
+    </p>
 
 
-<!-- =================================================
-     ACCESSIBILITY BUTTON
-================================================== -->
+    <!-- =================================================
+         ACCESSIBILITY BUTTON
+    ================================================== -->
 
-<button
-  id="accessibilityButton"
-  class="accessibility-button"
-  onclick="openAccessibility()"
->
-
-  <span class="button-icon">
-
-    <img
-      src="assets/images/AccessibilityIcon.png"
-      alt=""
+    <button
+      id="accessibilityButton"
+      class="accessibility-button"
+      onclick="openAccessibility()"
     >
 
-  </span>
+      <span class="button-icon">
+
+        <img
+          src="assets/images/AccessibilityIcon.png"
+          alt=""
+        >
+
+      </span>
 
 
-  <span>
-    Accessibility
-  </span>
+      <span>
+        Accessibility
+      </span>
 
-</button>
+    </button>
 
 
-<!-- =================================================
-     CONTINUE
-================================================== -->
+    <!-- =================================================
+         CONTINUE
+    ================================================== -->
 
-<button
-  id="setupContinue"
-  class="setup-continue"
-  onclick="continueSetup()"
->
-  Continue
-</button>
+    <button
+      id="setupContinue"
+      class="setup-continue"
+      onclick="continueSetup()"
+    >
+      Continue
+    </button>
 
   </div>
 
@@ -573,306 +273,309 @@ aria-label="Back"
 
 <!-- =====================================================
      ACCESSIBILITY OVERLAY
-====================================================== -->
+===================================================== -->
 
 <div
   id="accessibilityOverlay"
   class="accessibility-overlay"
 >
 
+
   <div class="accessibility-card">
 
-<!-- HANDLE -->
 
-<div class="drag-handle"></div>
+    <!-- HANDLE -->
 
-
-<!-- HEADER -->
-
-<div class="accessibility-header">
-
-  <div class="accessibility-title">
+    <div class="drag-handle"></div>
 
 
-    <div class="accessibility-main-icon">
+    <!-- HEADER -->
+
+    <div class="accessibility-header">
+
+      <div class="accessibility-title">
+
+
+        <div class="accessibility-main-icon">
+
+          <img
+            src="assets/images/AccessibilityIcon.png"
+            alt=""
+          >
+
+        </div>
+
+
+        <div>
+
+          <h1>
+            Accessibility
+          </h1>
+
+          <p>
+            Make the experience your own
+          </p>
+
+        </div>
+
+      </div>
+
+
+      <button
+        class="accessibility-close"
+        onclick="closeAccessibility()"
+        aria-label="Close accessibility"
+      >
+        ×
+      </button>
+
+    </div>
+
+
+
+    <!-- =================================================
+         LANGUAGE
+    ================================================== -->
+
+    <div class="accessibility-row">
 
       <img
-        src="assets/images/AccessibilityIcon.png"
+        class="accessibility-icon"
+        src="assets/images/LanguageTranslateIcon.png"
         alt=""
       >
 
+
+      <div class="accessibility-label">
+
+        <h2>
+          Language
+        </h2>
+
+        <p>
+          Choose your language
+        </p>
+
+      </div>
+
+
+      <button
+        class="language-selector"
+      >
+
+        English
+
+        <img
+          src="assets/images/LanguageTranslateIcon.png"
+          alt=""
+        >
+
+      </button>
+
     </div>
 
 
-    <div>
 
-      <h1>
-        Accessibility
-      </h1>
+    <!-- =================================================
+         TEXT SIZE
+    ================================================== -->
 
-      <p>
-        Make the experience your own
-      </p>
+    <div class="accessibility-row">
+
+      <img
+        class="accessibility-icon"
+        src="assets/images/TextSizeIcon.png"
+        alt=""
+      >
+
+
+      <div class="accessibility-label">
+
+        <h2>
+          Text size
+        </h2>
+
+        <p>
+          Make words bigger or smaller
+        </p>
+
+      </div>
+
+
+      <div class="text-size-selector">
+
+        <button>
+          A
+        </button>
+
+        <button class="selected">
+          A
+        </button>
+
+        <button>
+          A
+        </button>
+
+      </div>
 
     </div>
 
-  </div>
 
 
-  <button
-    class="accessibility-close"
-    onclick="closeAccessibility()"
-    aria-label="Close accessibility"
-  >
-    ×
-  </button>
+    <!-- =================================================
+         AUDIO
+    ================================================== -->
 
-</div>
+    <div class="accessibility-row">
 
+      <img
+        class="accessibility-icon"
+        src="assets/images/AudioIcon.png"
+        alt=""
+      >
 
 
-<!-- =================================================
-     LANGUAGE
-================================================== -->
+      <div class="accessibility-label">
 
-<div class="accessibility-row">
+        <h2>
+          Audio
+        </h2>
 
-  <img
-    class="accessibility-icon"
-    src="assets/images/LanguageTranslateIcon.png"
-    alt=""
-  >
+        <p>
+          Narrated stories through earphones
+        </p>
 
+      </div>
 
-  <div class="accessibility-label">
 
-    <h2>
-      Language
-    </h2>
+      <button
+        class="toggle active"
+        onclick="toggleSetting(this)"
+      >
 
-    <p>
-      Choose your language
-    </p>
+        <span></span>
 
-  </div>
+      </button>
 
+    </div>
 
-  <button
-    class="language-selector"
-  >
 
-    English
 
-    <img
-      src="assets/images/LanguageTranslateIcon.png"
-      alt=""
-    >
+    <!-- =================================================
+         CAPTIONS
+    ================================================== -->
 
-  </button>
+    <div class="accessibility-row">
 
-</div>
+      <img
+        class="accessibility-icon"
+        src="assets/images/CaptionsIcon.png"
+        alt=""
+      >
 
 
+      <div class="accessibility-label">
 
-<!-- =================================================
-     TEXT SIZE
-================================================== -->
+        <h2>
+          Captions
+        </h2>
 
-<div class="accessibility-row">
+        <p>
+          Show text for every story
+        </p>
 
-  <img
-    class="accessibility-icon"
-    src="assets/images/TextSizeIcon.png"
-    alt=""
-  >
+      </div>
 
 
-  <div class="accessibility-label">
+      <button
+        class="toggle active"
+        onclick="toggleSetting(this)"
+      >
 
-    <h2>
-      Text size
-    </h2>
+        <span></span>
 
-    <p>
-      Make words bigger or smaller
-    </p>
+      </button>
 
-  </div>
+    </div>
 
 
-  <div class="text-size-selector">
 
-    <button>
-      A
-    </button>
+    <!-- =================================================
+         HIGH CONTRAST
+    ================================================== -->
 
-    <button class="selected">
-      A
-    </button>
+    <div class="accessibility-row">
 
-    <button>
-      A
-    </button>
+      <img
+        class="accessibility-icon"
+        src="assets/images/HighContrastIcon.png"
+        alt=""
+      >
 
-  </div>
 
-</div>
+      <div class="accessibility-label">
 
+        <h2>
+          High contrast
+        </h2>
 
+        <p>
+          For easier readability
+        </p>
 
-<!-- =================================================
-     AUDIO
-================================================== -->
+      </div>
 
-<div class="accessibility-row">
 
-  <img
-    class="accessibility-icon"
-    src="assets/images/AudioIcon.png"
-    alt=""
-  >
+      <button
+        class="toggle"
+        onclick="toggleSetting(this)"
+      >
 
+        <span></span>
 
-  <div class="accessibility-label">
+      </button>
 
-    <h2>
-      Audio
-    </h2>
+    </div>
 
-    <p>
-      Narrated stories through earphones
-    </p>
 
-  </div>
 
+    <!-- =================================================
+         HAPTIC FEEDBACK
+    ================================================== -->
 
-  <button
-    class="toggle active"
-    onclick="toggleSetting(this)"
-  >
+    <div class="accessibility-row last">
 
-    <span></span>
+      <img
+        class="accessibility-icon"
+        src="assets/images/HapticsIcon.png"
+        alt=""
+      >
 
-  </button>
 
-</div>
+      <div class="accessibility-label">
 
+        <h2>
+          Haptic feedback
+        </h2>
 
+        <p>
+          Gentle vibrations
+        </p>
 
-<!-- =================================================
-     CAPTIONS
-================================================== -->
+      </div>
 
-<div class="accessibility-row">
 
-  <img
-    class="accessibility-icon"
-    src="assets/images/CaptionsIcon.png"
-    alt=""
-  >
+      <button
+        class="toggle active"
+        onclick="toggleSetting(this)"
+      >
 
+        <span></span>
 
-  <div class="accessibility-label">
+      </button>
 
-    <h2>
-      Captions
-    </h2>
+    </div>
 
-    <p>
-      Show text for every story
-    </p>
-
-  </div>
-
-
-  <button
-    class="toggle active"
-    onclick="toggleSetting(this)"
-  >
-
-    <span></span>
-
-  </button>
-
-</div>
-
-
-
-<!-- =================================================
-     HIGH CONTRAST
-================================================== -->
-
-<div class="accessibility-row">
-
-  <img
-    class="accessibility-icon"
-    src="assets/images/HighContrastIcon.png"
-    alt=""
-  >
-
-
-  <div class="accessibility-label">
-
-    <h2>
-      High contrast
-    </h2>
-
-    <p>
-      For easier readability
-    </p>
-
-  </div>
-
-
-  <button
-    class="toggle"
-    onclick="toggleSetting(this)"
-  >
-
-    <span></span>
-
-  </button>
-
-</div>
-
-
-
-<!-- =================================================
-     HAPTIC FEEDBACK
-================================================== -->
-
-<div class="accessibility-row last">
-
-  <img
-    class="accessibility-icon"
-    src="assets/images/HapticsIcon.png"
-    alt=""
-  >
-
-
-  <div class="accessibility-label">
-
-    <h2>
-      Haptic feedback
-    </h2>
-
-    <p>
-      Gentle vibrations
-    </p>
-
-  </div>
-
-
-  <button
-    class="toggle active"
-    onclick="toggleSetting(this)"
-  >
-
-    <span></span>
-
-  </button>
-
-</div>
 
   </div>
 
@@ -882,232 +585,151 @@ aria-label="Back"
 
 <!-- =====================================================
      AR SCREEN
-====================================================== -->
+===================================================== -->
 
 <section
   id="arScreen"
   class="screen ar-screen"
 >
 
+
   <!-- ===================================================
        MINDAR SCENE
   ==================================================== -->
 
-<a-scene
-id="mindarScene"
+  <a-scene
+    id="mindarScene"
 
-mindar-image="
-  imageTargetSrc: assets/images/Vishnu_Artifact-target.mind;
-  autoStart: false;
-  filterMinCF: 0.001;
-  filterBeta: 1000;
-  warmupTolerance: 5;
-  missTolerance: 5;
-"
-
-color-space="sRGB"
-
-renderer="
-  colorManagement: true;
-  physicallyCorrectLights: true;
-  antialias: true;
-  alpha: true;
-"
-
-vr-mode-ui="enabled: false"
-
-device-orientation-permission-ui="enabled: false"
-
-embedded
-
-
-
-<!-- =================================================
-     3D MODEL ASSET
-     
-     IMPORTANT:
-     The GLB is inside assets/images/
-================================================== -->
-
-<a-assets>
-
-  <a-asset-item
-    id="artifactModel"
-    src="assets/images/visnu_lokesvara17mb.glb"
-  ></a-asset-item>
-
-</a-assets>
-
-
-
-<!-- =================================================
-     LIGHTING FOR GLB
-================================================== -->
-
-<a-entity
-  light="
-    type: ambient;
-    color: #ffffff;
-    intensity: 1.5;
-  "
-></a-entity>
-
-
-<a-entity
-  light="
-    type: directional;
-    color: #ffffff;
-    intensity: 2;
-  "
-  position="1 2 3"
-></a-entity>
-
-
-<a-entity
-  light="
-    type: directional;
-    color: #ffffff;
-    intensity: 1;
-  "
-  position="-2 1 1"
-></a-entity>
-
-
-
-<!-- =================================================
-     CAMERA
-================================================== -->
-
-<a-camera
-  id="arCamera"
-  position="0 0 0"
-  look-controls="enabled: false"
-  cursor="rayOrigin: mouse"
-  raycaster="objects: .hotspot"
-></a-camera>
-
-
-
-<!-- =================================================
-     VISHNU TARGET
-================================================== -->
-
-<a-entity
-  id="vishnuTarget"
-  mindar-image-target="targetIndex: 0"
->
-
-
-  <!-- =================================================
-       HOTSPOT 1 — CROWN
-  ================================================== -->
-
-  <a-image
-    id="hotspot1"
-    class="hotspot"
-
-    position="0 0.37 0.08"
-
-    width="0.12"
-    height="0.12"
-
-    src="assets/images/Hotspot.png"
-
-    visible="false"
-
-    material="
-      shader: flat;
-      transparent: true;
-      alphaTest: 0.01;
-      side: double;
+    mindar-image="
+      imageTargetSrc: assets/images/Vishnu_Artifact-target.mind;
+      autoStart: false;
+      filterMinCF: 0.001;
+      filterBeta: 1000;
+      warmupTolerance: 5;
+      missTolerance: 5;
     "
-  ></a-image>
 
+    color-space="sRGB"
 
-
-  <!-- =================================================
-       HOTSPOT 2 — RIGHT HAND
-  ================================================== -->
-
-  <a-image
-    id="hotspot2"
-    class="hotspot"
-
-    position="0.25 0.02 0.08"
-
-    width="0.12"
-    height="0.12"
-
-    src="assets/images/Hotspot.png"
-
-    visible="false"
-
-    material="
-      shader: flat;
-      transparent: true;
-      alphaTest: 0.01;
-      side: double;
+    renderer="
+      colorManagement: true;
+      physicallyCorrectLights: true;
+      alpha: true;
     "
-  ></a-image>
+
+    vr-mode-ui="enabled: false"
+
+    device-orientation-permission-ui="enabled: false"
+
+    embedded
+  >
+
+
+    <!-- =================================================
+         CAMERA
+    ================================================== -->
+
+    <a-camera
+      position="0 0 0"
+      look-controls="enabled: false"
+      cursor="rayOrigin: mouse"
+      raycaster="objects: .hotspot"
+    ></a-camera>
 
 
 
-  <!-- =================================================
-       HOTSPOT 3 — ORNAMENTAL ARCH
-  ================================================== -->
+    <!-- =================================================
+         VISHNU TARGET
+    ================================================== -->
 
-  <a-image
-    id="hotspot3"
-    class="hotspot"
-
-    position="0.34 0.34 0.08"
-
-    width="0.12"
-    height="0.12"
-
-    src="assets/images/Hotspot.png"
-
-    visible="false"
-
-    material="
-      shader: flat;
-      transparent: true;
-      alphaTest: 0.01;
-      side: double;
-    "
-  ></a-image>
+    <a-entity
+      id="vishnuTarget"
+      mindar-image-target="targetIndex: 0"
+    >
 
 
-</a-entity>
+      <!-- =================================================
+           HOTSPOT 1 — CROWN
+      ================================================== -->
+
+      <a-image
+        id="hotspot1"
+        class="hotspot"
+
+        position="0 0.37 0.08"
+
+        width="0.12"
+        height="0.12"
+
+        src="assets/images/Hotspot.png"
+
+        visible="false"
+
+        material="
+          shader: flat;
+          transparent: true;
+          alphaTest: 0.01;
+          side: double;
+        "
+      ></a-image>
 
 
 
-<!-- =================================================
-     3D ARTIFACT MODEL
+      <!-- =================================================
+           HOTSPOT 2 — RIGHT HAND
+      ================================================== -->
 
-     IMPORTANT:
-     This model is OUTSIDE the MindAR target.
+      <a-image
+        id="hotspot2"
+        class="hotspot"
 
-     It is shown when the user selects
-     "View Artifact in 3D".
+        position="0.25 0.02 0.08"
 
-     The id "artifact3D" is kept because
-     script.js controls this element.
-================================================== -->
+        width="0.12"
+        height="0.12"
 
-<a-gltf-model
-  id="artifact3D"
+        src="assets/images/Hotspot.png"
 
-  src="#artifactModel"
+        visible="false"
 
-  visible="false"
+        material="
+          shader: flat;
+          transparent: true;
+          alphaTest: 0.01;
+          side: double;
+        "
+      ></a-image>
 
-  position="0 0 -1.8"
 
-  rotation="0 0 0"
 
-  scale="0.8 0.8 0.8"
-></a-gltf-model>
+      <!-- =================================================
+           HOTSPOT 3 — ORNAMENTAL ARCH
+      ================================================== -->
+
+      <a-image
+        id="hotspot3"
+        class="hotspot"
+
+        position="0.34 0.34 0.08"
+
+        width="0.12"
+        height="0.12"
+
+        src="assets/images/Hotspot.png"
+
+        visible="false"
+
+        material="
+          shader: flat;
+          transparent: true;
+          alphaTest: 0.01;
+          side: double;
+        "
+      ></a-image>
+
+
+    </a-entity>
+
 
   </a-scene>
 
@@ -1117,15 +739,12 @@ embedded
        TOP LEFT — BACK
   ==================================================== -->
 
-<button
-class="ar-back"
-onclick="exitAR()"
-aria-label="Back"
-
-
-
-←
-
+  <button
+    class="ar-back"
+    onclick="exitAR()"
+    aria-label="Back"
+  >
+    ←
   </button>
 
 
@@ -1134,17 +753,16 @@ aria-label="Back"
        TOP RIGHT — ACCESSIBILITY
   ==================================================== -->
 
-<button
-class="ar-accessibility"
-onclick="openAccessibility()"
-aria-label="Accessibility"
+  <button
+    class="ar-accessibility"
+    onclick="openAccessibility()"
+    aria-label="Accessibility"
+  >
 
-
-
-<img
-  src="assets/images/AccessibilityIcon.png"
-  alt="Accessibility"
->
+    <img
+      src="assets/images/AccessibilityIcon.png"
+      alt="Accessibility"
+    >
 
   </button>
 
@@ -1172,13 +790,10 @@ aria-label="Accessibility"
     class="scan-frame"
   >
 
-<span class="corner top-left"></span>
-
-<span class="corner top-right"></span>
-
-<span class="corner bottom-left"></span>
-
-<span class="corner bottom-right"></span>
+    <span class="corner top-left"></span>
+    <span class="corner top-right"></span>
+    <span class="corner bottom-left"></span>
+    <span class="corner bottom-right"></span>
 
   </div>
 
@@ -1219,48 +834,50 @@ aria-label="Accessibility"
     class="artifact-found"
   >
 
-<!-- TOP PILL -->
 
-<div class="found-pill">
-  Artifact found
-</div>
+    <!-- TOP PILL -->
 
-
-
-<!-- INFO CARD -->
-
-<div class="artifact-info">
-
-  <h2>
-    Shri Vishnu
-  </h2>
-
-  <h3>
-    South India, 17th Century A.D.
-  </h3>
-
-  <p>
-    A 17th century South Indian
-    stone sculpture depicting
-    Vishnu, surrounded by an
-    intricately carved ornamental
-    frame.
-  </p>
+    <div class="found-pill">
+      Artifact found
+    </div>
 
 
-  <!-- =================================================
-       EXPLORE BUTTON
-  ================================================== -->
 
-  <button
-    id="exploreArtifactButton"
-    class="explore-artifact-button"
-    onclick="enterHotspotMode()"
-  >
-    Explore the artifact
-  </button>
+    <!-- INFO CARD -->
 
-</div>
+    <div class="artifact-info">
+
+      <h2>
+        Shri Vishnu
+      </h2>
+
+      <h3>
+        South India, 17th Century A.D.
+      </h3>
+
+      <p>
+        A 17th century South Indian
+        stone sculpture depicting
+        Vishnu, surrounded by an
+        intricately carved ornamental
+        frame.
+      </p>
+
+
+
+      <!-- =================================================
+           EXPLORE BUTTON
+      ================================================== -->
+
+      <button
+        id="exploreArtifactButton"
+        class="explore-artifact-button"
+        onclick="enterHotspotMode()"
+      >
+        Explore the artifact
+      </button>
+
+    </div>
 
   </div>
 
@@ -1289,9 +906,9 @@ aria-label="Accessibility"
     class="hotspot-ui"
   >
 
-<div class="hotspot-hint">
-  Tap a hotspot to explore
-</div>
+    <div class="hotspot-hint">
+      Tap a hotspot to explore
+    </div>
 
   </div>
 
@@ -1306,287 +923,209 @@ aria-label="Accessibility"
     class="hotspot-info"
   >
 
-<!-- =================================================
-     CLOSE BUTTON
-================================================== -->
 
-<button
-  class="hotspot-close"
-  onclick="closeHotspot()"
-  aria-label="Close"
->
-  ×
-</button>
+    <!-- =================================================
+         CLOSE BUTTON
+    ================================================== -->
 
-
-
-<!-- =================================================
-     STORY TITLE
-================================================== -->
-
-<div class="story-heading">
-
-  <h2 id="hotspotTitle">
-    THE CROWN &amp; FACE
-  </h2>
-
-  <p id="hotspotSubtitle">
-    How the vessel was held
-  </p>
-
-</div>
+    <button
+      class="hotspot-close"
+      onclick="closeHotspot()"
+      aria-label="Close"
+    >
+      ×
+    </button>
 
 
 
-<!-- =================================================
-     VISUAL / ANIMATION
-================================================== -->
+    <!-- =================================================
+         STORY TITLE
+    ================================================== -->
 
-<div
-  class="story-visual"
-  id="storyVisual"
->
+    <div class="story-heading">
 
-  <img
-    src="assets/images/Artifact_GIF.gif"
-    alt="Animation showing the crown and face of Shri Vishnu"
-    class="story-animation"
-  >
+      <h2 id="hotspotTitle">
+        THE CROWN &amp; FACE
+      </h2>
 
-</div>
+      <p id="hotspotSubtitle">
+        How the vessel was held
+      </p>
 
-
-
-<!-- =================================================
-     AUDIO WAVEFORM
-================================================== -->
-
-<div
-  class="audio-waveform"
-  id="audioWaveform"
->
-
-  <span></span>
-  <span></span>
-  <span></span>
-  <span></span>
-  <span></span>
-  <span></span>
-  <span></span>
-  <span></span>
-  <span></span>
-  <span></span>
-  <span></span>
-  <span></span>
-  <span></span>
-  <span></span>
-  <span></span>
-  <span></span>
-  <span></span>
-  <span></span>
-  <span></span>
-  <span></span>
-  <span></span>
-  <span></span>
-  <span></span>
-
-</div>
+    </div>
 
 
 
-<!-- =================================================
-     AUDIO PROGRESS
-================================================== -->
+    <!-- =================================================
+         VISUAL / ANIMATION
+    ================================================== -->
 
-<div class="audio-progress-row">
-
-  <span id="audioCurrentTime">
-    00:00
-  </span>
-
-
-  <input
-    type="range"
-    id="audioProgress"
-    min="0"
-    max="100"
-    value="0"
-  >
-
-
-  <span id="audioDuration">
-    00:00
-  </span>
-
-</div>
-
-
-
-<!-- =================================================
-     AUDIO CONTROLS
-================================================== -->
-
-<div class="audio-controls">
-
-
-  <!-- PLAY / PAUSE -->
-
-  <button
-    id="playPauseButton"
-    class="play-pause-button"
-    onclick="toggleStoryAudio()"
-    aria-label="Play or pause"
-  >
-    ▶
-  </button>
-
-
-  <!-- REWIND -->
-
-  <button
-    id="rewindButton"
-    class="rewind-button"
-    onclick="rewindStoryAudio()"
-    aria-label="Replay 10 seconds"
-  >
-    ↶
-  </button>
-
-
-  <span class="playing-label">
-    Playing story
-  </span>
-
-</div>
-
-
-
-<!-- =================================================
-     CAPTIONS
-================================================== -->
-
-<div class="captions-box">
-
-
-  <div class="captions-heading">
-
-    <img
-      src="assets/images/CaptionsIcon.png"
-      alt=""
+    <div
+      class="story-visual"
+      id="storyVisual"
     >
 
-    <span>
-      CAPTIONS
-    </span>
+      <img
+        src="assets/images/Artifact_GIF.gif"
+        alt="Animation showing the crown and face of Shri Vishnu"
+        class="story-animation"
+      >
 
-  </div>
-
-
-  <p id="hotspotDescription">
-    The calm face and elaborate crown give Vishnu
-    a composed, authoritative presence. In sacred
-    sculpture, such details communicate the deity's
-    divine and royal character.
-  </p>
-
-
-</div>
-
-  </div>
+    </div>
 
 
 
-  <!-- ===================================================
-       VIEW ARTIFACT IN 3D BUTTON
+    <!-- =================================================
+         AUDIO WAVEFORM
+    ================================================== -->
 
-       This becomes visible AFTER the user closes
-       the hotspot story card.
-  ==================================================== -->
+    <div
+      class="audio-waveform"
+      id="audioWaveform"
+    >
 
-  <div
-    id="view3DButton"
-    class="view-3d-button"
-    onclick="showArtifact3D()"
-  >
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
 
-<span class="view-3d-icon">
-  ◈
-</span>
-
-<span>
-
-  <strong>
-    VIEW ARTIFACT IN 3D
-  </strong>
-
-  <small>
-    Explore the sculpture
-  </small>
-
-</span>
-
-  </div>
-
-
-
-  <!-- ===================================================
-       3D VIEW INSTRUCTION
-
-       Becomes visible when the 3D model opens.
-  ==================================================== -->
-
-  <div
-    id="artifact3DUI"
-    class="artifact-3d-ui"
-  >
-
-<div class="artifact-3d-title">
-  VIEWING ARTIFACT
-</div>
-
-<div class="artifact-3d-instruction">
-  Move your hand left or right<br>
-  to rotate the artifact
-</div>
-
-
-<button
-  class="artifact-3d-close"
-  onclick="closeArtifact3D()"
-  aria-label="Close 3D artifact view"
->
-  ×
-</button>
-
-  </div>
+    </div>
 
 
 
-  <!-- ===================================================
-       3D LOADING MESSAGE
+    <!-- =================================================
+         AUDIO PROGRESS
+    ================================================== -->
 
-       Hidden by default.
-  ==================================================== -->
+    <div class="audio-progress-row">
 
-  <div
-    id="artifact3DLoading"
-    class="artifact-3d-loading"
-  >
-    Loading artifact...
+      <span id="audioCurrentTime">
+        00:00
+      </span>
+
+
+      <input
+        type="range"
+        id="audioProgress"
+        min="0"
+        max="100"
+        value="0"
+      >
+
+
+      <span id="audioDuration">
+        00:00
+      </span>
+
+    </div>
+
+
+
+    <!-- =================================================
+         AUDIO CONTROLS
+    ================================================== -->
+
+    <div class="audio-controls">
+
+
+      <!-- PLAY / PAUSE -->
+
+      <button
+        id="playPauseButton"
+        class="play-pause-button"
+        onclick="toggleStoryAudio()"
+        aria-label="Play or pause"
+      >
+        ▶
+      </button>
+
+
+
+      <!-- REWIND -->
+
+      <button
+        class="rewind-button"
+        onclick="rewindStoryAudio()"
+        aria-label="Replay 10 seconds"
+      >
+        ↶
+      </button>
+
+
+      <span class="playing-label">
+        Playing story
+      </span>
+
+    </div>
+
+
+
+    <!-- =================================================
+         CAPTIONS
+    ================================================== -->
+
+    <div class="captions-box">
+
+
+      <div class="captions-heading">
+
+        <img
+          src="assets/images/CaptionsIcon.png"
+          alt=""
+        >
+
+        <span>
+          CAPTIONS
+        </span>
+
+      </div>
+
+
+      <p id="hotspotDescription">
+        The calm face and elaborate crown give Vishnu
+        a composed, authoritative presence. In sacred
+        sculpture, such details communicate the deity's
+        divine and royal character.
+      </p>
+
+    </div>
+
+
   </div>
 
 
 
   <!-- ===================================================
        STORY AUDIO
-
-       Audio file uploaded by the user.
   ==================================================== -->
 
-<audio
-id="storyAudio"
-src="assets/images/Audio1.mp3"
-preload="metadata"
+  <audio
+    id="storyAudio"
+    src="assets/images/Audio1.mp3"
+    preload="metadata"
+  ></audio>
+
 
 </section>
 
@@ -1594,68 +1133,12 @@ preload="metadata"
 
 <!-- =====================================================
      JAVASCRIPT
-====================================================== -->
+===================================================== -->
 
 <script
   src="script.js">
 </script>
 
-<!-- =====================================================
-     3D MODEL DEBUGGING
-     
-     This does NOT replace script.js.
-     It simply logs whether the GLB successfully loads.
-====================================================== -->
-
-<script>
-
-  document.addEventListener("DOMContentLoaded", function () {
-
-    const model = document.getElementById("artifact3D");
-
-    if (!model) {
-      console.error("3D MODEL ELEMENT NOT FOUND");
-      return;
-    }
-
-    model.addEventListener("model-loaded", function () {
-
-      console.log(
-        "✅ 3D MODEL LOADED SUCCESSFULLY"
-      );
-
-      const loading =
-        document.getElementById("artifact3DLoading");
-
-      if (loading) {
-        loading.classList.remove("visible");
-      }
-
-    });
-
-
-    model.addEventListener("model-error", function (event) {
-
-      console.error(
-        "❌ ERROR LOADING 3D MODEL",
-        event
-      );
-
-      const loading =
-        document.getElementById("artifact3DLoading");
-
-      if (loading) {
-
-        loading.textContent =
-          "Unable to load artifact";
-
-      }
-
-    });
-
-  });
-
-</script>
 
 </body>
 
