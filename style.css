@@ -35,6 +35,7 @@ button {
   font-family: inherit;
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
 }
 
 img {
@@ -789,15 +790,22 @@ img {
 
 .ar-screen {
 
-  background: transparent;
-
-  display: none;
-
   position: fixed;
 
   inset: 0;
 
+  width: 100%;
+  height: 100%;
+
+  background: transparent;
+
+  display: none;
+
   overflow: hidden;
+
+  z-index: 1;
+
+  touch-action: none;
 }
 
 .ar-screen.active {
@@ -819,6 +827,34 @@ img {
   height: 100% !important;
 
   z-index: 1 !important;
+}
+
+
+/* =====================================================
+   REMOVE VR BUTTON
+===================================================== */
+
+/*
+   A-Frame normally creates a VR button.
+   Hide every common A-Frame VR button selector.
+*/
+
+.a-enter-vr,
+.a-enter-vr-button,
+[data-a-enter-vr],
+a-scene .a-enter-vr,
+a-scene .a-enter-vr-button {
+
+  display: none !important;
+
+  visibility: hidden !important;
+
+  opacity: 0 !important;
+
+  pointer-events: none !important;
+
+  width: 0 !important;
+  height: 0 !important;
 }
 
 
@@ -849,12 +885,15 @@ img {
   font-size: 24px;
 
   display: flex;
+
   align-items: center;
   justify-content: center;
 
-  z-index: 100;
+  z-index: 1000;
 
   backdrop-filter: blur(8px);
+
+  touch-action: manipulation;
 }
 
 
@@ -880,9 +919,11 @@ img {
 
   background: rgba(50,27,18,0.82);
 
-  z-index: 100;
+  z-index: 1000;
 
   backdrop-filter: blur(8px);
+
+  touch-action: manipulation;
 }
 
 .ar-accessibility img {
@@ -923,6 +964,8 @@ img {
   white-space: nowrap;
 
   backdrop-filter: blur(8px);
+
+  pointer-events: none;
 }
 
 
@@ -1030,6 +1073,7 @@ img {
   position: fixed;
 
   left: 50%;
+
   bottom: 45px;
 
   transform: translateX(-50%);
@@ -1051,6 +1095,8 @@ img {
   white-space: nowrap;
 
   backdrop-filter: blur(8px);
+
+  pointer-events: none;
 }
 
 
@@ -1072,7 +1118,6 @@ img {
 }
 
 .artifact-found.visible {
-
   display: block;
 }
 
@@ -1146,6 +1191,7 @@ img {
   margin: 0 0 4px;
 
   font-size: 24px;
+
   font-weight: 600;
 }
 
@@ -1154,6 +1200,7 @@ img {
   margin: 0 0 12px;
 
   font-size: 11px;
+
   font-weight: 500;
 
   color: #917b6d;
@@ -1192,6 +1239,8 @@ img {
   font-size: 13px;
 
   font-weight: 500;
+
+  touch-action: manipulation;
 }
 
 
@@ -1221,13 +1270,24 @@ img {
 
   cursor: pointer;
 
-  pointer-events: auto;
+  pointer-events: auto !important;
+
+  touch-action: manipulation;
+
+  -webkit-tap-highlight-color: transparent;
 }
 
 
 /* =====================================================
    HOTSPOT UI
 ===================================================== */
+
+/*
+   IMPORTANT:
+   The original CSS had pointer-events: none here.
+   That prevented the "Tap a hotspot to explore"
+   element from receiving touch input.
+*/
 
 .hotspot-ui {
 
@@ -1239,19 +1299,24 @@ img {
 
   transform: translateX(-50%);
 
-  z-index: 150;
+  z-index: 1500;
 
   display: none;
 
   align-items: center;
+
   justify-content: center;
 
-  pointer-events: none;
+  pointer-events: auto !important;
+
+  touch-action: manipulation;
 }
 
 .hotspot-ui.visible {
 
   display: flex;
+
+  pointer-events: auto !important;
 }
 
 .hotspot-hint {
@@ -1272,6 +1337,15 @@ img {
     0 8px 25px rgba(0,0,0,0.2);
 
   backdrop-filter: blur(8px);
+
+  pointer-events: auto !important;
+
+  cursor: pointer;
+
+  touch-action: manipulation;
+
+  -webkit-user-select: none;
+  user-select: none;
 }
 
 
@@ -1284,6 +1358,7 @@ img {
   position: fixed;
 
   left: 50%;
+
   bottom: 0;
 
   transform: translateX(-50%);
@@ -1294,9 +1369,13 @@ img {
 
   overflow-y: auto;
 
-  z-index: 250;
+  z-index: 2500;
 
   display: none;
+
+  visibility: hidden;
+
+  opacity: 0;
 
   padding: 24px 22px 30px;
 
@@ -1309,11 +1388,19 @@ img {
 
   box-shadow:
     0 -10px 40px rgba(0,0,0,0.22);
+
+  -webkit-overflow-scrolling: touch;
+
+  overscroll-behavior: contain;
 }
 
 .hotspot-info.visible {
 
-  display: block;
+  display: block !important;
+
+  visibility: visible !important;
+
+  opacity: 1 !important;
 }
 
 
@@ -1343,7 +1430,11 @@ img {
 
   font-size: 22px;
 
-  z-index: 5;
+  z-index: 10;
+
+  pointer-events: auto;
+
+  touch-action: manipulation;
 }
 
 
@@ -1385,7 +1476,14 @@ img {
    STORY VISUAL
 ===================================================== */
 
+/*
+   Force the visual container to remain visible
+   when the hotspot story opens.
+*/
+
 .story-visual {
+
+  position: relative;
 
   width: 100%;
 
@@ -1399,18 +1497,39 @@ img {
 
   background: #e7ddd3;
 
-  display: flex;
+  display: flex !important;
 
   align-items: center;
+
   justify-content: center;
+
+  visibility: visible !important;
+
+  opacity: 1 !important;
 }
+
+
+/* =====================================================
+   STORY ANIMATION / VIDEO
+===================================================== */
 
 .story-animation {
 
+  display: block !important;
+
   width: 100%;
+
   height: 100%;
 
   object-fit: cover;
+
+  visibility: visible !important;
+
+  opacity: 1 !important;
+
+  max-width: none;
+
+  pointer-events: none;
 }
 
 
@@ -1429,12 +1548,19 @@ img {
   display: flex;
 
   align-items: center;
+
   justify-content: center;
 
   gap: 3px;
+
+  visibility: visible;
+
+  opacity: 1;
 }
 
 .audio-waveform span {
+
+  display: block;
 
   width: 3px;
 
@@ -1443,6 +1569,8 @@ img {
   background: #6c4937;
 
   opacity: 0.55;
+
+  flex-shrink: 0;
 }
 
 .audio-waveform span:nth-child(1) {
@@ -1551,6 +1679,8 @@ img {
   font-size: 9px;
 
   color: #8c786a;
+
+  width: 100%;
 }
 
 .audio-progress-row input[type="range"] {
@@ -1560,6 +1690,10 @@ img {
   height: 3px;
 
   accent-color: #321b12;
+
+  cursor: pointer;
+
+  touch-action: manipulation;
 }
 
 
@@ -1578,6 +1712,8 @@ img {
   gap: 14px;
 
   margin-bottom: 20px;
+
+  width: 100%;
 }
 
 .play-pause-button {
@@ -1596,6 +1732,12 @@ img {
   color: white;
 
   font-size: 16px;
+
+  flex-shrink: 0;
+
+  pointer-events: auto;
+
+  touch-action: manipulation;
 }
 
 .rewind-button {
@@ -1614,6 +1756,12 @@ img {
   color: #321b12;
 
   font-size: 18px;
+
+  flex-shrink: 0;
+
+  pointer-events: auto;
+
+  touch-action: manipulation;
 }
 
 .playing-label {
@@ -1621,6 +1769,8 @@ img {
   font-size: 11px;
 
   color: #806f63;
+
+  margin-left: 8px;
 }
 
 
@@ -1637,6 +1787,10 @@ img {
   background: #ece3da;
 
   text-align: left;
+
+  visibility: visible;
+
+  opacity: 1;
 }
 
 .captions-heading {
@@ -1661,6 +1815,7 @@ img {
 .captions-heading img {
 
   width: 16px;
+
   height: 16px;
 
   object-fit: contain;
@@ -1704,7 +1859,14 @@ img {
     font-size: 25px;
   }
 
+  .ar-back,
+  .ar-accessibility {
+    width: 44px;
+    height: 44px;
+  }
+
   .artifact-info {
+
     bottom: 18px;
 
     width: calc(100% - 28px);
@@ -1717,19 +1879,93 @@ img {
   }
 
   .scan-frame {
+
     width: 76vw;
+
     height: 50vh;
   }
 
+  .hotspot-ui {
+
+    bottom: 28px;
+
+    width: calc(100% - 32px);
+
+  }
+
+  .hotspot-hint {
+
+    padding: 13px 20px;
+
+    font-size: 12px;
+
+  }
+
   .hotspot-info {
-    max-height: 90vh;
+
+    width: 100%;
+
+    max-height: 91vh;
 
     padding-left: 18px;
+
     padding-right: 18px;
+
+    padding-top: 22px;
+
   }
 
   .story-visual {
+
     height: 155px;
+
+  }
+
+  .story-heading h2 {
+
+    font-size: 19px;
+
+  }
+
+  .audio-waveform {
+
+    height: 42px;
+
+  }
+
+  .captions-box p {
+
+    font-size: 12px;
+
+  }
+
+}
+
+
+/* =====================================================
+   SMALL MOBILE DEVICES
+===================================================== */
+
+@media (max-width: 380px) {
+
+  .hotspot-hint {
+
+    font-size: 11px;
+
+    padding:
+      11px 16px;
+  }
+
+  .story-visual {
+
+    height: 145px;
+  }
+
+  .hotspot-info {
+
+    padding-left: 16px;
+
+    padding-right: 16px;
   }
 
 }
@@ -1750,7 +1986,6 @@ img {
         30px +
         env(safe-area-inset-bottom)
       );
-
   }
 
   .artifact-info {
@@ -1760,7 +1995,77 @@ img {
         18px +
         env(safe-area-inset-bottom)
       );
+  }
 
+  .hotspot-ui {
+
+    bottom:
+      calc(
+        28px +
+        env(safe-area-inset-bottom)
+      );
   }
 
 }
+
+
+/* =====================================================
+   EXTRA VR SUPPRESSION
+===================================================== */
+
+/*
+   This catches A-Frame's VR UI even if it is injected
+   after the page loads.
+*/
+
+.a-enter-vr *,
+.a-enter-vr-button * {
+
+  pointer-events: none !important;
+}
+
+.a-enter-vr {
+
+  display: none !important;
+
+  visibility: hidden !important;
+
+  opacity: 0 !important;
+
+  pointer-events: none !important;
+}
+
+
+/* =====================================================
+   STORY CARD INTERACTION SAFETY
+===================================================== */
+
+.hotspot-info,
+.hotspot-info * {
+
+  touch-action: manipulation;
+}
+
+.hotspot-info {
+
+  pointer-events: auto !important;
+}
+
+
+/* =====================================================
+   PREVENT AR CANVAS FROM BLOCKING HTML UI
+===================================================== */
+
+.ar-screen .hotspot-ui,
+.ar-screen .hotspot-info,
+.ar-screen .ar-back,
+.ar-screen .ar-accessibility,
+.ar-screen .artifact-found {
+
+  pointer-events: auto;
+}
+
+
+/* =====================================================
+   END
+===================================================== */
