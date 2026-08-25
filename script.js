@@ -1,12 +1,4 @@
 /* =====================================================
-   REKH WEBAR — SCRIPT
-   AR + HOTSPOTS + AUDIO + HAPTICS
-   + 3D ARTIFACT VIEW
-   + HAND TRACKING ROTATION
-===================================================== */
-
-
-/* =====================================================
    SCREEN NAVIGATION
 ===================================================== */
 
@@ -25,13 +17,11 @@ function showScreen(screenId) {
 
 
 /* =====================================================
-   LOADING SCREEN
+   LOADING
 ===================================================== */
 
 setTimeout(() => {
-
   showScreen("welcome");
-
 }, 2500);
 
 
@@ -40,15 +30,10 @@ setTimeout(() => {
 ===================================================== */
 
 const storyFrames = [
-
   "assets/images/Rekh_How_It_Works_Frame_1_HD.png",
-
   "assets/images/Rekh_How_It_Works_Frame_2_HD.png",
-
   "assets/images/Rekh_How_It_Works_Frame_3_HD.png",
-
   "assets/images/Rekh_How_It_Works_Frame_4_HD.png"
-
 ];
 
 let currentStory = 0;
@@ -62,10 +47,7 @@ function showStory(index) {
     document.getElementById("storyFrame");
 
   if (image) {
-
-    image.src =
-      storyFrames[currentStory];
-
+    image.src = storyFrames[index];
   }
 
   document.querySelectorAll(".dot").forEach(
@@ -73,12 +55,11 @@ function showStory(index) {
 
       dot.classList.toggle(
         "active",
-        i === currentStory
+        i === index
       );
 
     }
   );
-
 }
 
 
@@ -89,52 +70,47 @@ function showStory(index) {
 function openAccessibility() {
 
   const overlay =
-    document.getElementById(
-      "accessibilityOverlay"
-    );
+    document.getElementById("accessibilityOverlay");
 
   const continueButton =
-    document.getElementById(
-      "setupContinue"
-    );
+    document.getElementById("setupContinue");
 
   if (overlay) {
-
     overlay.classList.add("open");
-
   }
 
   if (continueButton) {
-
     continueButton.classList.remove("show");
-
   }
-
 }
 
 
 function closeAccessibility() {
 
   const overlay =
-    document.getElementById(
-      "accessibilityOverlay"
-    );
+    document.getElementById("accessibilityOverlay");
 
   const continueButton =
-    document.getElementById(
-      "setupContinue"
-    );
+    document.getElementById("setupContinue");
 
   if (overlay) {
-
     overlay.classList.remove("open");
-
   }
 
   if (continueButton) {
-
     continueButton.classList.add("show");
+  }
+}
 
+
+/* =====================================================
+   ACCESSIBILITY TOGGLES
+===================================================== */
+
+function toggleSetting(button) {
+
+  if (button) {
+    button.classList.toggle("active");
   }
 
 }
@@ -144,154 +120,21 @@ function closeAccessibility() {
    HAPTIC FEEDBACK
 ===================================================== */
 
-let hapticsEnabled = true;
+function triggerHaptic(duration = 20) {
 
+  if (
+    "vibrate" in navigator
+  ) {
 
-const HAPTIC_PATTERNS = {
+    try {
 
-  tap: 35,
+      navigator.vibrate(duration);
 
-  select: 55,
+    } catch (error) {
 
-  success: [40, 40, 40],
-
-  open: 70,
-
-  close: 35,
-
-  toggle: 45,
-
-  rewind: 35,
-
-  play: 30
-
-};
-
-
-function hapticsSupported() {
-
-  return (
-    "vibrate" in navigator &&
-    typeof navigator.vibrate === "function"
-  );
-
-}
-
-
-function triggerHaptic(type = "tap") {
-
-  if (!hapticsEnabled) {
-
-    return false;
-
-  }
-
-  if (!hapticsSupported()) {
-
-    console.warn(
-      "Haptic feedback is not supported."
-    );
-
-    return false;
-
-  }
-
-  const pattern =
-    HAPTIC_PATTERNS[type] ||
-    HAPTIC_PATTERNS.tap;
-
-  try {
-
-    return navigator.vibrate(pattern);
-
-  }
-
-  catch (error) {
-
-    console.error(
-      "Haptic error:",
-      error
-    );
-
-    return false;
-
-  }
-
-}
-
-
-function addHapticToButton(
-  element,
-  type = "tap"
-) {
-
-  if (!element) {
-
-    return;
-
-  }
-
-  element.addEventListener(
-    "pointerdown",
-    () => {
-
-      triggerHaptic(type);
-
-    },
-    {
-      passive: true
-    }
-  );
-
-}
-
-
-/* =====================================================
-   ACCESSIBILITY TOGGLE
-===================================================== */
-
-function toggleSetting(button) {
-
-  if (!button) {
-
-    return;
-
-  }
-
-  button.classList.toggle("active");
-
-  const row =
-    button.closest(".accessibility-row");
-
-  const label =
-    row
-      ? row.querySelector(
-          ".accessibility-label h2"
-        )
-      : null;
-
-  const isHapticToggle =
-    label &&
-    label.textContent
-      .trim()
-      .toLowerCase() ===
-      "haptic feedback";
-
-  if (isHapticToggle) {
-
-    hapticsEnabled =
-      button.classList.contains("active");
-
-    console.log(
-      "HAPTIC FEEDBACK:",
-      hapticsEnabled
-        ? "ON"
-        : "OFF"
-    );
-
-    if (hapticsEnabled) {
-
-      triggerHaptic("toggle");
+      console.log(
+        "Haptic feedback unavailable"
+      );
 
     }
 
@@ -301,226 +144,127 @@ function toggleSetting(button) {
 
 
 /* =====================================================
-   AR STATE
+   START AR
 ===================================================== */
 
 let arStarted = false;
 
-let arReady = false;
-
-let artifactIsFound = false;
-
-let hotspotMode = false;
-
-let selectedHotspot = null;
-
-let hotspotListenersAttached = false;
-
-let hotspotUIListenerAttached = false;
-
-
-/* =====================================================
-   HOTSPOT CONTENT
-===================================================== */
-
-const hotspot1Content = {
-
-  number: 1,
-
-  title:
-    "THE CROWN & FACE",
-
-  subtitle:
-    "How the vessel was held",
-
-  description:
-    "The calm face and elaborate crown give Vishnu a composed, authoritative presence. In sacred sculpture, such details communicate the deity's divine and royal character."
-
-};
-
-
-/* =====================================================
-   CONTINUE → AR
-===================================================== */
 
 function continueSetup() {
 
   console.log(
-    "CONTINUE CLICKED — STARTING AR"
+    "CONTINUE → AR"
   );
+
+
+  /*
+     Show AR screen first.
+  */
 
   showScreen("arScreen");
 
-  startAR();
+
+  /*
+     Wait for the AR screen to
+     become visible before starting
+     MindAR.
+  */
+
+  setTimeout(() => {
+
+    startAR();
+
+  }, 100);
 
 }
 
 
 /* =====================================================
-   START MINDAR
+   MINDAR
 ===================================================== */
 
 function startAR() {
 
+  if (arStarted) {
+    return;
+  }
+
+
   const scene =
-    document.getElementById(
-      "mindarScene"
-    );
+    document.getElementById("mindarScene");
+
 
   if (!scene) {
 
     console.error(
-      "MindAR scene not found."
+      "MindAR scene not found"
     );
 
     return;
 
   }
 
-  if (arStarted) {
+
+  const startMindAR = () => {
+
+    const mindar =
+      scene.systems["mindar-image-system"];
+
+
+    if (!mindar) {
+
+      console.error(
+        "MindAR system not found"
+      );
+
+      return;
+
+    }
+
 
     console.log(
-      "MindAR already started."
+      "MINDAR SYSTEM FOUND"
     );
 
-    return;
 
-  }
-
-  setupARTarget();
-
-  if (scene.hasLoaded) {
-
-    launchMindAR();
-
-  }
-
-  else {
-
-    scene.addEventListener(
-      "loaded",
-      launchMindAR,
-      {
-        once: true
-      }
-    );
-
-  }
-
-}
-
-
-/* =====================================================
-   LAUNCH MINDAR
-===================================================== */
-
-function launchMindAR() {
-
-  const scene =
-    document.getElementById(
-      "mindarScene"
-    );
-
-  if (!scene) {
-
-    return;
-
-  }
-
-  const mindar =
-    scene.systems[
-      "mindar-image-system"
-    ];
-
-  if (!mindar) {
-
-    console.error(
-      "MindAR image system not found."
-    );
-
-    return;
-
-  }
-
-  if (arStarted) {
-
-    return;
-
-  }
-
-  console.log(
-    "MindAR system found."
-  );
-
-  try {
+    /*
+       START CAMERA
+    */
 
     mindar.start();
 
+
     arStarted = true;
 
+
     console.log(
-      "MindAR camera starting..."
+      "MINDAR CAMERA STARTED"
+    );
+
+  };
+
+
+  /*
+     Wait until A-Frame is ready.
+  */
+
+  if (scene.hasLoaded) {
+
+    startMindAR();
+
+  } else {
+
+    scene.addEventListener(
+      "loaded",
+      startMindAR,
+      { once: true }
     );
 
   }
-
-  catch (error) {
-
-    console.error(
-      "Could not start MindAR:",
-      error
-    );
-
-    alert(
-      "Camera could not start. Please allow camera access and reload the page."
-    );
-
-  }
-
-}
-
-
-/* =====================================================
-   AR TARGET SETUP
-===================================================== */
-
-function setupARTarget() {
-
-  const scene =
-    document.getElementById(
-      "mindarScene"
-    );
-
-  const target =
-    document.getElementById(
-      "vishnuTarget"
-    );
-
-  if (!scene || !target) {
-
-    console.error(
-      "AR scene or Vishnu target not found."
-    );
-
-    return;
-
-  }
-
-  if (
-    target.dataset.listenersAttached ===
-    "true"
-  ) {
-
-    return;
-
-  }
-
-  target.dataset.listenersAttached =
-    "true";
 
 
   /* =================================================
-     CAMERA READY
+     AR READY
   ================================================= */
 
   scene.addEventListener(
@@ -528,19 +272,18 @@ function setupARTarget() {
     () => {
 
       console.log(
-        "MindAR READY — CAMERA IS RUNNING"
+        "CAMERA READY"
       );
-
-      arReady = true;
 
       showScanning();
 
-    }
+    },
+    { once: true }
   );
 
 
   /* =================================================
-     CAMERA ERROR
+     AR ERROR
   ================================================= */
 
   scene.addEventListener(
@@ -548,16 +291,32 @@ function setupARTarget() {
     event => {
 
       console.error(
-        "MindAR ERROR:",
+        "AR ERROR:",
         event
       );
 
-      alert(
-        "Camera could not start. Please allow camera access and reload the page."
-      );
-
-    }
+    },
+    { once: true }
   );
+
+
+  /* =================================================
+     TARGET
+  ================================================= */
+
+  const target =
+    document.getElementById("vishnuTarget");
+
+
+  if (!target) {
+
+    console.error(
+      "Vishnu target not found"
+    );
+
+    return;
+
+  }
 
 
   /* =================================================
@@ -569,18 +328,10 @@ function setupARTarget() {
     () => {
 
       console.log(
-        "VISHNU ARTIFACT FOUND"
+        "VISHNU FOUND!"
       );
 
-      artifactIsFound = true;
-
-      hotspotMode = false;
-
-      selectedHotspot = null;
-
       showArtifactFound();
-
-      hideHotspots();
 
     }
   );
@@ -595,10 +346,14 @@ function setupARTarget() {
     () => {
 
       console.log(
-        "VISHNU ARTIFACT LOST"
+        "VISHNU LOST"
       );
 
-      artifactIsFound = false;
+      /*
+         Only show scanning again if
+         we are not currently exploring
+         a hotspot/story.
+      */
 
       if (!hotspotMode) {
 
@@ -608,9 +363,6 @@ function setupARTarget() {
 
     }
   );
-
-
-  setupHotspots();
 
 }
 
@@ -622,309 +374,138 @@ function setupARTarget() {
 function showScanning() {
 
   const message =
-    document.getElementById(
-      "scanMessage"
-    );
+    document.getElementById("scanMessage");
 
   const frame =
-    document.getElementById(
-      "scanFrame"
-    );
-
-  const search =
-    document.getElementById(
-      "searchIcon"
-    );
+    document.getElementById("scanFrame");
 
   const status =
-    document.getElementById(
-      "scanStatus"
-    );
+    document.getElementById("scanStatus");
 
   const found =
-    document.getElementById(
-      "artifactFound"
-    );
+    document.getElementById("artifactFound");
+
+  const hotspotUI =
+    document.getElementById("hotspotUI");
+
+  const hotspotInfo =
+    document.getElementById("hotspotInfo");
 
 
   if (message) {
-
     message.style.display = "block";
-
   }
 
   if (frame) {
-
     frame.style.display = "block";
-
-  }
-
-  if (search) {
-
-    search.style.display = "flex";
-
   }
 
   if (status) {
-
     status.style.display = "block";
-
   }
 
   if (found) {
-
     found.classList.remove("visible");
-
-    found.style.display = "";
-
   }
 
-  hideHotspots();
+  if (hotspotUI) {
+    hotspotUI.classList.remove("visible");
+  }
+
+  if (hotspotInfo) {
+    hotspotInfo.classList.remove("visible");
+  }
+
+
+  hideAllHotspots();
 
 }
 
 
 /* =====================================================
-   ARTIFACT FOUND UI
+   ARTIFACT FOUND
 ===================================================== */
 
 function showArtifactFound() {
 
   const message =
-    document.getElementById(
-      "scanMessage"
-    );
+    document.getElementById("scanMessage");
 
   const frame =
-    document.getElementById(
-      "scanFrame"
-    );
-
-  const search =
-    document.getElementById(
-      "searchIcon"
-    );
+    document.getElementById("scanFrame");
 
   const status =
-    document.getElementById(
-      "scanStatus"
-    );
+    document.getElementById("scanStatus");
 
   const found =
-    document.getElementById(
-      "artifactFound"
-    );
+    document.getElementById("artifactFound");
 
 
   if (message) {
-
     message.style.display = "none";
-
   }
 
   if (frame) {
-
     frame.style.display = "none";
-
-  }
-
-  if (search) {
-
-    search.style.display = "none";
-
   }
 
   if (status) {
-
     status.style.display = "none";
-
   }
 
   if (found) {
 
     found.classList.add("visible");
 
-    found.style.display = "";
+    found.style.display = "block";
 
   }
 
-  hotspotMode = false;
 
-  hideHotspots();
+  hideAllHotspots();
 
 }
 
 
 /* =====================================================
-   HOTSPOT SETUP
+   HOTSPOT MODE
 ===================================================== */
 
-function setupHotspots() {
+let hotspotMode = false;
 
-  if (hotspotListenersAttached) {
-
-    return;
-
-  }
-
-  const hotspot1 =
-    document.getElementById(
-      "hotspot1"
-    );
-
-  if (!hotspot1) {
-
-    console.error(
-      "hotspot1 not found."
-    );
-
-    return;
-
-  }
-
-
-  const hotspotHandler =
-    event => {
-
-      event.preventDefault();
-
-      event.stopPropagation();
-
-      console.log(
-        "HOTSPOT 1 CLICKED"
-      );
-
-      triggerHaptic("select");
-
-      selectHotspot(
-        hotspot1Content.number,
-        hotspot1Content.title,
-        hotspot1Content.description
-      );
-
-    };
-
-
-  hotspot1.addEventListener(
-    "click",
-    hotspotHandler
-  );
-
-
-  hotspot1.addEventListener(
-    "touchend",
-    hotspotHandler,
-    {
-      passive: false
-    }
-  );
-
-
-  addHapticToButton(
-    hotspot1,
-    "select"
-  );
-
-
-  hotspotListenersAttached = true;
-
-}
-
-
-/* =====================================================
-   HOTSPOT UI
-===================================================== */
-
-function setupHotspotUI() {
-
-  if (hotspotUIListenerAttached) {
-
-    return;
-
-  }
-
-  const hotspotUI =
-    document.getElementById(
-      "hotspotUI"
-    );
-
-  if (!hotspotUI) {
-
-    console.warn(
-      "hotspotUI not found."
-    );
-
-    return;
-
-  }
-
-  hotspotUI.style.pointerEvents =
-    "auto";
-
-  hotspotUI.style.cursor =
-    "pointer";
-
-
-  addHapticToButton(
-    hotspotUI,
-    "tap"
-  );
-
-
-  hotspotUI.addEventListener(
-    "click",
-    event => {
-
-      event.preventDefault();
-
-      event.stopPropagation();
-
-      if (!hotspotMode) {
-
-        return;
-
-      }
-
-      selectHotspot(
-        hotspot1Content.number,
-        hotspot1Content.title,
-        hotspot1Content.description
-      );
-
-    }
-  );
-
-
-  hotspotUIListenerAttached = true;
-
-}
-
-
-/* =====================================================
-   ENTER HOTSPOT MODE
-===================================================== */
 
 function enterHotspotMode() {
 
   console.log(
-    "EXPLORE ARTIFACT CLICKED"
+    "ENTERING HOTSPOT MODE"
   );
+
+
+  triggerHaptic(25);
+
 
   hotspotMode = true;
 
-  triggerHaptic("open");
-
-  selectedHotspot = null;
-
-
-  /* =================================================
-     HIDE ARTIFACT FOUND CARD
-  ================================================= */
 
   const found =
-    document.getElementById(
-      "artifactFound"
-    );
+    document.getElementById("artifactFound");
+
+  const hotspotUI =
+    document.getElementById("hotspotUI");
+
+  const message =
+    document.getElementById("scanMessage");
+
+  const frame =
+    document.getElementById("scanFrame");
+
+  const status =
+    document.getElementById("scanStatus");
+
+
+  /*
+     Hide artifact information card.
+  */
 
   if (found) {
 
@@ -935,157 +516,138 @@ function enterHotspotMode() {
   }
 
 
-  /* =================================================
-     HIDE SCANNING UI
-  ================================================= */
-
-  const message =
-    document.getElementById(
-      "scanMessage"
-    );
-
-  const frame =
-    document.getElementById(
-      "scanFrame"
-    );
-
-  const search =
-    document.getElementById(
-      "searchIcon"
-    );
-
-  const status =
-    document.getElementById(
-      "scanStatus"
-    );
-
+  /*
+     Hide scanning UI.
+  */
 
   if (message) {
-
     message.style.display = "none";
-
   }
 
   if (frame) {
-
     frame.style.display = "none";
-
-  }
-
-  if (search) {
-
-    search.style.display = "none";
-
   }
 
   if (status) {
-
     status.style.display = "none";
-
   }
 
 
-  /* =================================================
-     SHOW ONE HOTSPOT
-  ================================================= */
-
-  showOneHotspot();
-
-
-  /* =================================================
-     SHOW HOTSPOT UI
-  ================================================= */
-
-  const hotspotUI =
-    document.getElementById(
-      "hotspotUI"
-    );
+  /*
+     Show hotspot instruction.
+  */
 
   if (hotspotUI) {
 
     hotspotUI.classList.add("visible");
 
-    hotspotUI.style.display = "block";
-
-    hotspotUI.style.pointerEvents =
-      "auto";
-
-    hotspotUI.style.cursor =
-      "pointer";
+    hotspotUI.style.display = "flex";
 
   }
+
+
+  /*
+     Show the first hotspot.
+  */
+
+  showHotspot("hotspot1");
+
+
+  console.log(
+    "HOTSPOT 1 SHOWN"
+  );
 
 }
 
 
 /* =====================================================
-   SHOW ONE HOTSPOT
+   SHOW HOTSPOT
 ===================================================== */
 
-function showOneHotspot() {
+function showHotspot(id) {
 
-  const hotspot1 =
-    document.getElementById(
-      "hotspot1"
+  const hotspot =
+    document.getElementById(id);
+
+
+  if (!hotspot) {
+
+    console.error(
+      "Hotspot not found:",
+      id
     );
 
-  const hotspot2 =
-    document.getElementById(
-      "hotspot2"
-    );
-
-  const hotspot3 =
-    document.getElementById(
-      "hotspot3"
-    );
-
-
-  if (hotspot1) {
-
-    hotspot1.setAttribute(
-      "visible",
-      "false"
-    );
-
-  }
-
-  if (hotspot2) {
-
-    hotspot2.setAttribute(
-      "visible",
-      "false"
-    );
-
-  }
-
-  if (hotspot3) {
-
-    hotspot3.setAttribute(
-      "visible",
-      "false"
-    );
+    return;
 
   }
 
 
-  if (hotspot1) {
+  /*
+     Hide all other hotspots first.
+  */
 
-    hotspot1.setAttribute(
-      "src",
-      "assets/images/Hotspot.png"
-    );
+  hideAllHotspots();
 
-    hotspot1.setAttribute(
-      "visible",
-      "true"
-    );
 
-    hotspot1.setAttribute(
-      "class",
-      "hotspot"
-    );
+  /*
+     Make selected hotspot visible.
+  */
 
-  }
+  hotspot.setAttribute(
+    "visible",
+    "true"
+  );
+
+
+  hotspot.style.display =
+    "block";
+
+
+  console.log(
+    "Showing hotspot:",
+    id
+  );
+
+}
+
+
+/* =====================================================
+   SHOW ALL HOTSPOTS
+===================================================== */
+
+function showAllHotspots() {
+
+  const hotspots = [
+    "hotspot1",
+    "hotspot2",
+    "hotspot3"
+  ];
+
+
+  hotspots.forEach(id => {
+
+    const hotspot =
+      document.getElementById(id);
+
+
+    if (hotspot) {
+
+      hotspot.setAttribute(
+        "visible",
+        "true"
+      );
+
+      hotspot.style.display =
+        "block";
+
+    }
+
+  });
+
+
+  console.log(
+    "ALL HOTSPOTS SHOWN"
+  );
 
 }
 
@@ -1094,59 +656,223 @@ function showOneHotspot() {
    HIDE ALL HOTSPOTS
 ===================================================== */
 
-function hideHotspots() {
+function hideAllHotspots() {
 
   const hotspots = [
-
-    document.getElementById(
-      "hotspot1"
-    ),
-
-    document.getElementById(
-      "hotspot2"
-    ),
-
-    document.getElementById(
-      "hotspot3"
-    )
-
+    "hotspot1",
+    "hotspot2",
+    "hotspot3"
   ];
 
 
-  hotspots.forEach(
-    hotspot => {
+  hotspots.forEach(id => {
 
-      if (hotspot) {
+    const hotspot =
+      document.getElementById(id);
 
-        hotspot.setAttribute(
-          "visible",
-          "false"
-        );
 
-      }
+    if (hotspot) {
+
+      hotspot.setAttribute(
+        "visible",
+        "false"
+      );
+
+      hotspot.style.display =
+        "none";
 
     }
+
+  });
+
+}
+
+
+/* =====================================================
+   HOTSPOT DATA
+===================================================== */
+
+const hotspotData = {
+
+  hotspot1: {
+
+    title:
+      "THE CROWN & FACE",
+
+    subtitle:
+      "The divine presence of Vishnu",
+
+    description:
+      "The calm face and elaborate crown give Vishnu a composed, authoritative presence. In sacred sculpture, such details communicate the deity's divine and royal character."
+
+  },
+
+
+  hotspot2: {
+
+    title:
+      "THE RIGHT HAND",
+
+    subtitle:
+      "Symbols of power and protection",
+
+    description:
+      "The position and attributes held by Vishnu's hands help communicate his divine role and his association with protection, preservation and cosmic order."
+
+  },
+
+
+  hotspot3: {
+
+    title:
+      "THE ORNAMENTAL ARCH",
+
+    subtitle:
+      "Framing the divine figure",
+
+    description:
+      "The elaborate arch surrounding Vishnu creates a visual frame around the deity and adds depth and richness to the sculpture."
+
+  }
+
+};
+
+
+/* =====================================================
+   HOTSPOT CLICK HANDLING
+===================================================== */
+
+function setupHotspotListeners() {
+
+  const hotspots = [
+    "hotspot1",
+    "hotspot2",
+    "hotspot3"
+  ];
+
+
+  hotspots.forEach(id => {
+
+    const hotspot =
+      document.getElementById(id);
+
+
+    if (!hotspot) {
+
+      console.warn(
+        "Could not find:",
+        id
+      );
+
+      return;
+
+    }
+
+
+    /*
+       Prevent duplicate listeners.
+    */
+
+    hotspot.addEventListener(
+      "click",
+      () => {
+
+        console.log(
+          "HOTSPOT CLICKED:",
+          id
+        );
+
+
+        triggerHaptic(30);
+
+
+        openHotspotStory(id);
+
+      }
+    );
+
+  });
+
+}
+
+
+/* =====================================================
+   OPEN HOTSPOT STORY
+===================================================== */
+
+function openHotspotStory(id) {
+
+  console.log(
+    "OPENING STORY:",
+    id
   );
 
+
+  const data =
+    hotspotData[id];
+
+
+  if (!data) {
+
+    console.error(
+      "No hotspot data for:",
+      id
+    );
+
+    return;
+
+  }
+
+
+  const title =
+    document.getElementById(
+      "hotspotTitle"
+    );
+
+  const subtitle =
+    document.getElementById(
+      "hotspotSubtitle"
+    );
+
+  const description =
+    document.getElementById(
+      "hotspotDescription"
+    );
+
+  const hotspotUI =
+    document.getElementById(
+      "hotspotUI"
+    );
 
   const hotspotInfo =
     document.getElementById(
       "hotspotInfo"
     );
 
-  if (hotspotInfo) {
 
-    hotspotInfo.classList.remove(
-      "visible"
-    );
+  /*
+     Update text.
+  */
 
+  if (title) {
+    title.textContent =
+      data.title;
+  }
+
+  if (subtitle) {
+    subtitle.textContent =
+      data.subtitle;
+  }
+
+  if (description) {
+    description.textContent =
+      data.description;
   }
 
 
-  const hotspotUI =
-    document.getElementById(
-      "hotspotUI"
-    );
+  /*
+     Hide hotspot instruction.
+  */
 
   if (hotspotUI) {
 
@@ -1154,112 +880,23 @@ function hideHotspots() {
       "visible"
     );
 
-    hotspotUI.style.pointerEvents =
+    hotspotUI.style.display =
       "none";
 
   }
 
-}
+
+  /*
+     Hide hotspots while
+     story is open.
+  */
+
+  hideAllHotspots();
 
 
-/* =====================================================
-   SELECT HOTSPOT
-===================================================== */
-
-function selectHotspot(
-  number,
-  title,
-  description
-) {
-
-  console.log(
-    "SELECTING HOTSPOT:",
-    number
-  );
-
-  selectedHotspot = number;
-
-  triggerHaptic("select");
-
-
-  /* =================================================
-     SELECT HOTSPOT ICON
-  ================================================= */
-
-  const selected =
-    document.getElementById(
-      "hotspot" + number
-    );
-
-  if (selected) {
-
-    selected.setAttribute(
-      "src",
-      "assets/images/Hotspot Selected.png"
-    );
-
-  }
-
-
-  /* =================================================
-     TITLE
-  ================================================= */
-
-  const titleElement =
-    document.getElementById(
-      "hotspotTitle"
-    );
-
-  if (titleElement) {
-
-    titleElement.textContent =
-      title;
-
-  }
-
-
-  /* =================================================
-     SUBTITLE
-  ================================================= */
-
-  const subtitleElement =
-    document.getElementById(
-      "hotspotSubtitle"
-    );
-
-  if (subtitleElement) {
-
-    subtitleElement.textContent =
-      hotspot1Content.subtitle;
-
-  }
-
-
-  /* =================================================
-     DESCRIPTION
-  ================================================= */
-
-  const descriptionElement =
-    document.getElementById(
-      "hotspotDescription"
-    );
-
-  if (descriptionElement) {
-
-    descriptionElement.textContent =
-      description;
-
-  }
-
-
-  /* =================================================
-     SHOW STORY CARD
-  ================================================= */
-
-  const hotspotInfo =
-    document.getElementById(
-      "hotspotInfo"
-    );
+  /*
+     Show story card.
+  */
 
   if (hotspotInfo) {
 
@@ -1267,98 +904,33 @@ function selectHotspot(
       "visible"
     );
 
-  }
-
-
-  /* =================================================
-     HIDE HOTSPOT UI
-  ================================================= */
-
-  const hotspotUI =
-    document.getElementById(
-      "hotspotUI"
-    );
-
-  if (hotspotUI) {
-
-    hotspotUI.classList.remove(
-      "visible"
-    );
-
-    hotspotUI.style.pointerEvents =
-      "none";
+    hotspotInfo.style.display =
+      "block";
 
   }
 
 
-  /* =================================================
-     PREPARE AUDIO
-  ================================================= */
+  /*
+     Reset audio.
+  */
 
-  setupStoryAudio();
+  prepareStoryAudio();
 
 }
 
 
 /* =====================================================
-   SHOW 3D BUTTON
-===================================================== */
-
-function show3DButton() {
-
-  const button =
-    document.getElementById(
-      "view3DButton"
-    );
-
-  if (!button) {
-
-    console.warn(
-      "3D button not found."
-    );
-
-    return;
-
-  }
-
-  button.classList.add("visible");
-
-  button.style.display = "flex";
-
-}
-
-
-/* =====================================================
-   HIDE 3D BUTTON
-===================================================== */
-
-function hide3DButton() {
-
-  const button =
-    document.getElementById(
-      "view3DButton"
-    );
-
-  if (!button) {
-
-    return;
-
-  }
-
-  button.classList.remove("visible");
-
-  button.style.display = "none";
-
-}
-
-
-/* =====================================================
-   CLOSE HOTSPOT
+   CLOSE HOTSPOT STORY
 ===================================================== */
 
 function closeHotspot() {
 
-  triggerHaptic("close");
+  console.log(
+    "CLOSING HOTSPOT STORY"
+  );
+
+
+  triggerHaptic(20);
 
 
   const hotspotInfo =
@@ -1366,64 +938,40 @@ function closeHotspot() {
       "hotspotInfo"
     );
 
+  const hotspotUI =
+    document.getElementById(
+      "hotspotUI"
+    );
+
+
+  /*
+     Stop audio.
+  */
+
+  stopStoryAudio();
+
+
+  /*
+     Hide story.
+  */
+
   if (hotspotInfo) {
 
     hotspotInfo.classList.remove(
       "visible"
     );
 
-  }
-
-
-  selectedHotspot = null;
-
-
-  /* =================================================
-     STOP AUDIO
-  ================================================= */
-
-  const audio =
-    document.getElementById(
-      "storyAudio"
-    );
-
-  if (audio) {
-
-    audio.pause();
+    hotspotInfo.style.display =
+      "none";
 
   }
 
 
-  /* =================================================
-     RETURN TO HOTSPOT MODE
-  ================================================= */
+  /*
+     Return to hotspot mode.
+  */
 
   if (hotspotMode) {
-
-    const hotspot1 =
-      document.getElementById(
-        "hotspot1"
-      );
-
-    if (hotspot1) {
-
-      hotspot1.setAttribute(
-        "src",
-        "assets/images/Hotspot.png"
-      );
-
-      hotspot1.setAttribute(
-        "visible",
-        "true"
-      );
-
-    }
-
-
-    const hotspotUI =
-      document.getElementById(
-        "hotspotUI"
-      );
 
     if (hotspotUI) {
 
@@ -1432,24 +980,18 @@ function closeHotspot() {
       );
 
       hotspotUI.style.display =
-        "block";
-
-      hotspotUI.style.pointerEvents =
-        "auto";
-
-      hotspotUI.style.cursor =
-        "pointer";
+        "flex";
 
     }
 
+
+    /*
+       Show all three hotspots again.
+    */
+
+    showAllHotspots();
+
   }
-
-
-  /* =================================================
-     SHOW 3D OPTION
-  ================================================= */
-
-  show3DButton();
 
 }
 
@@ -1458,261 +1000,86 @@ function closeHotspot() {
    STORY AUDIO
 ===================================================== */
 
-let storyAudioReady = false;
+let storyAudio = null;
 
 
-function setupStoryAudio() {
+function getStoryAudio() {
 
-  const audio =
-    document.getElementById(
-      "storyAudio"
-    );
+  if (!storyAudio) {
 
-  if (!audio) {
-
-    return;
-
-  }
-
-  if (storyAudioReady) {
-
-    updateAudioDuration();
-
-    return;
-
-  }
-
-  storyAudioReady = true;
-
-
-  audio.addEventListener(
-    "loadedmetadata",
-    () => {
-
-      updateAudioDuration();
-
-    }
-  );
-
-
-  audio.addEventListener(
-    "play",
-    () => {
-
-      const button =
-        document.getElementById(
-          "playPauseButton"
-        );
-
-      if (button) {
-
-        button.textContent = "Ⅱ";
-
-      }
-
-    }
-  );
-
-
-  audio.addEventListener(
-    "pause",
-    () => {
-
-      const button =
-        document.getElementById(
-          "playPauseButton"
-        );
-
-      if (button) {
-
-        button.textContent = "▶";
-
-      }
-
-    }
-  );
-
-
-  audio.addEventListener(
-    "ended",
-    () => {
-
-      const button =
-        document.getElementById(
-          "playPauseButton"
-        );
-
-      if (button) {
-
-        button.textContent = "▶";
-
-      }
-
-    }
-  );
-
-
-  audio.addEventListener(
-    "timeupdate",
-    updateAudioProgress
-  );
-
-
-  const progress =
-    document.getElementById(
-      "audioProgress"
-    );
-
-  if (progress) {
-
-    progress.addEventListener(
-      "input",
-      () => {
-
-        if (!audio.duration) {
-
-          return;
-
-        }
-
-        audio.currentTime =
-          (
-            progress.value / 100
-          ) *
-          audio.duration;
-
-      }
-    );
-
-  }
-
-  updateAudioDuration();
-
-}
-
-
-/* =====================================================
-   UPDATE AUDIO DURATION
-===================================================== */
-
-function updateAudioDuration() {
-
-  const audio =
-    document.getElementById(
-      "storyAudio"
-    );
-
-  const duration =
-    document.getElementById(
-      "audioDuration"
-    );
-
-  if (
-    !audio ||
-    !duration ||
-    !isFinite(audio.duration)
-  ) {
-
-    return;
-
-  }
-
-  duration.textContent =
-    formatTime(
-      audio.duration
-    );
-
-}
-
-
-/* =====================================================
-   UPDATE AUDIO PROGRESS
-===================================================== */
-
-function updateAudioProgress() {
-
-  const audio =
-    document.getElementById(
-      "storyAudio"
-    );
-
-  const progress =
-    document.getElementById(
-      "audioProgress"
-    );
-
-  const current =
-    document.getElementById(
-      "audioCurrentTime"
-    );
-
-  if (!audio) {
-
-    return;
-
-  }
-
-  if (current) {
-
-    current.textContent =
-      formatTime(
-        audio.currentTime
+    storyAudio =
+      document.getElementById(
+        "storyAudio"
       );
 
   }
 
-  if (
-    progress &&
-    audio.duration
-  ) {
-
-    progress.value =
-      (
-        audio.currentTime /
-        audio.duration
-      ) * 100;
-
-  }
+  return storyAudio;
 
 }
 
 
 /* =====================================================
-   FORMAT TIME
+   PREPARE AUDIO
 ===================================================== */
 
-function formatTime(seconds) {
+function prepareStoryAudio() {
 
-  if (
-    !isFinite(seconds) ||
-    seconds < 0
-  ) {
+  const audio =
+    getStoryAudio();
 
-    return "00:00";
+
+  if (!audio) {
+
+    console.warn(
+      "Story audio element not found"
+    );
+
+    return;
 
   }
 
-  const minutes =
-    Math.floor(
-      seconds / 60
+
+  audio.pause();
+
+  audio.currentTime = 0;
+
+
+  const playButton =
+    document.getElementById(
+      "playPauseButton"
     );
 
-  const secs =
-    Math.floor(
-      seconds % 60
+
+  if (playButton) {
+
+    playButton.textContent =
+      "▶";
+
+  }
+
+
+  /*
+     Update duration when metadata
+     is available.
+  */
+
+  if (audio.readyState >= 1) {
+
+    updateAudioDuration();
+
+  } else {
+
+    audio.addEventListener(
+      "loadedmetadata",
+      updateAudioDuration,
+      { once: true }
     );
 
-  return (
+  }
 
-    String(minutes)
-      .padStart(2, "0") +
 
-    ":" +
-
-    String(secs)
-      .padStart(2, "0")
-
-  );
+  updateAudioProgress();
 
 }
 
@@ -1724,50 +1091,66 @@ function formatTime(seconds) {
 function toggleStoryAudio() {
 
   const audio =
-    document.getElementById(
-      "storyAudio"
-    );
+    getStoryAudio();
+
 
   if (!audio) {
-
-    console.error(
-      "Audio element not found."
-    );
-
     return;
-
   }
 
-  triggerHaptic("play");
+
+  triggerHaptic(20);
+
 
   if (audio.paused) {
 
     audio.play()
       .then(() => {
 
-        console.log(
-          "STORY AUDIO PLAYING"
-        );
+        updatePlayButton(true);
 
       })
-      .catch(
-        error => {
+      .catch(error => {
 
-          console.error(
-            "Audio playback failed:",
-            error
-          );
+        console.error(
+          "Audio playback failed:",
+          error
+        );
 
-        }
-      );
+      });
 
-  }
-
-  else {
+  } else {
 
     audio.pause();
 
+    updatePlayButton(false);
+
   }
+
+}
+
+
+/* =====================================================
+   PLAY BUTTON
+===================================================== */
+
+function updatePlayButton(isPlaying) {
+
+  const button =
+    document.getElementById(
+      "playPauseButton"
+    );
+
+
+  if (!button) {
+    return;
+  }
+
+
+  button.textContent =
+    isPlaying
+      ? "Ⅱ"
+      : "▶";
 
 }
 
@@ -1778,18 +1161,17 @@ function toggleStoryAudio() {
 
 function rewindStoryAudio() {
 
-  triggerHaptic("rewind");
-
   const audio =
-    document.getElementById(
-      "storyAudio"
-    );
+    getStoryAudio();
+
 
   if (!audio) {
-
     return;
-
   }
+
+
+  triggerHaptic(20);
+
 
   audio.currentTime =
     Math.max(
@@ -1797,154 +1179,463 @@ function rewindStoryAudio() {
       audio.currentTime - 10
     );
 
+
+  updateAudioProgress();
+
 }
+
+
 /* =====================================================
-   3D ARTIFACT VIEW
+   AUDIO PROGRESS
 ===================================================== */
 
-let artifactRotation = 0;
+function updateAudioProgress() {
 
+  const audio =
+    getStoryAudio();
 
-/* OPEN 3D VIEW */
-
-function showArtifact3D() {
-
-  console.log("Opening 3D artifact view");
-
-  const view =
-    document.getElementById("artifact3DView");
-
-  const viewer =
-    document.getElementById("artifactViewer");
-
-  if (!view || !viewer) {
-
-    console.error(
-      "3D viewer elements not found"
+  const progress =
+    document.getElementById(
+      "audioProgress"
     );
 
+  const currentTime =
+    document.getElementById(
+      "audioCurrentTime"
+    );
+
+
+  if (!audio) {
     return;
   }
 
 
-  /* Hide the old AR interface */
+  if (
+    progress &&
+    audio.duration &&
+    isFinite(audio.duration)
+  ) {
 
-  const artifactFound =
-    document.getElementById("artifactFound");
+    progress.value =
+      (
+        audio.currentTime /
+        audio.duration
+      ) * 100;
 
-  const hotspotUI =
-    document.getElementById("hotspotUI");
-
-  const hotspotInfo =
-    document.getElementById("hotspotInfo");
-
-  const view3DButton =
-    document.getElementById("view3DButton");
-
-
-  if (artifactFound) {
-    artifactFound.style.display = "none";
-  }
-
-  if (hotspotUI) {
-    hotspotUI.style.display = "none";
-  }
-
-  if (hotspotInfo) {
-    hotspotInfo.style.display = "none";
-  }
-
-  if (view3DButton) {
-    view3DButton.style.display = "none";
   }
 
 
-  /* Show 3D screen */
+  if (currentTime) {
 
-  view.classList.add("visible");
+    currentTime.textContent =
+      formatTime(
+        audio.currentTime
+      );
+
+  }
+
+}
 
 
-  /* Reset rotation */
+/* =====================================================
+   AUDIO DURATION
+===================================================== */
 
-  artifactRotation = 0;
+function updateAudioDuration() {
 
-  viewer.cameraOrbit =
-    "0deg 75deg 2.5m";
+  const audio =
+    getStoryAudio();
+
+  const duration =
+    document.getElementById(
+      "audioDuration"
+    );
 
 
-  /* Make sure model starts loading */
+  if (
+    !audio ||
+    !duration ||
+    !isFinite(audio.duration)
+  ) {
 
-  viewer.setAttribute(
-    "src",
-    "assets/images/visnu_lokesvara17mb.glb"
+    return;
+
+  }
+
+
+  duration.textContent =
+    formatTime(
+      audio.duration
+    );
+
+}
+
+
+/* =====================================================
+   FORMAT TIME
+===================================================== */
+
+function formatTime(seconds) {
+
+  if (
+    !seconds ||
+    !isFinite(seconds)
+  ) {
+
+    return "00:00";
+
+  }
+
+
+  const minutes =
+    Math.floor(
+      seconds / 60
+    );
+
+  const remainingSeconds =
+    Math.floor(
+      seconds % 60
+    );
+
+
+  return (
+    String(minutes).padStart(2, "0") +
+    ":" +
+    String(remainingSeconds).padStart(2, "0")
   );
 
 }
 
 
 /* =====================================================
-   ROTATE MODEL
+   AUDIO SEEK
 ===================================================== */
 
-function rotateArtifact(amount) {
+function setupAudioSeek() {
 
-  const viewer =
-    document.getElementById("artifactViewer");
-
-  if (!viewer) return;
-
-
-  artifactRotation += amount;
+  const progress =
+    document.getElementById(
+      "audioProgress"
+    );
 
 
-  viewer.cameraOrbit =
-    `${artifactRotation}deg 75deg 2.5m`;
+  if (!progress) {
+    return;
+  }
+
+
+  progress.addEventListener(
+    "input",
+    () => {
+
+      const audio =
+        getStoryAudio();
+
+
+      if (
+        !audio ||
+        !audio.duration ||
+        !isFinite(audio.duration)
+      ) {
+
+        return;
+
+      }
+
+
+      audio.currentTime =
+        (
+          Number(progress.value) /
+          100
+        ) * audio.duration;
+
+    }
+  );
+
 }
 
 
 /* =====================================================
-   RESET ROTATION
+   STOP AUDIO
 ===================================================== */
 
-function resetArtifactRotation() {
+function stopStoryAudio() {
 
-  const viewer =
-    document.getElementById("artifactViewer");
-
-  if (!viewer) return;
+  const audio =
+    getStoryAudio();
 
 
-  artifactRotation = 0;
+  if (!audio) {
+    return;
+  }
 
-  viewer.cameraOrbit =
-    "0deg 75deg 2.5m";
+
+  audio.pause();
+
+  audio.currentTime = 0;
+
+
+  updatePlayButton(false);
+
+  updateAudioProgress();
+
 }
 
 
 /* =====================================================
-   CLOSE 3D VIEW
+   AUDIO EVENTS
 ===================================================== */
 
-function closeArtifact3D() {
+function setupAudioEvents() {
 
-  const view =
-    document.getElementById("artifact3DView");
-
-  if (!view) return;
+  const audio =
+    getStoryAudio();
 
 
-  view.classList.remove("visible");
+  if (!audio) {
+    return;
+  }
 
 
-  /* Return to AR */
+  audio.addEventListener(
+    "timeupdate",
+    updateAudioProgress
+  );
 
-  const view3DButton =
-    document.getElementById("view3DButton");
 
-  if (view3DButton) {
+  audio.addEventListener(
+    "loadedmetadata",
+    updateAudioDuration
+  );
 
-    view3DButton.classList.add("visible");
+
+  audio.addEventListener(
+    "play",
+    () => {
+
+      updatePlayButton(true);
+
+    }
+  );
+
+
+  audio.addEventListener(
+    "pause",
+    () => {
+
+      updatePlayButton(false);
+
+    }
+  );
+
+
+  audio.addEventListener(
+    "ended",
+    () => {
+
+      updatePlayButton(false);
+
+      updateAudioProgress();
+
+    }
+  );
+
+}
+
+
+/* =====================================================
+   EXIT AR
+===================================================== */
+
+function exitAR() {
+
+  console.log(
+    "EXITING AR"
+  );
+
+
+  /*
+     Stop audio.
+  */
+
+  stopStoryAudio();
+
+
+  /*
+     Reset hotspot state.
+  */
+
+  hotspotMode = false;
+
+  hideAllHotspots();
+
+
+  /*
+     Hide hotspot UI.
+  */
+
+  const hotspotUI =
+    document.getElementById(
+      "hotspotUI"
+    );
+
+  const hotspotInfo =
+    document.getElementById(
+      "hotspotInfo"
+    );
+
+
+  if (hotspotUI) {
+
+    hotspotUI.classList.remove(
+      "visible"
+    );
+
+    hotspotUI.style.display =
+      "none";
 
   }
 
+
+  if (hotspotInfo) {
+
+    hotspotInfo.classList.remove(
+      "visible"
+    );
+
+    hotspotInfo.style.display =
+      "none";
+
+  }
+
+
+  /*
+     Stop MindAR.
+  */
+
+  const scene =
+    document.getElementById(
+      "mindarScene"
+    );
+
+
+  if (scene) {
+
+    const mindar =
+      scene.systems[
+        "mindar-image-system"
+      ];
+
+
+    if (
+      mindar &&
+      typeof mindar.stop === "function"
+    ) {
+
+      try {
+
+        mindar.stop();
+
+      } catch (error) {
+
+        console.warn(
+          "Could not stop MindAR:",
+          error
+        );
+
+      }
+
+    }
+
+  }
+
+
+  arStarted = false;
+
+
+  /*
+     Return to setup.
+  */
+
+  showScreen("setup");
+
 }
+
+
+/* =====================================================
+   INITIALISE
+===================================================== */
+
+document.addEventListener(
+  "DOMContentLoaded",
+  () => {
+
+    console.log(
+      "REKH INITIALISING"
+    );
+
+
+    /*
+       Setup hotspot clicks.
+    */
+
+    setupHotspotListeners();
+
+
+    /*
+       Setup audio.
+    */
+
+    setupAudioEvents();
+
+    setupAudioSeek();
+
+
+    /*
+       Initial UI state.
+    */
+
+    hideAllHotspots();
+
+
+    const hotspotUI =
+      document.getElementById(
+        "hotspotUI"
+      );
+
+    const hotspotInfo =
+      document.getElementById(
+        "hotspotInfo"
+      );
+
+
+    if (hotspotUI) {
+
+      hotspotUI.classList.remove(
+        "visible"
+      );
+
+      hotspotUI.style.display =
+        "none";
+
+    }
+
+
+    if (hotspotInfo) {
+
+      hotspotInfo.classList.remove(
+        "visible"
+      );
+
+      hotspotInfo.style.display =
+        "none";
+
+    }
+
+
+    console.log(
+      "REKH READY"
+    );
+
+  }
+);
