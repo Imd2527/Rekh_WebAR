@@ -1801,9 +1801,7 @@ function rewindStoryAudio() {
 
 
 /* =====================================================
-   =====================================================
    3D ARTIFACT VIEW
-   =====================================================
 ===================================================== */
 
 
@@ -1819,11 +1817,21 @@ let handTrackingActive = false;
 
 let handVideo = null;
 
-let handStream = null;
-
 let handsProcessor = null;
 
-let handCamera = null;
+/*
+   IMPORTANT:
+   MindAR already owns the phone camera.
+
+   We use MindAR's existing video element for
+   MediaPipe hand tracking.
+
+   We DO NOT call getUserMedia() again.
+*/
+
+let handTrackingFramePending = false;
+
+let handTrackingAnimationFrame = null;
 
 let lastHandX = null;
 
@@ -1945,33 +1953,27 @@ async function showArtifact3D() {
 
 
   /* =================================================
-     STOP MINDAR
-     
-     This releases the phone camera before
-     MediaPipe requests its own camera stream.
+     IMPORTANT CAMERA CHANGE
+
+     DO NOT STOP MINDAR.
+
+     MindAR is already using the phone camera.
+     Hand tracking will use that same camera video.
+
+     The old version stopped MindAR here and then
+     requested another camera stream with getUserMedia().
+     That caused:
+
+     NotReadableError:
+     Could not start video source
   ================================================= */
 
   arWasRunningBefore3D =
     arStarted;
 
 
-  if (arStarted) {
-
-    stopMindAR();
-
-  }
-
-
-  /*
-     Give the browser a moment to release
-     the MindAR camera.
-  */
-
-  await wait(500);
-
-
   /* =================================================
-     START HAND TRACKING
+     START HAND TRACKING USING EXISTING CAMERA
   ================================================= */
 
   await startHandTracking();
@@ -2060,18 +2062,13 @@ async function closeArtifact3D() {
 
 
   /* =================================================
-     RESTART MINDAR
+     MINDAR WAS NEVER STOPPED
+
+     The same camera remains active throughout
+     3D mode, so there is nothing to restart.
   ================================================= */
 
-  if (arWasRunningBefore3D) {
-
-    await wait(400);
-
-    arStarted = false;
-
-    startAR();
-
-  }
+  arWasRunningBefore3D = false;
 
 
   /*
@@ -2145,7 +2142,7 @@ function stopMindAR() {
     arReady = false;
 
     console.log(
-      "MindAR stopped for 3D mode."
+      "MindAR stopped."
     );
 
   }
@@ -2194,16 +2191,18 @@ async function startHandTracking() {
 
   }
 
+
   if (handTrackingStarting) {
 
     return;
 
   }
 
+
   handTrackingStarting = true;
 
   console.log(
-    "STARTING HAND TRACKING..."
+    "STARTING HAND TRACKING USING EXISTING MINDAR CAMERA..."
   );
 
 
@@ -2232,121 +2231,78 @@ async function startHandTracking() {
   }
 
 
-  /* =================================================
-     CHECK CAMERA API
-  ================================================= */
-
-  if (
-    !navigator.mediaDevices ||
-    !navigator.mediaDevices.getUserMedia
-  ) {
-
-    console.error(
-      "Camera API not available."
-    );
-
-    handTrackingStarting = false;
-
-    hide3DLoading();
-
-    alert(
-      "Hand tracking requires camera access. Please use the HTTPS GitHub Pages version of the app."
-    );
-
-    return;
-
-  }
-
-
   try {
 
     /* =================================================
-       CREATE HIDDEN VIDEO
+       FIND MINDAR'S EXISTING VIDEO
+
+       MindAR creates the camera video itself.
+
+       Depending on the MindAR version, the video
+       may have the .mindar-video class or may simply
+       be a video element inside the scene.
+
+       IMPORTANT:
+       We deliberately DO NOT call getUserMedia().
     ================================================= */
 
     handVideo =
-      document.createElement("video");
+      findMindARVideo();
 
-    handVideo.id =
-      "handTrackingVideo";
 
-    handVideo.autoplay = true;
+    if (!handVideo) {
 
-    handVideo.muted = true;
+      console.warn(
+        "MindAR video not found yet. Waiting for camera video..."
+      );
 
-    handVideo.playsInline = true;
+      handVideo =
+        await waitForMindARVideo(3000);
+
+    }
+
+
+    if (!handVideo) {
+
+      throw new Error(
+        "Could not find the existing MindAR camera video."
+      );
+
+    }
+
+
+    /* =================================================
+       MAKE SURE THE EXISTING VIDEO IS RUNNING
+    ================================================= */
 
     handVideo.setAttribute(
       "playsinline",
       ""
     );
 
-    handVideo.style.position =
-      "fixed";
+    handVideo.playsInline = true;
 
-    handVideo.style.left =
-      "-9999px";
-
-    handVideo.style.top =
-      "-9999px";
-
-    handVideo.style.width =
-      "1px";
-
-    handVideo.style.height =
-      "1px";
-
-    handVideo.style.opacity =
-      "0";
-
-    handVideo.style.pointerEvents =
-      "none";
-
-    document.body.appendChild(
-      handVideo
-    );
+    handVideo.muted = true;
 
 
-    /* =================================================
-       REQUEST CAMERA
-       
-       Rear/environment camera is preferred.
-    ================================================= */
+    if (handVideo.paused) {
 
-    handStream =
-      await navigator.mediaDevices.getUserMedia({
+      try {
 
-        video: {
+        await handVideo.play();
 
-          facingMode: {
-            ideal: "environment"
-          },
+      }
 
-          width: {
-            ideal: 640
-          },
+      catch (playError) {
 
-          height: {
-            ideal: 480
-          },
+        console.warn(
+          "Existing MindAR video could not be played:",
+          playError
+        );
 
-          frameRate: {
-            ideal: 30,
-            max: 30
-          }
+      }
 
-        },
-
-        audio: false
-
-      });
-
-
-    handVideo.srcObject =
-      handStream;
-
-
-    await handVideo.play();
+    }
 
 
     /* =================================================
@@ -2387,73 +2343,35 @@ async function startHandTracking() {
 
 
     /* =================================================
-       MEDIAPIPE CAMERA LOOP
+       START PROCESSING EXISTING MINDAR VIDEO
+
+       We use requestAnimationFrame instead of the
+       MediaPipe Camera helper because the Camera helper
+       would try to manage its own camera/video lifecycle.
+
+       MindAR remains the only owner of the camera.
     ================================================= */
-
-    handCamera =
-      new Camera(
-        handVideo,
-        {
-
-          onFrame: async () => {
-
-            if (
-              !artifact3DVisible ||
-              !handsProcessor
-            ) {
-
-              return;
-
-            }
-
-            try {
-
-              await handsProcessor.send({
-
-                image:
-                  handVideo
-
-              });
-
-            }
-
-            catch (error) {
-
-              console.warn(
-                "Hand tracking frame error:",
-                error
-              );
-
-            }
-
-          },
-
-          width: 640,
-
-          height: 480
-
-        }
-      );
-
-
-    handCamera.start();
 
     handTrackingActive = true;
 
     handTrackingStarting = false;
 
+    handTrackingFramePending = false;
+
     console.log(
-      "HAND TRACKING ACTIVE"
+      "HAND TRACKING ACTIVE — USING MINDAR CAMERA"
     );
 
     hide3DLoading();
+
+    runHandTrackingLoop();
 
   }
 
   catch (error) {
 
     console.error(
-      "HAND TRACKING CAMERA ERROR:",
+      "HAND TRACKING ERROR:",
       error
     );
 
@@ -2461,22 +2379,265 @@ async function startHandTracking() {
 
     handTrackingActive = false;
 
+    handTrackingFramePending = false;
+
     hide3DLoading();
-
-
-    /*
-       Clean up if camera permission
-       or stream creation failed.
-    */
 
     stopHandTracking();
 
-
     alert(
-      "Camera access is needed to rotate the 3D artifact with your hand. Please allow camera access and try again."
+      "Hand tracking could not start. Please make sure the AR camera is running and try again."
     );
 
   }
+
+}
+
+
+/* =====================================================
+   FIND MINDAR CAMERA VIDEO
+===================================================== */
+
+function findMindARVideo() {
+
+  const scene =
+    document.getElementById(
+      "mindarScene"
+    );
+
+
+  /* =================================================
+     FIRST TRY STANDARD MINDAR VIDEO CLASS
+  ================================================= */
+
+  let video =
+    document.querySelector(
+      "video.mindar-video"
+    );
+
+
+  if (video) {
+
+    return video;
+
+  }
+
+
+  /* =================================================
+     SEARCH INSIDE MINDAR SCENE
+  ================================================= */
+
+  if (scene) {
+
+    video =
+      scene.querySelector(
+        "video.mindar-video"
+      );
+
+    if (video) {
+
+      return video;
+
+    }
+
+
+    video =
+      scene.querySelector(
+        "video"
+      );
+
+    if (video) {
+
+      return video;
+
+    }
+
+  }
+
+
+  /* =================================================
+     FINAL FALLBACK
+
+     Look for an already active video.
+
+     This still does NOT request a new camera.
+  ================================================= */
+
+  const videos =
+    document.querySelectorAll(
+      "video"
+    );
+
+
+  for (
+    let i = 0;
+    i < videos.length;
+    i++
+  ) {
+
+    const candidate =
+      videos[i];
+
+    if (
+      candidate &&
+      (
+        candidate.srcObject ||
+        candidate.readyState >= 2
+      )
+    ) {
+
+      return candidate;
+
+    }
+
+  }
+
+
+  return null;
+
+}
+
+
+/* =====================================================
+   WAIT FOR MINDAR VIDEO
+===================================================== */
+
+function waitForMindARVideo(
+  timeout = 3000
+) {
+
+  return new Promise(
+    resolve => {
+
+      const startTime =
+        Date.now();
+
+
+      const checkVideo = () => {
+
+        const video =
+          findMindARVideo();
+
+
+        if (video) {
+
+          resolve(video);
+
+          return;
+
+        }
+
+
+        if (
+          Date.now() - startTime >=
+          timeout
+        ) {
+
+          resolve(null);
+
+          return;
+
+        }
+
+
+        requestAnimationFrame(
+          checkVideo
+        );
+
+      };
+
+
+      checkVideo();
+
+    }
+  );
+
+}
+
+
+/* =====================================================
+   HAND TRACKING LOOP
+===================================================== */
+
+function runHandTrackingLoop() {
+
+  if (
+    !handTrackingActive ||
+    !artifact3DVisible ||
+    !handsProcessor
+  ) {
+
+    handTrackingAnimationFrame =
+      null;
+
+    return;
+
+  }
+
+
+  handTrackingAnimationFrame =
+    requestAnimationFrame(
+      runHandTrackingLoop
+    );
+
+
+  if (!handVideo) {
+
+    return;
+
+  }
+
+
+  /* Video must have enough data to be processed. */
+
+  if (
+    handVideo.readyState <
+    2
+  ) {
+
+    return;
+
+  }
+
+
+  /* Do not send another frame while MediaPipe is
+     still processing the previous frame. */
+
+  if (
+    handTrackingFramePending
+  ) {
+
+    return;
+
+  }
+
+
+  handTrackingFramePending =
+    true;
+
+
+  handsProcessor
+    .send({
+      image: handVideo
+    })
+    .catch(
+      error => {
+
+        console.warn(
+          "Hand tracking frame error:",
+          error
+        );
+
+      }
+    )
+    .finally(
+      () => {
+
+        handTrackingFramePending =
+          false;
+
+      }
+    );
 
 }
 
@@ -2523,9 +2684,9 @@ function handleHandResults(results) {
 
   /* =================================================
      USE PALM CENTRE
-     
-     Using multiple points makes rotation
-     more stable than using one fingertip.
+
+     Using multiple points makes rotation more stable
+     than using one fingertip.
   ================================================= */
 
   const palmPoints = [
@@ -2583,9 +2744,7 @@ function handleHandResults(results) {
   lastHandX = palmX;
 
 
-  /*
-     Ignore tiny hand movements.
-  */
+  /* Ignore tiny hand movements. */
 
   if (
     Math.abs(movement) < 0.004
@@ -2598,7 +2757,7 @@ function handleHandResults(results) {
 
   /* =================================================
      ROTATE MODEL
-     
+
      MediaPipe x:
      0 = left
      1 = right
@@ -2614,9 +2773,6 @@ function handleHandResults(results) {
 
   /* =================================================
      LIMIT ROTATION VALUE
-     
-     Prevents the number from becoming
-     extremely large over time.
   ================================================= */
 
   if (
@@ -2672,32 +2828,32 @@ function stopHandTracking() {
   handTrackingStarting =
     false;
 
+  handTrackingFramePending =
+    false;
+
   lastHandX =
     null;
 
 
   /* =================================================
-     STOP MEDIAPIPE CAMERA
+     STOP HAND-TRACKING ANIMATION LOOP
+
+     IMPORTANT:
+     We do NOT stop the video tracks.
+
+     The video belongs to MindAR and is still needed
+     by the AR experience.
   ================================================= */
 
-  if (handCamera) {
+  if (
+    handTrackingAnimationFrame !== null
+  ) {
 
-    try {
+    cancelAnimationFrame(
+      handTrackingAnimationFrame
+    );
 
-      handCamera.stop();
-
-    }
-
-    catch (error) {
-
-      console.warn(
-        "Hand camera stop error:",
-        error
-      );
-
-    }
-
-    handCamera =
+    handTrackingAnimationFrame =
       null;
 
   }
@@ -2731,52 +2887,21 @@ function stopHandTracking() {
 
 
   /* =================================================
-     STOP CAMERA TRACKS
+     IMPORTANT
+
+     DO NOT:
+
+       handVideo.pause()
+
+       handVideo.srcObject = null
+
+       handVideo.srcObject.getTracks().stop()
+
+     because this video belongs to MindAR.
   ================================================= */
 
-  if (handStream) {
-
-    handStream
-      .getTracks()
-      .forEach(
-        track => {
-
-          track.stop();
-
-        }
-      );
-
-    handStream =
-      null;
-
-  }
-
-
-  /* =================================================
-     REMOVE VIDEO
-  ================================================= */
-
-  if (handVideo) {
-
-    handVideo.pause();
-
-    handVideo.srcObject =
-      null;
-
-    if (
-      handVideo.parentNode
-    ) {
-
-      handVideo.parentNode.removeChild(
-        handVideo
-      );
-
-    }
-
-    handVideo =
-      null;
-
-  }
+  handVideo =
+    null;
 
 }
 
@@ -2866,8 +2991,8 @@ function setup3DModel() {
 ===================================================== */
 
 /*
-   If hand tracking is unavailable, the user can
-   still rotate the artifact by dragging on it.
+   If hand tracking is unavailable, the user can still
+   rotate the artifact by dragging on it.
 
    This does NOT replace hand tracking.
 */
