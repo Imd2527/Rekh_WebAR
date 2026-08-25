@@ -348,7 +348,7 @@
 
 <!-- =====================================================
      LOADING SCREEN
-===================================================== -->
+====================================================== -->
 
 <section
   id="loading"
@@ -381,7 +381,7 @@
 
 <!-- =====================================================
      WELCOME SCREEN
-===================================================== -->
+====================================================== -->
 
 <section
   id="welcome"
@@ -426,7 +426,7 @@
 
 <!-- =====================================================
      HOW REKH WORKS
-===================================================== -->
+====================================================== -->
 
 <section
   id="howRekh"
@@ -495,7 +495,7 @@
 
 <!-- =====================================================
      SET UP EXPERIENCE
-===================================================== -->
+====================================================== -->
 
 <section
   id="setup"
@@ -573,7 +573,7 @@
 
 <!-- =====================================================
      ACCESSIBILITY OVERLAY
-===================================================== -->
+====================================================== -->
 
 <div
   id="accessibilityOverlay"
@@ -885,7 +885,7 @@
 
 <!-- =====================================================
      AR SCREEN
-===================================================== -->
+====================================================== -->
 
 <section
   id="arScreen"
@@ -924,6 +924,24 @@
 
     embedded
   >
+
+
+    <!-- =================================================
+         3D MODEL ASSET
+         
+         IMPORTANT:
+         The GLB is inside assets/images/
+    ================================================== -->
+
+    <a-assets>
+
+      <a-asset-item
+        id="artifactModel"
+        src="assets/images/visnu_lokesvara17mb.glb"
+      ></a-asset-item>
+
+    </a-assets>
+
 
 
     <!-- =================================================
@@ -1070,16 +1088,21 @@
 
     <!-- =================================================
          3D ARTIFACT MODEL
-         
-         This is intentionally OUTSIDE the
-         MindAR target entity.
 
-         It becomes visible only when the user
-         selects "View Artifact in 3D".
+         IMPORTANT:
+         This model is OUTSIDE the MindAR target.
+
+         It is shown when the user selects
+         "View Artifact in 3D".
+
+         The id "artifact3D" is kept because
+         script.js controls this element.
     ================================================== -->
 
-    <a-entity
+    <a-gltf-model
       id="artifact3D"
+
+      src="#artifactModel"
 
       visible="false"
 
@@ -1088,11 +1111,7 @@
       rotation="0 0 0"
 
       scale="0.8 0.8 0.8"
-
-      gltf-model="
-        url(assets/images/visnu_lokesvara17mb.glb)
-      "
-    ></a-entity>
+    ></a-gltf-model>
 
 
   </a-scene>
@@ -1581,10 +1600,68 @@
 
 <!-- =====================================================
      JAVASCRIPT
-===================================================== -->
+====================================================== -->
 
 <script
   src="script.js">
+</script>
+
+
+<!-- =====================================================
+     3D MODEL DEBUGGING
+     
+     This does NOT replace script.js.
+     It simply logs whether the GLB successfully loads.
+====================================================== -->
+
+<script>
+
+  document.addEventListener("DOMContentLoaded", function () {
+
+    const model = document.getElementById("artifact3D");
+
+    if (!model) {
+      console.error("3D MODEL ELEMENT NOT FOUND");
+      return;
+    }
+
+    model.addEventListener("model-loaded", function () {
+
+      console.log(
+        "✅ 3D MODEL LOADED SUCCESSFULLY"
+      );
+
+      const loading =
+        document.getElementById("artifact3DLoading");
+
+      if (loading) {
+        loading.classList.remove("visible");
+      }
+
+    });
+
+
+    model.addEventListener("model-error", function (event) {
+
+      console.error(
+        "❌ ERROR LOADING 3D MODEL",
+        event
+      );
+
+      const loading =
+        document.getElementById("artifact3DLoading");
+
+      if (loading) {
+
+        loading.textContent =
+          "Unable to load artifact";
+
+      }
+
+    });
+
+  });
+
 </script>
 
 
