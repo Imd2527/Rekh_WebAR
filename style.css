@@ -2381,3 +2381,24 @@ button {
 
   color: rgba(255,255,255,0.92);
 }
+/* =====================================================
+   HOTSPOT STORY ANIMATION
+===================================================== */
+
+.story-visual {
+  width: 100%;
+  overflow: hidden;
+  border-radius: 20px;
+  background: #160500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.story-animation {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 20px;
+}
