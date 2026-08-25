@@ -32,6 +32,19 @@
 
 
   <!-- =====================================================
+       MEDIAPIPE HAND TRACKING
+  ====================================================== -->
+
+  <script
+    src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js">
+  </script>
+
+  <script
+    src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js">
+  </script>
+
+
+  <!-- =====================================================
        CSS
   ====================================================== -->
 
@@ -39,6 +52,293 @@
     rel="stylesheet"
     href="style.css"
   >
+
+
+  <!-- =====================================================
+       3D ARTIFACT VIEW CSS
+  ====================================================== -->
+
+  <style>
+
+    /* =====================================================
+       VIEW ARTIFACT IN 3D BUTTON
+    ===================================================== */
+
+    .view-3d-button {
+
+      position: fixed;
+
+      left: 50%;
+      bottom: 32px;
+
+      transform: translateX(-50%);
+
+      display: none;
+
+      align-items: center;
+
+      gap: 14px;
+
+      padding: 14px 22px;
+
+      background: rgba(55, 25, 15, 0.96);
+
+      color: white;
+
+      border: 1px solid rgba(255,255,255,0.15);
+
+      border-radius: 18px;
+
+      z-index: 1000;
+
+      cursor: pointer;
+
+      box-shadow:
+        0 8px 30px rgba(0,0,0,0.25);
+
+      backdrop-filter: blur(8px);
+
+      -webkit-backdrop-filter: blur(8px);
+
+    }
+
+
+    .view-3d-button.visible {
+
+      display: flex;
+
+    }
+
+
+    .view-3d-icon {
+
+      width: 34px;
+      height: 34px;
+
+      display: flex;
+
+      align-items: center;
+      justify-content: center;
+
+      border-radius: 50%;
+
+      background: rgba(255,255,255,0.1);
+
+      font-size: 20px;
+
+    }
+
+
+    .view-3d-button strong {
+
+      display: block;
+
+      font-size: 14px;
+
+      letter-spacing: 0.04em;
+
+      white-space: nowrap;
+
+    }
+
+
+    .view-3d-button small {
+
+      display: block;
+
+      margin-top: 3px;
+
+      font-size: 11px;
+
+      opacity: 0.7;
+
+    }
+
+
+    /* =====================================================
+       3D VIEW INSTRUCTION
+    ===================================================== */
+
+    .artifact-3d-ui {
+
+      position: fixed;
+
+      top: 24px;
+      left: 50%;
+
+      transform: translateX(-50%);
+
+      display: none;
+
+      padding: 14px 54px 14px 20px;
+
+      background: rgba(45, 20, 12, 0.94);
+
+      color: white;
+
+      border-radius: 18px;
+
+      z-index: 1001;
+
+      text-align: center;
+
+      pointer-events: none;
+
+      box-shadow:
+        0 8px 30px rgba(0,0,0,0.2);
+
+      backdrop-filter: blur(8px);
+
+      -webkit-backdrop-filter: blur(8px);
+
+    }
+
+
+    .artifact-3d-ui.visible {
+
+      display: block;
+
+    }
+
+
+    .artifact-3d-title {
+
+      font-size: 14px;
+
+      font-weight: 600;
+
+      letter-spacing: 0.08em;
+
+    }
+
+
+    .artifact-3d-instruction {
+
+      margin-top: 5px;
+
+      font-size: 11px;
+
+      line-height: 1.4;
+
+      opacity: 0.75;
+
+    }
+
+
+    .artifact-3d-close {
+
+      position: absolute;
+
+      top: 7px;
+      right: 9px;
+
+      width: 30px;
+      height: 30px;
+
+      border: none;
+
+      border-radius: 50%;
+
+      background: rgba(255,255,255,0.08);
+
+      color: white;
+
+      font-size: 22px;
+
+      cursor: pointer;
+
+      pointer-events: auto;
+
+      display: flex;
+
+      align-items: center;
+      justify-content: center;
+
+      padding: 0;
+
+    }
+
+
+    /* =====================================================
+       3D LOADING MESSAGE
+    ===================================================== */
+
+    .artifact-3d-loading {
+
+      position: fixed;
+
+      left: 50%;
+      top: 50%;
+
+      transform: translate(-50%, -50%);
+
+      display: none;
+
+      z-index: 1002;
+
+      padding: 12px 20px;
+
+      border-radius: 14px;
+
+      background: rgba(45, 20, 12, 0.9);
+
+      color: white;
+
+      font-size: 13px;
+
+      pointer-events: none;
+
+    }
+
+
+    .artifact-3d-loading.visible {
+
+      display: block;
+
+    }
+
+
+    /* =====================================================
+       MOBILE
+    ===================================================== */
+
+    @media (max-width: 600px) {
+
+      .view-3d-button {
+
+        bottom: 24px;
+
+        width: calc(100% - 40px);
+
+        max-width: 340px;
+
+        justify-content: center;
+
+        padding: 13px 18px;
+
+      }
+
+
+      .view-3d-button strong {
+
+        font-size: 13px;
+
+      }
+
+
+      .artifact-3d-ui {
+
+        top: 18px;
+
+        width: calc(100% - 70px);
+
+        max-width: 300px;
+
+      }
+
+    }
+
+  </style>
 
 </head>
 
@@ -614,6 +914,7 @@
     renderer="
       colorManagement: true;
       physicallyCorrectLights: true;
+      antialias: true;
       alpha: true;
     "
 
@@ -626,10 +927,45 @@
 
 
     <!-- =================================================
+         LIGHTING FOR GLB
+    ================================================== -->
+
+    <a-entity
+      light="
+        type: ambient;
+        color: #ffffff;
+        intensity: 1.5;
+      "
+    ></a-entity>
+
+
+    <a-entity
+      light="
+        type: directional;
+        color: #ffffff;
+        intensity: 2;
+      "
+      position="1 2 3"
+    ></a-entity>
+
+
+    <a-entity
+      light="
+        type: directional;
+        color: #ffffff;
+        intensity: 1;
+      "
+      position="-2 1 1"
+    ></a-entity>
+
+
+
+    <!-- =================================================
          CAMERA
     ================================================== -->
 
     <a-camera
+      id="arCamera"
       position="0 0 0"
       look-controls="enabled: false"
       cursor="rayOrigin: mouse"
@@ -731,6 +1067,34 @@
     </a-entity>
 
 
+
+    <!-- =================================================
+         3D ARTIFACT MODEL
+         
+         This is intentionally OUTSIDE the
+         MindAR target entity.
+
+         It becomes visible only when the user
+         selects "View Artifact in 3D".
+    ================================================== -->
+
+    <a-entity
+      id="artifact3D"
+
+      visible="false"
+
+      position="0 0 -1.8"
+
+      rotation="0 0 0"
+
+      scale="0.8 0.8 0.8"
+
+      gltf-model="
+        url(assets/images/visnu_lokesvara17mb.glb)
+      "
+    ></a-entity>
+
+
   </a-scene>
 
 
@@ -791,8 +1155,11 @@
   >
 
     <span class="corner top-left"></span>
+
     <span class="corner top-right"></span>
+
     <span class="corner bottom-left"></span>
+
     <span class="corner bottom-right"></span>
 
   </div>
@@ -956,21 +1323,22 @@
 
 
     <!-- =================================================
-         VISUAL / ANIMATION PLACEHOLDER
-
-         This is intentionally empty for now.
+         VISUAL / ANIMATION
     ================================================== -->
 
-  <div
-  class="story-visual"
-  id="storyVisual"
->
-  <img
-    src="assets/images/Artifact_GIF.gif"
-    alt="Animation showing the crown and face of Shri Vishnu"
-    class="story-animation"
-  >
-</div>
+    <div
+      class="story-visual"
+      id="storyVisual"
+    >
+
+      <img
+        src="assets/images/Artifact_GIF.gif"
+        alt="Animation showing the crown and face of Shri Vishnu"
+        class="story-animation"
+      >
+
+    </div>
+
 
 
     <!-- =================================================
@@ -982,8 +1350,6 @@
       id="audioWaveform"
     >
 
-      <span></span>
-      <span></span>
       <span></span>
       <span></span>
       <span></span>
@@ -1062,6 +1428,7 @@
       <!-- REWIND -->
 
       <button
+        id="rewindButton"
         class="rewind-button"
         onclick="rewindStoryAudio()"
         aria-label="Replay 10 seconds"
@@ -1110,6 +1477,87 @@
     </div>
 
 
+  </div>
+
+
+
+  <!-- ===================================================
+       VIEW ARTIFACT IN 3D BUTTON
+
+       This becomes visible AFTER the user closes
+       the hotspot story card.
+  ==================================================== -->
+
+  <div
+    id="view3DButton"
+    class="view-3d-button"
+    onclick="showArtifact3D()"
+  >
+
+    <span class="view-3d-icon">
+      ◈
+    </span>
+
+    <span>
+
+      <strong>
+        VIEW ARTIFACT IN 3D
+      </strong>
+
+      <small>
+        Explore the sculpture
+      </small>
+
+    </span>
+
+  </div>
+
+
+
+  <!-- ===================================================
+       3D VIEW INSTRUCTION
+
+       Becomes visible when the 3D model opens.
+  ==================================================== -->
+
+  <div
+    id="artifact3DUI"
+    class="artifact-3d-ui"
+  >
+
+    <div class="artifact-3d-title">
+      VIEWING ARTIFACT
+    </div>
+
+    <div class="artifact-3d-instruction">
+      Move your hand left or right<br>
+      to rotate the artifact
+    </div>
+
+
+    <button
+      class="artifact-3d-close"
+      onclick="closeArtifact3D()"
+      aria-label="Close 3D artifact view"
+    >
+      ×
+    </button>
+
+  </div>
+
+
+
+  <!-- ===================================================
+       3D LOADING MESSAGE
+
+       Hidden by default.
+  ==================================================== -->
+
+  <div
+    id="artifact3DLoading"
+    class="artifact-3d-loading"
+  >
+    Loading artifact...
   </div>
 
 
