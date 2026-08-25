@@ -1,6 +1,6 @@
 /* =====================================================
    REKH WEBAR — SCRIPT
-   One-hotspot stable version
+   One-hotspot stable version + HAPTIC FEEDBACK
 ===================================================== */
 
 
@@ -14,7 +14,8 @@ function showScreen(screenId) {
     screen.classList.remove("active");
   });
 
-  const screen = document.getElementById(screenId);
+  const screen =
+    document.getElementById(screenId);
 
   if (screen) {
     screen.classList.add("active");
@@ -27,7 +28,9 @@ function showScreen(screenId) {
 ===================================================== */
 
 setTimeout(() => {
+
   showScreen("welcome");
+
 }, 2500);
 
 
@@ -36,11 +39,17 @@ setTimeout(() => {
 ===================================================== */
 
 const storyFrames = [
+
   "assets/images/Rekh_How_It_Works_Frame_1_HD.png",
+
   "assets/images/Rekh_How_It_Works_Frame_2_HD.png",
+
   "assets/images/Rekh_How_It_Works_Frame_3_HD.png",
+
   "assets/images/Rekh_How_It_Works_Frame_4_HD.png"
+
 ];
+
 
 let currentStory = 0;
 
@@ -49,21 +58,36 @@ function showStory(index) {
 
   currentStory = index;
 
+
   const image =
-    document.getElementById("storyFrame");
+    document.getElementById(
+      "storyFrame"
+    );
+
 
   if (image) {
-    image.src = storyFrames[currentStory];
+
+    image.src =
+      storyFrames[currentStory];
+
   }
 
-  document.querySelectorAll(".dot").forEach(
+
+  document.querySelectorAll(
+    ".dot"
+  ).forEach(
+
     (dot, i) => {
+
       dot.classList.toggle(
         "active",
         i === currentStory
       );
+
     }
+
   );
+
 }
 
 
@@ -78,18 +102,30 @@ function openAccessibility() {
       "accessibilityOverlay"
     );
 
+
   const continueButton =
     document.getElementById(
       "setupContinue"
     );
 
+
   if (overlay) {
-    overlay.classList.add("open");
+
+    overlay.classList.add(
+      "open"
+    );
+
   }
 
+
   if (continueButton) {
-    continueButton.classList.remove("show");
+
+    continueButton.classList.remove(
+      "show"
+    );
+
   }
+
 }
 
 
@@ -100,123 +136,120 @@ function closeAccessibility() {
       "accessibilityOverlay"
     );
 
+
   const continueButton =
     document.getElementById(
       "setupContinue"
     );
 
+
   if (overlay) {
-    overlay.classList.remove("open");
+
+    overlay.classList.remove(
+      "open"
+    );
+
   }
+
 
   if (continueButton) {
-    continueButton.classList.add("show");
+
+    continueButton.classList.add(
+      "show"
+    );
+
   }
+
 }
 
 
-function toggleSetting(button) {
-
-  if (!button) {
-    return;
-  }
-
-  button.classList.toggle("active");
-
-  /*
-     HAPTIC FEEDBACK SETTING
-
-     The existing HTML already has a Haptic Feedback toggle.
-     We identify it from the row heading.
-  */
-  const row = button.closest(".accessibility-row");
-
-  const label = row
-    ? row.querySelector(".accessibility-label h2")
-    : null;
-
-  const isHapticToggle =
-    label &&
-    label.textContent.trim().toLowerCase() === "haptic feedback";
-
-  if (isHapticToggle) {
-
-    hapticsEnabled =
-      button.classList.contains("active");
-
-    /*
-       Give a small confirmation vibration
-       when haptics are switched ON.
-    */
-    if (hapticsEnabled) {
-      triggerHaptic("toggle");
-    }
-  }
-}
 /* =====================================================
    HAPTIC FEEDBACK
 ===================================================== */
 
 /*
-   Haptics are enabled by default because the
-   Haptic Feedback toggle is currently active.
+   Haptics are enabled by default.
 
-   On supported mobile browsers, this uses
-   navigator.vibrate().
+   navigator.vibrate() is supported mainly by
+   Android browsers.
 
-   On unsupported devices/browsers, nothing happens
-   and the AR experience continues normally.
+   If the device/browser does not support it,
+   the rest of the app continues normally.
 */
 
 let hapticsEnabled = true;
 
 
+/* =====================================================
+   HAPTIC PATTERNS
+===================================================== */
+
 const HAPTIC_PATTERNS = {
 
-  /* Very light tap */
-  tap: 12,
+  tap: 35,
 
-  /* Hotspot selection */
-  select: 18,
+  select: 55,
 
-  /* Artifact successfully detected */
-  success: [20, 35, 20],
+  success: [40, 40, 40],
 
-  /* Enter hotspot exploration */
-  open: 24,
+  open: 70,
 
-  /* Close / go back */
-  close: 12,
+  close: 35,
 
-  /* Haptic toggle */
-  toggle: 15,
+  toggle: 45,
 
-  /* Rewind */
-  rewind: 14,
+  rewind: 35,
 
-  /* Play / pause */
-  play: 10
+  play: 30
+
 };
 
 
-function triggerHaptic(type = "tap") {
+/* =====================================================
+   CHECK HAPTIC SUPPORT
+===================================================== */
 
-  /*
-     Haptics disabled by user
-  */
+function hapticsSupported() {
+
+  return (
+
+    "vibrate" in navigator &&
+
+    typeof navigator.vibrate ===
+      "function"
+
+  );
+
+}
+
+
+/* =====================================================
+   TRIGGER HAPTIC
+===================================================== */
+
+function triggerHaptic(
+  type = "tap"
+) {
+
   if (!hapticsEnabled) {
-    return;
+
+    console.log(
+      "HAPTIC DISABLED"
+    );
+
+    return false;
+
   }
 
 
-  /*
-     Device/browser does not support vibration
-  */
-  if (
-    typeof navigator === "undefined" ||
-    typeof navigator.vibrate !== "function"
-  ) {
-    return;
+  if (!hapticsSupported()) {
+
+    console.warn(
+      "HAPTIC NOT SUPPORTED BY THIS BROWSER"
+    );
+
+    return false;
+
   }
 
 
@@ -227,35 +260,177 @@ function triggerHaptic(type = "tap") {
 
   try {
 
-    navigator.vibrate(pattern);
+    const result =
+      navigator.vibrate(
+        pattern
+      );
+
+
+    console.log(
+      "HAPTIC:",
+      type,
+      result
+    );
+
+
+    return result;
 
   }
 
   catch (error) {
 
-    /*
-       Haptics should never break the AR experience.
-    */
-    console.warn(
-      "Haptic feedback unavailable:",
+    console.error(
+      "HAPTIC ERROR:",
       error
     );
 
+    return false;
+
   }
+
 }
+
+
+/* =====================================================
+   ADD DIRECT HAPTIC TO UI ELEMENT
+===================================================== */
+
+/*
+   This is important for mobile.
+
+   navigator.vibrate() is called directly
+   from pointerdown, which is a real user
+   interaction.
+*/
+
+function addHapticToButton(
+  element,
+  type = "tap"
+) {
+
+  if (!element) {
+
+    return;
+
+  }
+
+
+  element.addEventListener(
+
+    "pointerdown",
+
+    function() {
+
+      triggerHaptic(
+        type
+      );
+
+    },
+
+    {
+      passive: true
+    }
+
+  );
+
+}
+
+
+/* =====================================================
+   ACCESSIBILITY TOGGLE
+===================================================== */
+
+function toggleSetting(button) {
+
+  if (!button) {
+
+    return;
+
+  }
+
+
+  button.classList.toggle(
+    "active"
+  );
+
+
+  const row =
+    button.closest(
+      ".accessibility-row"
+    );
+
+
+  const label =
+    row
+      ? row.querySelector(
+          ".accessibility-label h2"
+        )
+      : null;
+
+
+  const isHapticToggle =
+
+    label &&
+
+    label.textContent
+      .trim()
+      .toLowerCase() ===
+      "haptic feedback";
+
+
+  if (isHapticToggle) {
+
+    hapticsEnabled =
+      button.classList.contains(
+        "active"
+      );
+
+
+    console.log(
+      "HAPTIC FEEDBACK:",
+      hapticsEnabled
+        ? "ON"
+        : "OFF"
+    );
+
+
+    /*
+       Give a confirmation vibration
+       when switching haptics ON.
+    */
+
+    if (hapticsEnabled) {
+
+      triggerHaptic(
+        "toggle"
+      );
+
+    }
+
+  }
+
+}
+
 
 /* =====================================================
    AR STATE
 ===================================================== */
 
 let arStarted = false;
+
 let arReady = false;
+
 let artifactIsFound = false;
+
 let hotspotMode = false;
+
 let selectedHotspot = null;
 
-let hotspotListenersAttached = false;
-let hotspotUIListenerAttached = false;
+let hotspotListenersAttached =
+  false;
+
+let hotspotUIListenerAttached =
+  false;
 
 
 /* =====================================================
@@ -266,12 +441,15 @@ const hotspot1Content = {
 
   number: 1,
 
-  title: "THE CROWN & FACE",
+  title:
+    "THE CROWN & FACE",
 
-  subtitle: "How the vessel was held",
+  subtitle:
+    "How the vessel was held",
 
   description:
     "The calm face and elaborate crown give Vishnu a composed, authoritative presence. In sacred sculpture, such details communicate the deity's divine and royal character."
+
 };
 
 
@@ -285,9 +463,14 @@ function continueSetup() {
     "CONTINUE CLICKED — STARTING AR"
   );
 
-  showScreen("arScreen");
+
+  showScreen(
+    "arScreen"
+  );
+
 
   startAR();
+
 }
 
 
@@ -302,6 +485,7 @@ function startAR() {
       "mindarScene"
     );
 
+
   if (!scene) {
 
     console.error(
@@ -309,6 +493,7 @@ function startAR() {
     );
 
     return;
+
   }
 
 
@@ -319,6 +504,7 @@ function startAR() {
     );
 
     return;
+
   }
 
 
@@ -329,16 +515,24 @@ function startAR() {
 
     launchMindAR();
 
-  } else {
+  }
+
+  else {
 
     scene.addEventListener(
+
       "loaded",
+
       launchMindAR,
+
       {
         once: true
       }
+
     );
+
   }
+
 }
 
 
@@ -353,8 +547,11 @@ function launchMindAR() {
       "mindarScene"
     );
 
+
   if (!scene) {
+
     return;
+
   }
 
 
@@ -371,11 +568,14 @@ function launchMindAR() {
     );
 
     return;
+
   }
 
 
   if (arStarted) {
+
     return;
+
   }
 
 
@@ -388,7 +588,9 @@ function launchMindAR() {
 
     mindar.start();
 
+
     arStarted = true;
+
 
     console.log(
       "MindAR camera starting..."
@@ -403,10 +605,13 @@ function launchMindAR() {
       error
     );
 
+
     alert(
       "Camera could not start. Please allow camera access and reload the page."
     );
+
   }
+
 }
 
 
@@ -421,6 +626,7 @@ function setupARTarget() {
       "mindarScene"
     );
 
+
   const target =
     document.getElementById(
       "vishnuTarget"
@@ -434,18 +640,23 @@ function setupARTarget() {
     );
 
     return;
+
   }
 
 
   if (
-    target.dataset.listenersAttached === "true"
+    target.dataset
+      .listenersAttached ===
+    "true"
   ) {
 
     return;
+
   }
 
 
-  target.dataset.listenersAttached =
+  target.dataset
+    .listenersAttached =
     "true";
 
 
@@ -454,18 +665,23 @@ function setupARTarget() {
   ================================================= */
 
   scene.addEventListener(
+
     "arReady",
+
     () => {
 
       console.log(
         "MindAR READY — CAMERA IS RUNNING"
       );
 
+
       arReady = true;
+
 
       showScanning();
 
     }
+
   );
 
 
@@ -474,7 +690,9 @@ function setupARTarget() {
   ================================================= */
 
   scene.addEventListener(
+
     "arError",
+
     event => {
 
       console.error(
@@ -482,11 +700,13 @@ function setupARTarget() {
         event
       );
 
+
       alert(
         "Camera could not start. Please allow camera access and reload the page."
       );
 
     }
+
   );
 
 
@@ -495,7 +715,9 @@ function setupARTarget() {
   ================================================= */
 
   target.addEventListener(
+
     "targetFound",
+
     () => {
 
       console.log(
@@ -503,14 +725,24 @@ function setupARTarget() {
       );
 
 
-     artifactIsFound = true;
+      artifactIsFound =
+        true;
 
-/* Short confirmation when artifact is recognised */
-triggerHaptic("success");
 
-hotspotMode = false;
+      /*
+         DO NOT trigger haptics here.
 
-      selectedHotspot = null;
+         targetFound is not necessarily a
+         direct user gesture, so browsers
+         may block vibration.
+      */
+
+      hotspotMode =
+        false;
+
+
+      selectedHotspot =
+        null;
 
 
       showArtifactFound();
@@ -519,6 +751,7 @@ hotspotMode = false;
       hideHotspots();
 
     }
+
   );
 
 
@@ -527,7 +760,9 @@ hotspotMode = false;
   ================================================= */
 
   target.addEventListener(
+
     "targetLost",
+
     () => {
 
       console.log(
@@ -535,7 +770,8 @@ hotspotMode = false;
       );
 
 
-      artifactIsFound = false;
+      artifactIsFound =
+        false;
 
 
       if (!hotspotMode) {
@@ -545,10 +781,12 @@ hotspotMode = false;
       }
 
     }
+
   );
 
 
   setupHotspots();
+
 }
 
 
@@ -563,20 +801,24 @@ function showScanning() {
       "scanMessage"
     );
 
+
   const frame =
     document.getElementById(
       "scanFrame"
     );
+
 
   const search =
     document.getElementById(
       "searchIcon"
     );
 
+
   const status =
     document.getElementById(
       "scanStatus"
     );
+
 
   const found =
     document.getElementById(
@@ -585,27 +827,48 @@ function showScanning() {
 
 
   if (message) {
-    message.style.display = "block";
+
+    message.style.display =
+      "block";
+
   }
+
 
   if (frame) {
-    frame.style.display = "block";
+
+    frame.style.display =
+      "block";
+
   }
+
 
   if (search) {
-    search.style.display = "flex";
+
+    search.style.display =
+      "flex";
+
   }
+
 
   if (status) {
-    status.style.display = "block";
+
+    status.style.display =
+      "block";
+
   }
 
+
   if (found) {
-    found.classList.remove("visible");
+
+    found.classList.remove(
+      "visible"
+    );
+
   }
 
 
   hideHotspots();
+
 }
 
 
@@ -620,20 +883,24 @@ function showArtifactFound() {
       "scanMessage"
     );
 
+
   const frame =
     document.getElementById(
       "scanFrame"
     );
+
 
   const search =
     document.getElementById(
       "searchIcon"
     );
 
+
   const status =
     document.getElementById(
       "scanStatus"
     );
+
 
   const found =
     document.getElementById(
@@ -642,19 +909,34 @@ function showArtifactFound() {
 
 
   if (message) {
-    message.style.display = "none";
+
+    message.style.display =
+      "none";
+
   }
+
 
   if (frame) {
-    frame.style.display = "none";
+
+    frame.style.display =
+      "none";
+
   }
+
 
   if (search) {
-    search.style.display = "none";
+
+    search.style.display =
+      "none";
+
   }
 
+
   if (status) {
-    status.style.display = "none";
+
+    status.style.display =
+      "none";
+
   }
 
 
@@ -667,9 +949,12 @@ function showArtifactFound() {
   }
 
 
-  hotspotMode = false;
+  hotspotMode =
+    false;
+
 
   hideHotspots();
+
 }
 
 
@@ -679,8 +964,12 @@ function showArtifactFound() {
 
 function setupHotspots() {
 
-  if (hotspotListenersAttached) {
+  if (
+    hotspotListenersAttached
+  ) {
+
     return;
+
   }
 
 
@@ -697,71 +986,112 @@ function setupHotspots() {
     );
 
     return;
+
   }
 
 
-  const hotspotHandler = event => {
+  const hotspotHandler =
+    event => {
 
-    event.preventDefault();
+      event.preventDefault();
 
-    event.stopPropagation();
-
-    console.log(
-  "HOTSPOT 1 CLICKED"
-);
-
-triggerHaptic("select");
+      event.stopPropagation();
 
 
-selectHotspot(
+      console.log(
+        "HOTSPOT 1 CLICKED"
+      );
 
 
-    selectHotspot(
-      hotspot1Content.number,
-      hotspot1Content.title,
-      hotspot1Content.description
-    );
+      /*
+         Direct user interaction.
+      */
 
-  };
+      triggerHaptic(
+        "select"
+      );
 
 
-  /* Desktop */
+      selectHotspot(
+
+        hotspot1Content.number,
+
+        hotspot1Content.title,
+
+        hotspot1Content.description
+
+      );
+
+    };
+
+
+  /*
+     Desktop
+  */
 
   hotspot1.addEventListener(
+
     "click",
+
     hotspotHandler
+
   );
 
 
-  /* Mobile */
+  /*
+     Mobile
+  */
 
   hotspot1.addEventListener(
+
     "touchend",
+
     hotspotHandler,
+
     {
       passive: false
     }
+
   );
 
 
-  hotspotListenersAttached = true;
+  /*
+     Direct pointer vibration.
+
+     This happens before the click
+     handler and is especially useful
+     on mobile.
+  */
+
+  addHapticToButton(
+    hotspot1,
+    "select"
+  );
+
+
+  hotspotListenersAttached =
+    true;
 
 
   console.log(
     "ONE HOTSPOT LISTENER ATTACHED"
   );
+
 }
 
 
 /* =====================================================
-   IMPORTANT NEW PART
    TAP A HOTSPOT TO EXPLORE UI
 ===================================================== */
 
 function setupHotspotUI() {
 
-  if (hotspotUIListenerAttached) {
+  if (
+    hotspotUIListenerAttached
+  ) {
+
     return;
+
   }
 
 
@@ -778,37 +1108,42 @@ function setupHotspotUI() {
     );
 
     return;
+
   }
 
 
-  /*
-     Make the UI itself clickable.
-  */
-
   hotspotUI.style.pointerEvents =
     "auto";
+
 
   hotspotUI.style.cursor =
     "pointer";
 
 
   /*
-     CLICK / TAP
+     Direct user vibration.
+  */
+
+  addHapticToButton(
+    hotspotUI,
+    "tap"
+  );
+
+
+  /*
+     CLICK
   */
 
   hotspotUI.addEventListener(
+
     "click",
+
     event => {
 
       event.preventDefault();
 
       event.stopPropagation();
 
-
-      /*
-         Only work after the user has
-         entered hotspot mode.
-      */
 
       if (!hotspotMode) {
 
@@ -817,6 +1152,7 @@ function setupHotspotUI() {
         );
 
         return;
+
       }
 
 
@@ -825,27 +1161,29 @@ function setupHotspotUI() {
       );
 
 
-      /*
-         Open the same card as the
-         actual yellow hotspot.
-      */
-
       selectHotspot(
+
         hotspot1Content.number,
+
         hotspot1Content.title,
+
         hotspot1Content.description
+
       );
 
     }
+
   );
 
 
-  hotspotUIListenerAttached = true;
+  hotspotUIListenerAttached =
+    true;
 
 
   console.log(
     "HOTSPOT UI LISTENER ATTACHED"
   );
+
 }
 
 
@@ -859,34 +1197,39 @@ function enterHotspotMode() {
     "================================="
   );
 
+
   console.log(
     "EXPLORE ARTIFACT CLICKED"
   );
+
 
   console.log(
     "artifactIsFound:",
     artifactIsFound
   );
 
+
   console.log(
     "================================="
   );
 
 
-  /*
-     Do not block this because of
-     artifactIsFound.
+  hotspotMode =
+    true;
 
-     The button is only shown after
-     artifact detection anyway.
+
+  /*
+     This is a direct button interaction,
+     so vibration is allowed here.
   */
 
-hotspotMode = true;
+  triggerHaptic(
+    "open"
+  );
 
-/* Confirm entry into artifact exploration */
-triggerHaptic("open");
 
-selectedHotspot = null;
+  selectedHotspot =
+    null;
 
 
   /* =================================================
@@ -898,13 +1241,16 @@ selectedHotspot = null;
       "artifactFound"
     );
 
+
   if (found) {
 
     found.classList.remove(
       "visible"
     );
 
-    found.style.display = "none";
+
+    found.style.display =
+      "none";
 
   }
 
@@ -918,15 +1264,18 @@ selectedHotspot = null;
       "scanMessage"
     );
 
+
   const frame =
     document.getElementById(
       "scanFrame"
     );
 
+
   const search =
     document.getElementById(
       "searchIcon"
     );
+
 
   const status =
     document.getElementById(
@@ -935,19 +1284,34 @@ selectedHotspot = null;
 
 
   if (message) {
-    message.style.display = "none";
+
+    message.style.display =
+      "none";
+
   }
+
 
   if (frame) {
-    frame.style.display = "none";
+
+    frame.style.display =
+      "none";
+
   }
+
 
   if (search) {
-    search.style.display = "none";
+
+    search.style.display =
+      "none";
+
   }
 
+
   if (status) {
-    status.style.display = "none";
+
+    status.style.display =
+      "none";
+
   }
 
 
@@ -967,16 +1331,21 @@ selectedHotspot = null;
       "hotspotUI"
     );
 
+
   if (hotspotUI) {
 
     hotspotUI.classList.add(
       "visible"
     );
 
-    hotspotUI.style.display = "block";
+
+    hotspotUI.style.display =
+      "block";
+
 
     hotspotUI.style.pointerEvents =
       "auto";
+
 
     hotspotUI.style.cursor =
       "pointer";
@@ -987,6 +1356,7 @@ selectedHotspot = null;
   console.log(
     "HOTSPOT MODE ACTIVE"
   );
+
 }
 
 
@@ -1001,10 +1371,12 @@ function showOneHotspot() {
       "hotspot1"
     );
 
+
   const hotspot2 =
     document.getElementById(
       "hotspot2"
     );
+
 
   const hotspot3 =
     document.getElementById(
@@ -1013,7 +1385,7 @@ function showOneHotspot() {
 
 
   /*
-     Hide everything first.
+     Hide all first.
   */
 
   if (hotspot1) {
@@ -1025,6 +1397,7 @@ function showOneHotspot() {
 
   }
 
+
   if (hotspot2) {
 
     hotspot2.setAttribute(
@@ -1033,6 +1406,7 @@ function showOneHotspot() {
     );
 
   }
+
 
   if (hotspot3) {
 
@@ -1045,25 +1419,35 @@ function showOneHotspot() {
 
 
   /*
-     Show ONLY hotspot 1.
+     Show only hotspot 1.
   */
 
   if (hotspot1) {
 
     hotspot1.setAttribute(
+
       "src",
+
       "assets/images/Hotspot.png"
+
     );
 
+
     hotspot1.setAttribute(
+
       "visible",
+
       "true"
+
     );
 
 
     hotspot1.setAttribute(
+
       "class",
+
       "hotspot"
+
     );
 
 
@@ -1080,6 +1464,7 @@ function showOneHotspot() {
     );
 
   }
+
 }
 
 
@@ -1090,13 +1475,24 @@ function showOneHotspot() {
 function hideHotspots() {
 
   const hotspots = [
-    document.getElementById("hotspot1"),
-    document.getElementById("hotspot2"),
-    document.getElementById("hotspot3")
+
+    document.getElementById(
+      "hotspot1"
+    ),
+
+    document.getElementById(
+      "hotspot2"
+    ),
+
+    document.getElementById(
+      "hotspot3"
+    )
+
   ];
 
 
   hotspots.forEach(
+
     hotspot => {
 
       if (hotspot) {
@@ -1109,6 +1505,7 @@ function hideHotspots() {
       }
 
     }
+
   );
 
 
@@ -1116,6 +1513,7 @@ function hideHotspots() {
     document.getElementById(
       "hotspotInfo"
     );
+
 
   if (hotspotInfo) {
 
@@ -1131,16 +1529,19 @@ function hideHotspots() {
       "hotspotUI"
     );
 
+
   if (hotspotUI) {
 
     hotspotUI.classList.remove(
       "visible"
     );
 
+
     hotspotUI.style.pointerEvents =
       "none";
 
   }
+
 }
 
 
@@ -1149,9 +1550,13 @@ function hideHotspots() {
 ===================================================== */
 
 function selectHotspot(
+
   number,
+
   title,
+
   description
+
 ) {
 
   console.log(
@@ -1160,14 +1565,22 @@ function selectHotspot(
   );
 
 
-selectedHotspot = number;
+  selectedHotspot =
+    number;
 
-triggerHaptic("select");
+
+  /*
+     Direct interaction haptic.
+  */
+
+  triggerHaptic(
+    "select"
+  );
 
 
-/* =================================================
-   CHANGE HOTSPOT TO SELECTED
-================================================= */
+  /* =================================================
+     CHANGE HOTSPOT TO SELECTED
+  ================================================= */
 
   const selected =
     document.getElementById(
@@ -1178,8 +1591,11 @@ triggerHaptic("select");
   if (selected) {
 
     selected.setAttribute(
+
       "src",
+
       "assets/images/Hotspot Selected.png"
+
     );
 
   }
@@ -1259,7 +1675,7 @@ triggerHaptic("select");
 
 
   /* =================================================
-     HIDE TAP HOTSPOT INSTRUCTION
+     HIDE TAP HOTSPOT UI
   ================================================= */
 
   const hotspotUI =
@@ -1273,6 +1689,7 @@ triggerHaptic("select");
     hotspotUI.classList.remove(
       "visible"
     );
+
 
     hotspotUI.style.pointerEvents =
       "none";
@@ -1290,6 +1707,7 @@ triggerHaptic("select");
   console.log(
     "HOTSPOT STORY CARD OPENED"
   );
+
 }
 
 
@@ -1299,7 +1717,10 @@ triggerHaptic("select");
 
 function closeHotspot() {
 
-  triggerHaptic("close");
+  triggerHaptic(
+    "close"
+  );
+
 
   const hotspotInfo =
     document.getElementById(
@@ -1316,7 +1737,8 @@ function closeHotspot() {
   }
 
 
-  selectedHotspot = null;
+  selectedHotspot =
+    null;
 
 
   /*
@@ -1334,13 +1756,20 @@ function closeHotspot() {
     if (hotspot1) {
 
       hotspot1.setAttribute(
+
         "src",
+
         "assets/images/Hotspot.png"
+
       );
 
+
       hotspot1.setAttribute(
+
         "visible",
+
         "true"
+
       );
 
     }
@@ -1358,11 +1787,14 @@ function closeHotspot() {
         "visible"
       );
 
+
       hotspotUI.style.display =
         "block";
 
+
       hotspotUI.style.pointerEvents =
         "auto";
+
 
       hotspotUI.style.cursor =
         "pointer";
@@ -1387,6 +1819,7 @@ function closeHotspot() {
     audio.pause();
 
   }
+
 }
 
 
@@ -1394,7 +1827,8 @@ function closeHotspot() {
    STORY AUDIO
 ===================================================== */
 
-let storyAudioReady = false;
+let storyAudioReady =
+  false;
 
 
 function setupStoryAudio() {
@@ -1412,6 +1846,7 @@ function setupStoryAudio() {
     );
 
     return;
+
   }
 
 
@@ -1420,10 +1855,12 @@ function setupStoryAudio() {
     updateAudioDuration();
 
     return;
+
   }
 
 
-  storyAudioReady = true;
+  storyAudioReady =
+    true;
 
 
   /* =================================================
@@ -1431,12 +1868,15 @@ function setupStoryAudio() {
   ================================================= */
 
   audio.addEventListener(
+
     "loadedmetadata",
+
     () => {
 
       updateAudioDuration();
 
     }
+
   );
 
 
@@ -1445,7 +1885,9 @@ function setupStoryAudio() {
   ================================================= */
 
   audio.addEventListener(
+
     "play",
+
     () => {
 
       const button =
@@ -1462,6 +1904,7 @@ function setupStoryAudio() {
       }
 
     }
+
   );
 
 
@@ -1470,7 +1913,9 @@ function setupStoryAudio() {
   ================================================= */
 
   audio.addEventListener(
+
     "pause",
+
     () => {
 
       const button =
@@ -1487,6 +1932,7 @@ function setupStoryAudio() {
       }
 
     }
+
   );
 
 
@@ -1495,7 +1941,9 @@ function setupStoryAudio() {
   ================================================= */
 
   audio.addEventListener(
+
     "ended",
+
     () => {
 
       const button =
@@ -1512,6 +1960,7 @@ function setupStoryAudio() {
       }
 
     }
+
   );
 
 
@@ -1520,8 +1969,11 @@ function setupStoryAudio() {
   ================================================= */
 
   audio.addEventListener(
+
     "timeupdate",
+
     updateAudioProgress
+
   );
 
 
@@ -1538,27 +1990,36 @@ function setupStoryAudio() {
   if (progress) {
 
     progress.addEventListener(
+
       "input",
+
       () => {
 
         if (!audio.duration) {
+
           return;
+
         }
 
 
         audio.currentTime =
+
           (
-            progress.value / 100
+            progress.value /
+            100
           ) *
+
           audio.duration;
 
       }
+
     );
 
   }
 
 
   updateAudioDuration();
+
 }
 
 
@@ -1573,6 +2034,7 @@ function updateAudioDuration() {
       "storyAudio"
     );
 
+
   const duration =
     document.getElementById(
       "audioDuration"
@@ -1580,12 +2042,19 @@ function updateAudioDuration() {
 
 
   if (
+
     !audio ||
+
     !duration ||
-    !isFinite(audio.duration)
+
+    !isFinite(
+      audio.duration
+    )
+
   ) {
 
     return;
+
   }
 
 
@@ -1593,6 +2062,7 @@ function updateAudioDuration() {
     formatTime(
       audio.duration
     );
+
 }
 
 
@@ -1607,10 +2077,12 @@ function updateAudioProgress() {
       "storyAudio"
     );
 
+
   const progress =
     document.getElementById(
       "audioProgress"
     );
+
 
   const current =
     document.getElementById(
@@ -1619,7 +2091,9 @@ function updateAudioProgress() {
 
 
   if (!audio) {
+
     return;
+
   }
 
 
@@ -1634,17 +2108,24 @@ function updateAudioProgress() {
 
 
   if (
+
     progress &&
+
     audio.duration
+
   ) {
 
     progress.value =
+
       (
         audio.currentTime /
         audio.duration
-      ) * 100;
+      ) *
+
+      100;
 
   }
+
 }
 
 
@@ -1652,11 +2133,18 @@ function updateAudioProgress() {
    FORMAT TIME
 ===================================================== */
 
-function formatTime(seconds) {
+function formatTime(
+  seconds
+) {
 
   if (
-    !isFinite(seconds) ||
+
+    !isFinite(
+      seconds
+    ) ||
+
     seconds < 0
+
   ) {
 
     return "00:00";
@@ -1669,6 +2157,7 @@ function formatTime(seconds) {
       seconds / 60
     );
 
+
   const secs =
     Math.floor(
       seconds % 60
@@ -1676,10 +2165,25 @@ function formatTime(seconds) {
 
 
   return (
-    String(minutes).padStart(2, "0") +
+
+    String(
+      minutes
+    ).padStart(
+      2,
+      "0"
+    ) +
+
     ":" +
-    String(secs).padStart(2, "0")
+
+    String(
+      secs
+    ).padStart(
+      2,
+      "0"
+    )
+
   );
+
 }
 
 
@@ -1702,14 +2206,23 @@ function toggleStoryAudio() {
     );
 
     return;
+
   }
 
 
-if (audio.paused) {
+  /*
+     Direct user interaction.
+  */
 
-  triggerHaptic("play");
+  triggerHaptic(
+    "play"
+  );
 
-  audio.play()
+
+  if (audio.paused) {
+
+    audio.play()
+
       .then(() => {
 
         console.log(
@@ -1717,24 +2230,28 @@ if (audio.paused) {
         );
 
       })
-      .catch(error => {
 
-        console.error(
-          "Audio playback failed:",
-          error
-        );
+      .catch(
 
-      });
+        error => {
+
+          console.error(
+            "Audio playback failed:",
+            error
+          );
+
+        }
+
+      );
 
   }
 
- else {
+  else {
 
-  triggerHaptic("play");
+    audio.pause();
 
-  audio.pause();
+  }
 
-}
 }
 
 
@@ -1744,7 +2261,14 @@ if (audio.paused) {
 
 function rewindStoryAudio() {
 
-  triggerHaptic("rewind");
+  /*
+     Direct user interaction.
+  */
+
+  triggerHaptic(
+    "rewind"
+  );
+
 
   const audio =
     document.getElementById(
@@ -1753,15 +2277,22 @@ function rewindStoryAudio() {
 
 
   if (!audio) {
+
     return;
+
   }
 
 
   audio.currentTime =
     Math.max(
+
       0,
-      audio.currentTime - 10
+
+      audio.currentTime -
+      10
+
     );
+
 }
 
 
@@ -1771,7 +2302,10 @@ function rewindStoryAudio() {
 
 function exitAR() {
 
-  triggerHaptic("close");
+  triggerHaptic(
+    "close"
+  );
+
 
   console.log(
     "EXITING AR"
@@ -1788,7 +2322,8 @@ function exitAR() {
 
     audio.pause();
 
-    audio.currentTime = 0;
+    audio.currentTime =
+      0;
 
   }
 
@@ -1829,17 +2364,33 @@ function exitAR() {
   }
 
 
-  arStarted = false;
-  arReady = false;
-  artifactIsFound = false;
-  hotspotMode = false;
-  selectedHotspot = null;
+  arStarted =
+    false;
+
+
+  arReady =
+    false;
+
+
+  artifactIsFound =
+    false;
+
+
+  hotspotMode =
+    false;
+
+
+  selectedHotspot =
+    null;
 
 
   hideHotspots();
 
 
-  showScreen("setup");
+  showScreen(
+    "setup"
+  );
+
 }
 
 
@@ -1848,7 +2399,9 @@ function exitAR() {
 ===================================================== */
 
 document.addEventListener(
+
   "DOMContentLoaded",
+
   () => {
 
     console.log(
@@ -1864,9 +2417,9 @@ document.addEventListener(
 
 
     /*
-       IMPORTANT:
-       Prepare the "Tap a hotspot to explore"
-       UI as a clickable element.
+       Prepare the
+       "Tap a hotspot to explore"
+       UI.
     */
 
     setupHotspotUI();
@@ -1878,5 +2431,146 @@ document.addEventListener(
 
     setupStoryAudio();
 
+
+    /* =================================================
+       DIRECT HAPTIC TOUCH EVENTS
+    ================================================= */
+
+
+    /*
+       EXPLORE THE ARTIFACT
+    */
+
+    const exploreButton =
+      document.querySelector(
+        "#artifactFound button"
+      );
+
+
+    if (exploreButton) {
+
+      addHapticToButton(
+
+        exploreButton,
+
+        "open"
+
+      );
+
+    }
+
+
+    /*
+       TAP A HOTSPOT TO EXPLORE
+    */
+
+    const hotspotUI =
+      document.getElementById(
+        "hotspotUI"
+      );
+
+
+    if (hotspotUI) {
+
+      /*
+         The listener inside setupHotspotUI()
+         handles the actual click.
+      */
+
+      console.log(
+        "Haptic enabled for hotspot UI."
+      );
+
+    }
+
+
+    /*
+       ACTUAL 3D HOTSPOT
+    */
+
+    const hotspot1 =
+      document.getElementById(
+        "hotspot1"
+      );
+
+
+    if (hotspot1) {
+
+      console.log(
+        "Haptic enabled for hotspot 1."
+      );
+
+    }
+
+
+    /*
+       STORY CARD CLOSE
+    */
+
+    const closeButton =
+      document.querySelector(
+        "#hotspotInfo .close"
+      );
+
+
+    if (closeButton) {
+
+      addHapticToButton(
+
+        closeButton,
+
+        "close"
+
+      );
+
+    }
+
+
+    /*
+       PLAY / PAUSE
+    */
+
+    const playButton =
+      document.getElementById(
+        "playPauseButton"
+      );
+
+
+    if (playButton) {
+
+      addHapticToButton(
+
+        playButton,
+
+        "play"
+
+      );
+
+    }
+
+
+    /*
+       REWIND
+    */
+
+    const rewindButton =
+      document.getElementById(
+        "rewindButton"
+      );
+
+
+    if (rewindButton) {
+
+      addHapticToButton(
+
+        rewindButton,
+
+        "rewind"
+
+      );
+
+    }
+
   }
+
 );
