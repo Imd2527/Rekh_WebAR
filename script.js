@@ -38,28 +38,19 @@ const storyFrames = [
 
 let currentStory = 0;
 
-
 function showStory(index) {
 
   currentStory = index;
 
-  const image =
-    document.getElementById("storyFrame");
+  const image = document.getElementById("storyFrame");
 
   if (image) {
     image.src = storyFrames[index];
   }
 
-  document.querySelectorAll(".dot").forEach(
-    (dot, i) => {
-
-      dot.classList.toggle(
-        "active",
-        i === index
-      );
-
-    }
-  );
+  document.querySelectorAll(".dot").forEach((dot, i) => {
+    dot.classList.toggle("active", i === index);
+  });
 }
 
 
@@ -117,25 +108,17 @@ function toggleSetting(button) {
 
 
 /* =====================================================
-   HAPTIC FEEDBACK
+   HAPTIC
 ===================================================== */
 
 function triggerHaptic(duration = 20) {
 
-  if (
-    "vibrate" in navigator
-  ) {
+  if ("vibrate" in navigator) {
 
     try {
-
       navigator.vibrate(duration);
-
     } catch (error) {
-
-      console.log(
-        "Haptic feedback unavailable"
-      );
-
+      console.log("Haptic feedback unavailable");
     }
 
   }
@@ -144,43 +127,26 @@ function triggerHaptic(duration = 20) {
 
 
 /* =====================================================
-   START AR
+   AR
 ===================================================== */
 
 let arStarted = false;
+let hotspotMode = false;
 
 
 function continueSetup() {
 
-  console.log(
-    "CONTINUE → AR"
-  );
-
-
-  /*
-     Show AR screen first.
-  */
-
   showScreen("arScreen");
 
-
-  /*
-     Wait for the AR screen to
-     become visible before starting
-     MindAR.
-  */
-
   setTimeout(() => {
-
     startAR();
-
-  }, 100);
+  }, 150);
 
 }
 
 
 /* =====================================================
-   MINDAR
+   START MINDAR
 ===================================================== */
 
 function startAR() {
@@ -189,19 +155,12 @@ function startAR() {
     return;
   }
 
-
   const scene =
     document.getElementById("mindarScene");
 
-
   if (!scene) {
-
-    console.error(
-      "MindAR scene not found"
-    );
-
+    console.error("MindAR scene not found");
     return;
-
   }
 
 
@@ -210,43 +169,30 @@ function startAR() {
     const mindar =
       scene.systems["mindar-image-system"];
 
-
     if (!mindar) {
+      console.error("MindAR system not found");
+      return;
+    }
+
+    try {
+
+      mindar.start();
+
+      arStarted = true;
+
+      console.log("MINDAR CAMERA STARTED");
+
+    } catch (error) {
 
       console.error(
-        "MindAR system not found"
+        "Could not start MindAR:",
+        error
       );
-
-      return;
 
     }
 
-
-    console.log(
-      "MINDAR SYSTEM FOUND"
-    );
-
-
-    /*
-       START CAMERA
-    */
-
-    mindar.start();
-
-
-    arStarted = true;
-
-
-    console.log(
-      "MINDAR CAMERA STARTED"
-    );
-
   };
 
-
-  /*
-     Wait until A-Frame is ready.
-  */
 
   if (scene.hasLoaded) {
 
@@ -271,11 +217,12 @@ function startAR() {
     "arReady",
     () => {
 
-      console.log(
-        "CAMERA READY"
-      );
+      console.log("CAMERA READY");
 
       showScanning();
+
+      setupHotspotListeners();
+      setupHotspotUI();
 
     },
     { once: true }
@@ -307,15 +254,9 @@ function startAR() {
   const target =
     document.getElementById("vishnuTarget");
 
-
   if (!target) {
-
-    console.error(
-      "Vishnu target not found"
-    );
-
+    console.error("Vishnu target not found");
     return;
-
   }
 
 
@@ -327,9 +268,7 @@ function startAR() {
     "targetFound",
     () => {
 
-      console.log(
-        "VISHNU FOUND!"
-      );
+      console.log("VISHNU FOUND!");
 
       showArtifactFound();
 
@@ -345,20 +284,10 @@ function startAR() {
     "targetLost",
     () => {
 
-      console.log(
-        "VISHNU LOST"
-      );
-
-      /*
-         Only show scanning again if
-         we are not currently exploring
-         a hotspot/story.
-      */
+      console.log("VISHNU LOST");
 
       if (!hotspotMode) {
-
         showScanning();
-
       }
 
     }
@@ -378,6 +307,9 @@ function showScanning() {
 
   const frame =
     document.getElementById("scanFrame");
+
+  const search =
+    document.getElementById("searchIcon");
 
   const status =
     document.getElementById("scanStatus");
@@ -400,22 +332,28 @@ function showScanning() {
     frame.style.display = "block";
   }
 
+  if (search) {
+    search.style.display = "block";
+  }
+
   if (status) {
     status.style.display = "block";
   }
 
   if (found) {
     found.classList.remove("visible");
+    found.style.display = "none";
   }
 
   if (hotspotUI) {
     hotspotUI.classList.remove("visible");
+    hotspotUI.style.display = "none";
   }
 
   if (hotspotInfo) {
     hotspotInfo.classList.remove("visible");
+    hotspotInfo.style.display = "none";
   }
-
 
   hideAllHotspots();
 
@@ -434,6 +372,9 @@ function showArtifactFound() {
   const frame =
     document.getElementById("scanFrame");
 
+  const search =
+    document.getElementById("searchIcon");
+
   const status =
     document.getElementById("scanStatus");
 
@@ -449,6 +390,10 @@ function showArtifactFound() {
     frame.style.display = "none";
   }
 
+  if (search) {
+    search.style.display = "none";
+  }
+
   if (status) {
     status.style.display = "none";
   }
@@ -456,11 +401,9 @@ function showArtifactFound() {
   if (found) {
 
     found.classList.add("visible");
-
     found.style.display = "block";
 
   }
-
 
   hideAllHotspots();
 
@@ -468,21 +411,14 @@ function showArtifactFound() {
 
 
 /* =====================================================
-   HOTSPOT MODE
+   ENTER HOTSPOT MODE
 ===================================================== */
-
-let hotspotMode = false;
-
 
 function enterHotspotMode() {
 
-  console.log(
-    "ENTERING HOTSPOT MODE"
-  );
-
+  console.log("ENTERING HOTSPOT MODE");
 
   triggerHaptic(25);
-
 
   hotspotMode = true;
 
@@ -499,26 +435,24 @@ function enterHotspotMode() {
   const frame =
     document.getElementById("scanFrame");
 
+  const search =
+    document.getElementById("searchIcon");
+
   const status =
     document.getElementById("scanStatus");
 
 
-  /*
-     Hide artifact information card.
-  */
+  /* Hide artifact card */
 
   if (found) {
 
     found.classList.remove("visible");
-
     found.style.display = "none";
 
   }
 
 
-  /*
-     Hide scanning UI.
-  */
+  /* Hide scanning UI */
 
   if (message) {
     message.style.display = "none";
@@ -528,14 +462,16 @@ function enterHotspotMode() {
     frame.style.display = "none";
   }
 
+  if (search) {
+    search.style.display = "none";
+  }
+
   if (status) {
     status.style.display = "none";
   }
 
 
-  /*
-     Show hotspot instruction.
-  */
+  /* Show hotspot instruction */
 
   if (hotspotUI) {
 
@@ -543,19 +479,14 @@ function enterHotspotMode() {
 
     hotspotUI.style.display = "flex";
 
+    hotspotUI.style.pointerEvents = "auto";
+
   }
 
 
-  /*
-     Show the first hotspot.
-  */
+  /* Show first hotspot */
 
   showHotspot("hotspot1");
-
-
-  console.log(
-    "HOTSPOT 1 SHOWN"
-  );
 
 }
 
@@ -566,47 +497,47 @@ function enterHotspotMode() {
 
 function showHotspot(id) {
 
-  const hotspot =
+  const hotspots = [
+    "hotspot1",
+    "hotspot2",
+    "hotspot3"
+  ];
+
+  hotspots.forEach(hotspotId => {
+
+    const hotspot =
+      document.getElementById(hotspotId);
+
+    if (hotspot) {
+
+      hotspot.setAttribute(
+        "visible",
+        hotspotId === id
+      );
+
+    }
+
+  });
+
+  const selected =
     document.getElementById(id);
 
+  if (selected) {
 
-  if (!hotspot) {
-
-    console.error(
-      "Hotspot not found:",
-      id
+    selected.setAttribute(
+      "visible",
+      "true"
     );
 
-    return;
+    selected.setAttribute(
+      "class",
+      "hotspot"
+    );
+
+    selected.style.pointerEvents =
+      "auto";
 
   }
-
-
-  /*
-     Hide all other hotspots first.
-  */
-
-  hideAllHotspots();
-
-
-  /*
-     Make selected hotspot visible.
-  */
-
-  hotspot.setAttribute(
-    "visible",
-    "true"
-  );
-
-
-  hotspot.style.display =
-    "block";
-
-
-  console.log(
-    "Showing hotspot:",
-    id
-  );
 
 }
 
@@ -617,18 +548,14 @@ function showHotspot(id) {
 
 function showAllHotspots() {
 
-  const hotspots = [
+  [
     "hotspot1",
     "hotspot2",
     "hotspot3"
-  ];
-
-
-  hotspots.forEach(id => {
+  ].forEach(id => {
 
     const hotspot =
       document.getElementById(id);
-
 
     if (hotspot) {
 
@@ -637,17 +564,14 @@ function showAllHotspots() {
         "true"
       );
 
-      hotspot.style.display =
-        "block";
+      hotspot.setAttribute(
+        "class",
+        "hotspot"
+      );
 
     }
 
   });
-
-
-  console.log(
-    "ALL HOTSPOTS SHOWN"
-  );
 
 }
 
@@ -658,18 +582,14 @@ function showAllHotspots() {
 
 function hideAllHotspots() {
 
-  const hotspots = [
+  [
     "hotspot1",
     "hotspot2",
     "hotspot3"
-  ];
-
-
-  hotspots.forEach(id => {
+  ].forEach(id => {
 
     const hotspot =
       document.getElementById(id);
-
 
     if (hotspot) {
 
@@ -677,9 +597,6 @@ function hideAllHotspots() {
         "visible",
         "false"
       );
-
-      hotspot.style.display =
-        "none";
 
     }
 
@@ -739,10 +656,17 @@ const hotspotData = {
 
 
 /* =====================================================
-   HOTSPOT CLICK HANDLING
+   HOTSPOT LISTENERS
+   MOBILE + DESKTOP
 ===================================================== */
 
+let hotspotListenersAttached = false;
+
 function setupHotspotListeners() {
+
+  if (hotspotListenersAttached) {
+    return;
+  }
 
   const hotspots = [
     "hotspot1",
@@ -756,48 +680,122 @@ function setupHotspotListeners() {
     const hotspot =
       document.getElementById(id);
 
-
     if (!hotspot) {
-
-      console.warn(
-        "Could not find:",
-        id
-      );
-
       return;
-
     }
 
 
-    /*
-       Prevent duplicate listeners.
-    */
+    const activateHotspot = event => {
+
+      if (event) {
+        event.preventDefault();
+        event.stopPropagation();
+      }
+
+      console.log(
+        "HOTSPOT ACTIVATED:",
+        id
+      );
+
+      triggerHaptic(30);
+
+      openHotspotStory(id);
+
+    };
+
+
+    /* Desktop */
 
     hotspot.addEventListener(
       "click",
-      () => {
-
-        console.log(
-          "HOTSPOT CLICKED:",
-          id
-        );
+      activateHotspot
+    );
 
 
-        triggerHaptic(30);
+    /* Mobile */
 
-
-        openHotspotStory(id);
-
+    hotspot.addEventListener(
+      "touchend",
+      activateHotspot,
+      {
+        passive: false
       }
     );
 
   });
 
+
+  hotspotListenersAttached = true;
+
 }
 
 
 /* =====================================================
-   OPEN HOTSPOT STORY
+   TAP "HOTSPOT TO EXPLORE" UI
+===================================================== */
+
+let hotspotUIListenerAttached = false;
+
+function setupHotspotUI() {
+
+  if (hotspotUIListenerAttached) {
+    return;
+  }
+
+  const hotspotUI =
+    document.getElementById("hotspotUI");
+
+  if (!hotspotUI) {
+    return;
+  }
+
+
+  hotspotUI.style.pointerEvents =
+    "auto";
+
+
+  const activateInstruction = event => {
+
+    event.preventDefault();
+    event.stopPropagation();
+
+    if (!hotspotMode) {
+      return;
+    }
+
+    console.log(
+      "TAP A HOTSPOT TO EXPLORE"
+    );
+
+    triggerHaptic(25);
+
+    openHotspotStory("hotspot1");
+
+  };
+
+
+  hotspotUI.addEventListener(
+    "click",
+    activateInstruction
+  );
+
+
+  hotspotUI.addEventListener(
+    "touchend",
+    activateInstruction,
+    {
+      passive: false
+    }
+  );
+
+
+  hotspotUIListenerAttached = true;
+
+}
+
+
+/* =====================================================
+   OPEN STORY CARD
 ===================================================== */
 
 function openHotspotStory(id) {
@@ -811,16 +809,12 @@ function openHotspotStory(id) {
   const data =
     hotspotData[id];
 
-
   if (!data) {
-
     console.error(
-      "No hotspot data for:",
+      "No hotspot data:",
       id
     );
-
     return;
-
   }
 
 
@@ -849,10 +843,18 @@ function openHotspotStory(id) {
       "hotspotInfo"
     );
 
+  const storyVisual =
+    document.getElementById(
+      "storyVisual"
+    );
 
-  /*
-     Update text.
-  */
+  const storyAnimation =
+    document.querySelector(
+      ".story-animation"
+    );
+
+
+  /* Update text */
 
   if (title) {
     title.textContent =
@@ -870,9 +872,7 @@ function openHotspotStory(id) {
   }
 
 
-  /*
-     Hide hotspot instruction.
-  */
+  /* Hide hotspot instruction */
 
   if (hotspotUI) {
 
@@ -886,17 +886,42 @@ function openHotspotStory(id) {
   }
 
 
-  /*
-     Hide hotspots while
-     story is open.
-  */
+  /* Hide hotspots */
 
   hideAllHotspots();
 
 
-  /*
-     Show story card.
-  */
+  /* Make animation visible */
+
+  if (storyVisual) {
+
+    storyVisual.style.display =
+      "flex";
+
+    storyVisual.style.visibility =
+      "visible";
+
+    storyVisual.style.opacity =
+      "1";
+
+  }
+
+
+  if (storyAnimation) {
+
+    storyAnimation.style.display =
+      "block";
+
+    storyAnimation.style.visibility =
+      "visible";
+
+    storyAnimation.style.opacity =
+      "1";
+
+  }
+
+
+  /* Open story card */
 
   if (hotspotInfo) {
 
@@ -907,12 +932,16 @@ function openHotspotStory(id) {
     hotspotInfo.style.display =
       "block";
 
+    hotspotInfo.style.visibility =
+      "visible";
+
+    hotspotInfo.style.opacity =
+      "1";
+
   }
 
 
-  /*
-     Reset audio.
-  */
+  /* Reset audio */
 
   prepareStoryAudio();
 
@@ -920,17 +949,14 @@ function openHotspotStory(id) {
 
 
 /* =====================================================
-   CLOSE HOTSPOT STORY
+   CLOSE STORY
 ===================================================== */
 
 function closeHotspot() {
 
-  console.log(
-    "CLOSING HOTSPOT STORY"
-  );
-
-
   triggerHaptic(20);
+
+  stopStoryAudio();
 
 
   const hotspotInfo =
@@ -944,17 +970,6 @@ function closeHotspot() {
     );
 
 
-  /*
-     Stop audio.
-  */
-
-  stopStoryAudio();
-
-
-  /*
-     Hide story.
-  */
-
   if (hotspotInfo) {
 
     hotspotInfo.classList.remove(
@@ -967,10 +982,6 @@ function closeHotspot() {
   }
 
 
-  /*
-     Return to hotspot mode.
-  */
-
   if (hotspotMode) {
 
     if (hotspotUI) {
@@ -982,12 +993,10 @@ function closeHotspot() {
       hotspotUI.style.display =
         "flex";
 
+      hotspotUI.style.pointerEvents =
+        "auto";
+
     }
-
-
-    /*
-       Show all three hotspots again.
-    */
 
     showAllHotspots();
 
@@ -997,7 +1006,7 @@ function closeHotspot() {
 
 
 /* =====================================================
-   STORY AUDIO
+   AUDIO
 ===================================================== */
 
 let storyAudio = null;
@@ -1028,15 +1037,11 @@ function prepareStoryAudio() {
   const audio =
     getStoryAudio();
 
-
   if (!audio) {
-
     console.warn(
-      "Story audio element not found"
+      "Story audio not found"
     );
-
     return;
-
   }
 
 
@@ -1050,7 +1055,6 @@ function prepareStoryAudio() {
       "playPauseButton"
     );
 
-
   if (playButton) {
 
     playButton.textContent =
@@ -1059,22 +1063,11 @@ function prepareStoryAudio() {
   }
 
 
-  /*
-     Update duration when metadata
-     is available.
-  */
-
-  if (audio.readyState >= 1) {
+  if (
+    audio.readyState >= 1
+  ) {
 
     updateAudioDuration();
-
-  } else {
-
-    audio.addEventListener(
-      "loadedmetadata",
-      updateAudioDuration,
-      { once: true }
-    );
 
   }
 
@@ -1085,14 +1078,13 @@ function prepareStoryAudio() {
 
 
 /* =====================================================
-   PLAY / PAUSE AUDIO
+   PLAY / PAUSE
 ===================================================== */
 
 function toggleStoryAudio() {
 
   const audio =
     getStoryAudio();
-
 
   if (!audio) {
     return;
@@ -1141,11 +1133,9 @@ function updatePlayButton(isPlaying) {
       "playPauseButton"
     );
 
-
   if (!button) {
     return;
   }
-
 
   button.textContent =
     isPlaying
@@ -1156,7 +1146,7 @@ function updatePlayButton(isPlaying) {
 
 
 /* =====================================================
-   REWIND AUDIO
+   REWIND
 ===================================================== */
 
 function rewindStoryAudio() {
@@ -1164,21 +1154,17 @@ function rewindStoryAudio() {
   const audio =
     getStoryAudio();
 
-
   if (!audio) {
     return;
   }
 
-
   triggerHaptic(20);
-
 
   audio.currentTime =
     Math.max(
       0,
       audio.currentTime - 10
     );
-
 
   updateAudioProgress();
 
@@ -1251,17 +1237,13 @@ function updateAudioDuration() {
       "audioDuration"
     );
 
-
   if (
     !audio ||
     !duration ||
     !isFinite(audio.duration)
   ) {
-
     return;
-
   }
-
 
   duration.textContent =
     formatTime(
@@ -1281,9 +1263,7 @@ function formatTime(seconds) {
     !seconds ||
     !isFinite(seconds)
   ) {
-
     return "00:00";
-
   }
 
 
@@ -1318,7 +1298,6 @@ function setupAudioSeek() {
       "audioProgress"
     );
 
-
   if (!progress) {
     return;
   }
@@ -1331,15 +1310,12 @@ function setupAudioSeek() {
       const audio =
         getStoryAudio();
 
-
       if (
         !audio ||
         !audio.duration ||
         !isFinite(audio.duration)
       ) {
-
         return;
-
       }
 
 
@@ -1364,16 +1340,13 @@ function stopStoryAudio() {
   const audio =
     getStoryAudio();
 
-
   if (!audio) {
     return;
   }
 
-
   audio.pause();
 
   audio.currentTime = 0;
-
 
   updatePlayButton(false);
 
@@ -1390,7 +1363,6 @@ function setupAudioEvents() {
 
   const audio =
     getStoryAudio();
-
 
   if (!audio) {
     return;
@@ -1412,9 +1384,7 @@ function setupAudioEvents() {
   audio.addEventListener(
     "play",
     () => {
-
       updatePlayButton(true);
-
     }
   );
 
@@ -1422,9 +1392,7 @@ function setupAudioEvents() {
   audio.addEventListener(
     "pause",
     () => {
-
       updatePlayButton(false);
-
     }
   );
 
@@ -1434,11 +1402,45 @@ function setupAudioEvents() {
     () => {
 
       updatePlayButton(false);
-
       updateAudioProgress();
 
     }
   );
+
+}
+
+
+/* =====================================================
+   FORCE HIDE A-FRAME VR BUTTON
+===================================================== */
+
+function hideVRButton() {
+
+  const vrButtons = [
+    ".a-enter-vr",
+    ".a-enter-vr-button",
+    "[data-a-enter-vr]"
+  ];
+
+
+  vrButtons.forEach(selector => {
+
+    document
+      .querySelectorAll(selector)
+      .forEach(button => {
+
+        button.style.display =
+          "none";
+
+        button.style.visibility =
+          "hidden";
+
+        button.style.pointerEvents =
+          "none";
+
+      });
+
+  });
 
 }
 
@@ -1449,30 +1451,12 @@ function setupAudioEvents() {
 
 function exitAR() {
 
-  console.log(
-    "EXITING AR"
-  );
-
-
-  /*
-     Stop audio.
-  */
-
   stopStoryAudio();
-
-
-  /*
-     Reset hotspot state.
-  */
 
   hotspotMode = false;
 
   hideAllHotspots();
 
-
-  /*
-     Hide hotspot UI.
-  */
 
   const hotspotUI =
     document.getElementById(
@@ -1509,10 +1493,6 @@ function exitAR() {
   }
 
 
-  /*
-     Stop MindAR.
-  */
-
   const scene =
     document.getElementById(
       "mindarScene"
@@ -1526,23 +1506,18 @@ function exitAR() {
         "mindar-image-system"
       ];
 
-
     if (
       mindar &&
       typeof mindar.stop === "function"
     ) {
 
       try {
-
         mindar.stop();
-
       } catch (error) {
-
         console.warn(
           "Could not stop MindAR:",
           error
         );
-
       }
 
     }
@@ -1551,11 +1526,6 @@ function exitAR() {
 
 
   arStarted = false;
-
-
-  /*
-     Return to setup.
-  */
 
   showScreen("setup");
 
@@ -1575,25 +1545,14 @@ document.addEventListener(
     );
 
 
-    /*
-       Setup hotspot clicks.
-    */
-
-    setupHotspotListeners();
-
-
-    /*
-       Setup audio.
-    */
-
     setupAudioEvents();
 
     setupAudioSeek();
 
+    setupHotspotListeners();
 
-    /*
-       Initial UI state.
-    */
+    setupHotspotUI();
+
 
     hideAllHotspots();
 
@@ -1633,9 +1592,48 @@ document.addEventListener(
     }
 
 
+    /* Hide VR immediately */
+
+    hideVRButton();
+
+
+    /* Hide it again after A-Frame loads */
+
+    setTimeout(
+      hideVRButton,
+      500
+    );
+
+    setTimeout(
+      hideVRButton,
+      1500
+    );
+
+
     console.log(
       "REKH READY"
     );
 
   }
 );
+
+
+/* =====================================================
+   CONTINUOUS VR BUTTON SUPPRESSION
+===================================================== */
+
+const vrObserver =
+  new MutationObserver(
+    () => {
+      hideVRButton();
+    }
+  );
+
+
+vrObserver.observe(
+  document.documentElement,
+  {
+    childList: true,
+    subtree: true
+  }
+);v
