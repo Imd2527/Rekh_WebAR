@@ -32,15 +32,12 @@
 
 
   <!-- =====================================================
-       MEDIAPIPE HAND TRACKING
+       MODEL-VIEWER FOR 3D ARTIFACT
   ====================================================== -->
 
   <script
-    src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js">
-  </script>
-
-  <script
-    src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js">
+    type="module"
+    src="https://ajax.googleapis.com/ajax/libs/model-viewer/4.0.0/model-viewer.min.js">
   </script>
 
 
@@ -55,217 +52,257 @@
 
 
   <!-- =====================================================
-       3D ARTIFACT VIEW CSS
+       3D VIEW CSS
   ====================================================== -->
 
   <style>
 
-    /* =====================================================
-       VIEW ARTIFACT IN 3D BUTTON
-    ===================================================== */
-
     .view-3d-button {
-
       position: fixed;
-
       left: 50%;
       bottom: 32px;
-
       transform: translateX(-50%);
 
       display: none;
-
       align-items: center;
-
       gap: 14px;
 
       padding: 14px 22px;
 
       background: rgba(55, 25, 15, 0.96);
-
       color: white;
 
       border: 1px solid rgba(255,255,255,0.15);
-
       border-radius: 18px;
 
       z-index: 1000;
-
       cursor: pointer;
 
-      box-shadow:
-        0 8px 30px rgba(0,0,0,0.25);
+      box-shadow: 0 8px 30px rgba(0,0,0,0.25);
 
       backdrop-filter: blur(8px);
-
       -webkit-backdrop-filter: blur(8px);
-
     }
-
 
     .view-3d-button.visible {
-
       display: flex;
-
     }
 
-
     .view-3d-icon {
-
       width: 34px;
       height: 34px;
 
       display: flex;
-
       align-items: center;
       justify-content: center;
 
       border-radius: 50%;
-
       background: rgba(255,255,255,0.1);
 
       font-size: 20px;
-
     }
-
 
     .view-3d-button strong {
-
       display: block;
-
       font-size: 14px;
-
       letter-spacing: 0.04em;
-
       white-space: nowrap;
-
     }
 
-
     .view-3d-button small {
-
       display: block;
-
       margin-top: 3px;
-
       font-size: 11px;
-
       opacity: 0.7;
-
     }
 
 
     /* =====================================================
-       3D VIEW INSTRUCTION
-    ===================================================== */
+       FULL-SCREEN 3D VIEW
+    ====================================================== */
 
-    .artifact-3d-ui {
-
+    .artifact-3d-view {
       position: fixed;
+      inset: 0;
 
-      top: 24px;
+      z-index: 5000;
+
+      display: none;
+      flex-direction: column;
+
+      background:
+        radial-gradient(
+          circle at center,
+          rgba(83, 55, 32, 0.98),
+          rgba(25, 12, 7, 0.99)
+        );
+
+      color: white;
+      overflow: hidden;
+    }
+
+    .artifact-3d-view.visible {
+      display: flex;
+    }
+
+
+    .artifact-3d-header {
+      position: relative;
+      z-index: 5;
+
+      padding-top: 34px;
+      text-align: center;
+    }
+
+    .artifact-3d-header h2 {
+      margin: 0;
+      font-size: 24px;
+      font-weight: 600;
+    }
+
+    .artifact-3d-header p {
+      margin: 6px 0 0;
+      font-size: 14px;
+      opacity: 0.7;
+    }
+
+
+    .artifact-3d-model-container {
+      position: relative;
+      flex: 1;
+      width: 100%;
+      min-height: 0;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+
+    #artifactViewer {
+      width: 100%;
+      height: 100%;
+
+      background: transparent;
+
+      --poster-color: transparent;
+      --progress-bar-color: #d6a84f;
+    }
+
+
+    .artifact-3d-close-button {
+      position: absolute;
+
+      top: 22px;
+      right: 22px;
+
+      width: 48px;
+      height: 48px;
+
+      border: none;
+      border-radius: 50%;
+
+      background: rgba(45, 22, 12, 0.9);
+      color: white;
+
+      font-size: 30px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      z-index: 10;
+      cursor: pointer;
+    }
+
+
+    .rotate-instruction {
+      position: absolute;
+
+      left: 50%;
+      bottom: 135px;
+
+      transform: translateX(-50%);
+
+      display: flex;
+      align-items: center;
+      gap: 12px;
+
+      padding: 12px 18px;
+
+      background: rgba(45, 22, 12, 0.88);
+
+      border-radius: 16px;
+
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+
+      pointer-events: none;
+      white-space: nowrap;
+
+      z-index: 6;
+    }
+
+    .rotate-instruction > span {
+      font-size: 24px;
+      opacity: 0.9;
+    }
+
+    .rotate-instruction strong {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .rotate-instruction small {
+      display: block;
+      margin-top: 3px;
+      font-size: 10px;
+      opacity: 0.6;
+    }
+
+
+    .rotate-controls {
+      position: absolute;
+
+      bottom: 35px;
       left: 50%;
 
       transform: translateX(-50%);
 
-      display: none;
+      display: flex;
+      align-items: center;
+      gap: 12px;
 
-      padding: 14px 54px 14px 20px;
-
-      background: rgba(45, 20, 12, 0.94);
-
-      color: white;
-
-      border-radius: 18px;
-
-      z-index: 1001;
-
-      text-align: center;
-
-      pointer-events: none;
-
-      box-shadow:
-        0 8px 30px rgba(0,0,0,0.2);
-
-      backdrop-filter: blur(8px);
-
-      -webkit-backdrop-filter: blur(8px);
-
+      z-index: 10;
     }
 
+    .rotate-controls button {
+      height: 48px;
+      min-width: 48px;
 
-    .artifact-3d-ui.visible {
-
-      display: block;
-
-    }
-
-
-    .artifact-3d-title {
-
-      font-size: 14px;
-
-      font-weight: 600;
-
-      letter-spacing: 0.08em;
-
-    }
-
-
-    .artifact-3d-instruction {
-
-      margin-top: 5px;
-
-      font-size: 11px;
-
-      line-height: 1.4;
-
-      opacity: 0.75;
-
-    }
-
-
-    .artifact-3d-close {
-
-      position: absolute;
-
-      top: 7px;
-      right: 9px;
-
-      width: 30px;
-      height: 30px;
+      padding: 0 18px;
 
       border: none;
+      border-radius: 24px;
 
-      border-radius: 50%;
-
-      background: rgba(255,255,255,0.08);
-
+      background: rgba(72, 43, 25, 0.95);
       color: white;
 
       font-size: 22px;
-
       cursor: pointer;
 
-      pointer-events: auto;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.25);
+    }
 
-      display: flex;
-
-      align-items: center;
-      justify-content: center;
-
-      padding: 0;
-
+    .rotate-controls button:nth-child(2) {
+      font-size: 11px;
+      letter-spacing: 0.08em;
     }
 
 
-    /* =====================================================
-       3D LOADING MESSAGE
-    ===================================================== */
-
     .artifact-3d-loading {
-
-      position: fixed;
+      position: absolute;
 
       left: 50%;
       top: 50%;
@@ -274,66 +311,59 @@
 
       display: none;
 
-      z-index: 1002;
+      z-index: 20;
 
       padding: 12px 20px;
 
       border-radius: 14px;
 
       background: rgba(45, 20, 12, 0.9);
-
       color: white;
 
       font-size: 13px;
-
       pointer-events: none;
-
     }
-
 
     .artifact-3d-loading.visible {
-
       display: block;
-
     }
 
-
-    /* =====================================================
-       MOBILE
-    ===================================================== */
 
     @media (max-width: 600px) {
 
       .view-3d-button {
-
         bottom: 24px;
 
         width: calc(100% - 40px);
-
         max-width: 340px;
 
         justify-content: center;
 
         padding: 13px 18px;
-
       }
-
 
       .view-3d-button strong {
-
         font-size: 13px;
-
       }
 
+      .artifact-3d-header {
+        padding-top: 28px;
+      }
 
-      .artifact-3d-ui {
+      .artifact-3d-header h2 {
+        font-size: 21px;
+      }
 
-        top: 18px;
+      .artifact-3d-header p {
+        font-size: 12px;
+      }
 
-        width: calc(100% - 70px);
+      .rotate-instruction {
+        bottom: 125px;
+      }
 
-        max-width: 300px;
-
+      .rotate-controls {
+        bottom: 28px;
       }
 
     }
@@ -398,7 +428,6 @@
     Welcome to Rekh
   </h1>
 
-
   <div class="welcome-card">
 
     <h2>
@@ -412,7 +441,6 @@
     <div class="small-line"></div>
 
   </div>
-
 
   <button
     onclick="showScreen('howRekh')"
@@ -503,8 +531,6 @@
 >
 
 
-  <!-- BACK BUTTON -->
-
   <button
     class="top-back"
     onclick="showScreen('howRekh')"
@@ -526,9 +552,7 @@
     </p>
 
 
-    <!-- =================================================
-         ACCESSIBILITY BUTTON
-    ================================================== -->
+    <!-- ACCESSIBILITY -->
 
     <button
       id="accessibilityButton"
@@ -545,7 +569,6 @@
 
       </span>
 
-
       <span>
         Accessibility
       </span>
@@ -553,9 +576,7 @@
     </button>
 
 
-    <!-- =================================================
-         CONTINUE
-    ================================================== -->
+    <!-- CONTINUE -->
 
     <button
       id="setupContinue"
@@ -580,21 +601,14 @@
   class="accessibility-overlay"
 >
 
-
   <div class="accessibility-card">
-
-
-    <!-- HANDLE -->
 
     <div class="drag-handle"></div>
 
 
-    <!-- HEADER -->
-
     <div class="accessibility-header">
 
       <div class="accessibility-title">
-
 
         <div class="accessibility-main-icon">
 
@@ -604,7 +618,6 @@
           >
 
         </div>
-
 
         <div>
 
@@ -633,9 +646,7 @@
 
 
 
-    <!-- =================================================
-         LANGUAGE
-    ================================================== -->
+    <!-- LANGUAGE -->
 
     <div class="accessibility-row">
 
@@ -644,7 +655,6 @@
         src="assets/images/LanguageTranslateIcon.png"
         alt=""
       >
-
 
       <div class="accessibility-label">
 
@@ -676,9 +686,7 @@
 
 
 
-    <!-- =================================================
-         TEXT SIZE
-    ================================================== -->
+    <!-- TEXT SIZE -->
 
     <div class="accessibility-row">
 
@@ -687,7 +695,6 @@
         src="assets/images/TextSizeIcon.png"
         alt=""
       >
-
 
       <div class="accessibility-label">
 
@@ -722,9 +729,7 @@
 
 
 
-    <!-- =================================================
-         AUDIO
-    ================================================== -->
+    <!-- AUDIO -->
 
     <div class="accessibility-row">
 
@@ -733,7 +738,6 @@
         src="assets/images/AudioIcon.png"
         alt=""
       >
-
 
       <div class="accessibility-label">
 
@@ -761,9 +765,7 @@
 
 
 
-    <!-- =================================================
-         CAPTIONS
-    ================================================== -->
+    <!-- CAPTIONS -->
 
     <div class="accessibility-row">
 
@@ -772,7 +774,6 @@
         src="assets/images/CaptionsIcon.png"
         alt=""
       >
-
 
       <div class="accessibility-label">
 
@@ -800,9 +801,7 @@
 
 
 
-    <!-- =================================================
-         HIGH CONTRAST
-    ================================================== -->
+    <!-- HIGH CONTRAST -->
 
     <div class="accessibility-row">
 
@@ -811,7 +810,6 @@
         src="assets/images/HighContrastIcon.png"
         alt=""
       >
-
 
       <div class="accessibility-label">
 
@@ -839,9 +837,7 @@
 
 
 
-    <!-- =================================================
-         HAPTIC FEEDBACK
-    ================================================== -->
+    <!-- HAPTIC FEEDBACK -->
 
     <div class="accessibility-row last">
 
@@ -850,7 +846,6 @@
         src="assets/images/HapticsIcon.png"
         alt=""
       >
-
 
       <div class="accessibility-label">
 
@@ -875,7 +870,6 @@
       </button>
 
     </div>
-
 
   </div>
 
@@ -926,61 +920,7 @@
   >
 
 
-    <!-- =================================================
-         3D MODEL ASSET
-         
-         IMPORTANT:
-         The GLB is inside assets/images/
-    ================================================== -->
-
-    <a-assets>
-
-      <a-asset-item
-        id="artifactModel"
-        src="assets/images/visnu_lokesvara17mb.glb"
-      ></a-asset-item>
-
-    </a-assets>
-
-
-
-    <!-- =================================================
-         LIGHTING FOR GLB
-    ================================================== -->
-
-    <a-entity
-      light="
-        type: ambient;
-        color: #ffffff;
-        intensity: 1.5;
-      "
-    ></a-entity>
-
-
-    <a-entity
-      light="
-        type: directional;
-        color: #ffffff;
-        intensity: 2;
-      "
-      position="1 2 3"
-    ></a-entity>
-
-
-    <a-entity
-      light="
-        type: directional;
-        color: #ffffff;
-        intensity: 1;
-      "
-      position="-2 1 1"
-    ></a-entity>
-
-
-
-    <!-- =================================================
-         CAMERA
-    ================================================== -->
+    <!-- CAMERA -->
 
     <a-camera
       id="arCamera"
@@ -1002,9 +942,7 @@
     >
 
 
-      <!-- =================================================
-           HOTSPOT 1 — CROWN
-      ================================================== -->
+      <!-- HOTSPOT 1 — CROWN -->
 
       <a-image
         id="hotspot1"
@@ -1029,9 +967,7 @@
 
 
 
-      <!-- =================================================
-           HOTSPOT 2 — RIGHT HAND
-      ================================================== -->
+      <!-- HOTSPOT 2 — RIGHT HAND -->
 
       <a-image
         id="hotspot2"
@@ -1056,9 +992,7 @@
 
 
 
-      <!-- =================================================
-           HOTSPOT 3 — ORNAMENTAL ARCH
-      ================================================== -->
+      <!-- HOTSPOT 3 — ORNAMENTAL ARCH -->
 
       <a-image
         id="hotspot3"
@@ -1083,36 +1017,6 @@
 
 
     </a-entity>
-
-
-
-    <!-- =================================================
-         3D ARTIFACT MODEL
-
-         IMPORTANT:
-         This model is OUTSIDE the MindAR target.
-
-         It is shown when the user selects
-         "View Artifact in 3D".
-
-         The id "artifact3D" is kept because
-         script.js controls this element.
-    ================================================== -->
-
-    <a-gltf-model
-      id="artifact3D"
-
-      src="#artifactModel"
-
-      visible="false"
-
-      position="0 0 -1.8"
-
-      rotation="0 0 0"
-
-      scale="0.8 0.8 0.8"
-    ></a-gltf-model>
-
 
   </a-scene>
 
@@ -1212,7 +1116,7 @@
 
 
   <!-- ===================================================
-       ARTIFACT FOUND STATE
+       ARTIFACT FOUND
   ==================================================== -->
 
   <div
@@ -1221,15 +1125,10 @@
   >
 
 
-    <!-- TOP PILL -->
-
     <div class="found-pill">
       Artifact found
     </div>
 
-
-
-    <!-- INFO CARD -->
 
     <div class="artifact-info">
 
@@ -1250,10 +1149,6 @@
       </p>
 
 
-      <!-- =================================================
-           EXPLORE BUTTON
-      ================================================== -->
-
       <button
         id="exploreArtifactButton"
         class="explore-artifact-button"
@@ -1270,9 +1165,6 @@
 
   <!-- ===================================================
        INVISIBLE TAP LAYER
-
-       Kept for compatibility with the previous code.
-       It is NOT used to trigger hotspot mode.
   ==================================================== -->
 
   <div
@@ -1309,10 +1201,6 @@
   >
 
 
-    <!-- =================================================
-         CLOSE BUTTON
-    ================================================== -->
-
     <button
       class="hotspot-close"
       onclick="closeHotspot()"
@@ -1322,10 +1210,6 @@
     </button>
 
 
-
-    <!-- =================================================
-         STORY TITLE
-    ================================================== -->
 
     <div class="story-heading">
 
@@ -1341,9 +1225,7 @@
 
 
 
-    <!-- =================================================
-         VISUAL / ANIMATION
-    ================================================== -->
+    <!-- VISUAL / ANIMATION -->
 
     <div
       class="story-visual"
@@ -1360,9 +1242,7 @@
 
 
 
-    <!-- =================================================
-         AUDIO WAVEFORM
-    ================================================== -->
+    <!-- AUDIO WAVEFORM -->
 
     <div
       class="audio-waveform"
@@ -1392,14 +1272,13 @@
       <span></span>
       <span></span>
       <span></span>
+      <span></span>
 
     </div>
 
 
 
-    <!-- =================================================
-         AUDIO PROGRESS
-    ================================================== -->
+    <!-- AUDIO PROGRESS -->
 
     <div class="audio-progress-row">
 
@@ -1425,14 +1304,9 @@
 
 
 
-    <!-- =================================================
-         AUDIO CONTROLS
-    ================================================== -->
+    <!-- AUDIO CONTROLS -->
 
     <div class="audio-controls">
-
-
-      <!-- PLAY / PAUSE -->
 
       <button
         id="playPauseButton"
@@ -1443,8 +1317,6 @@
         ▶
       </button>
 
-
-      <!-- REWIND -->
 
       <button
         id="rewindButton"
@@ -1464,12 +1336,9 @@
 
 
 
-    <!-- =================================================
-         CAPTIONS
-    ================================================== -->
+    <!-- CAPTIONS -->
 
     <div class="captions-box">
-
 
       <div class="captions-heading">
 
@@ -1492,7 +1361,6 @@
         divine and royal character.
       </p>
 
-
     </div>
 
 
@@ -1503,8 +1371,8 @@
   <!-- ===================================================
        VIEW ARTIFACT IN 3D BUTTON
 
-       This becomes visible AFTER the user closes
-       the hotspot story card.
+       This becomes visible after closing
+       the hotspot story.
   ==================================================== -->
 
   <div
@@ -1534,57 +1402,136 @@
 
 
   <!-- ===================================================
-       3D VIEW INSTRUCTION
-
-       Becomes visible when the 3D model opens.
+       FULL-SCREEN 3D ARTIFACT VIEW
   ==================================================== -->
 
   <div
-    id="artifact3DUI"
-    class="artifact-3d-ui"
+    id="artifact3DView"
+    class="artifact-3d-view"
   >
 
-    <div class="artifact-3d-title">
-      VIEWING ARTIFACT
-    </div>
-
-    <div class="artifact-3d-instruction">
-      Move your hand left or right<br>
-      to rotate the artifact
-    </div>
-
-
     <button
-      class="artifact-3d-close"
+      class="artifact-3d-close-button"
       onclick="closeArtifact3D()"
-      aria-label="Close 3D artifact view"
+      aria-label="Close 3D view"
     >
       ×
     </button>
 
-  </div>
+
+    <div class="artifact-3d-header">
+
+      <h2>
+        Shri Vishnu
+      </h2>
+
+      <p>
+        Explore the artifact in 3D
+      </p>
+
+    </div>
+
+
+    <div class="artifact-3d-model-container">
+
+      <model-viewer
+        id="artifactViewer"
+
+        src="assets/images/visnu_lokesvara17mb.glb"
+
+        alt="3D model of Shri Vishnu"
+
+        camera-controls
+
+        touch-action="pan-y"
+
+        interaction-prompt="auto"
+
+        shadow-intensity="1"
+
+        exposure="1"
+
+        camera-orbit="0deg 75deg 2.5m"
+
+        field-of-view="35deg"
+
+        loading="eager"
+
+        reveal="auto"
+      >
+      </model-viewer>
+
+
+      <div
+        id="artifact3DLoading"
+        class="artifact-3d-loading visible"
+      >
+        Loading artifact...
+      </div>
+
+    </div>
 
 
 
-  <!-- ===================================================
-       3D LOADING MESSAGE
+    <!-- ROTATION INSTRUCTION -->
 
-       Hidden by default.
-  ==================================================== -->
+    <div class="rotate-instruction">
 
-  <div
-    id="artifact3DLoading"
-    class="artifact-3d-loading"
-  >
-    Loading artifact...
+      <span>
+        ↔
+      </span>
+
+      <div>
+
+        <strong>
+          Rotate the artifact
+        </strong>
+
+        <small>
+          Drag left or right
+        </small>
+
+      </div>
+
+    </div>
+
+
+
+    <!-- ROTATION CONTROLS -->
+
+    <div class="rotate-controls">
+
+      <button
+        onclick="rotateArtifact(-30)"
+        aria-label="Rotate left"
+      >
+        ↶
+      </button>
+
+
+      <button
+        onclick="resetArtifactRotation()"
+        aria-label="Reset rotation"
+      >
+        RESET
+      </button>
+
+
+      <button
+        onclick="rotateArtifact(30)"
+        aria-label="Rotate right"
+      >
+        ↷
+      </button>
+
+    </div>
+
   </div>
 
 
 
   <!-- ===================================================
        STORY AUDIO
-
-       Audio file uploaded by the user.
   ==================================================== -->
 
   <audio
@@ -1604,64 +1551,6 @@
 
 <script
   src="script.js">
-</script>
-
-
-<!-- =====================================================
-     3D MODEL DEBUGGING
-     
-     This does NOT replace script.js.
-     It simply logs whether the GLB successfully loads.
-====================================================== -->
-
-<script>
-
-  document.addEventListener("DOMContentLoaded", function () {
-
-    const model = document.getElementById("artifact3D");
-
-    if (!model) {
-      console.error("3D MODEL ELEMENT NOT FOUND");
-      return;
-    }
-
-    model.addEventListener("model-loaded", function () {
-
-      console.log(
-        "✅ 3D MODEL LOADED SUCCESSFULLY"
-      );
-
-      const loading =
-        document.getElementById("artifact3DLoading");
-
-      if (loading) {
-        loading.classList.remove("visible");
-      }
-
-    });
-
-
-    model.addEventListener("model-error", function (event) {
-
-      console.error(
-        "❌ ERROR LOADING 3D MODEL",
-        event
-      );
-
-      const loading =
-        document.getElementById("artifact3DLoading");
-
-      if (loading) {
-
-        loading.textContent =
-          "Unable to load artifact";
-
-      }
-
-    });
-
-  });
-
 </script>
 
 
