@@ -117,11 +117,132 @@ function closeAccessibility() {
 
 function toggleSetting(button) {
 
-  if (button) {
-    button.classList.toggle("active");
+  if (!button) {
+    return;
+  }
+
+  button.classList.toggle("active");
+
+  /*
+     HAPTIC FEEDBACK SETTING
+
+     The existing HTML already has a Haptic Feedback toggle.
+     We identify it from the row heading.
+  */
+  const row = button.closest(".accessibility-row");
+
+  const label = row
+    ? row.querySelector(".accessibility-label h2")
+    : null;
+
+  const isHapticToggle =
+    label &&
+    label.textContent.trim().toLowerCase() === "haptic feedback";
+
+  if (isHapticToggle) {
+
+    hapticsEnabled =
+      button.classList.contains("active");
+
+    /*
+       Give a small confirmation vibration
+       when haptics are switched ON.
+    */
+    if (hapticsEnabled) {
+      triggerHaptic("toggle");
+    }
   }
 }
+/* =====================================================
+   HAPTIC FEEDBACK
+===================================================== */
 
+/*
+   Haptics are enabled by default because the
+   Haptic Feedback toggle is currently active.
+
+   On supported mobile browsers, this uses
+   navigator.vibrate().
+
+   On unsupported devices/browsers, nothing happens
+   and the AR experience continues normally.
+*/
+
+let hapticsEnabled = true;
+
+
+const HAPTIC_PATTERNS = {
+
+  /* Very light tap */
+  tap: 12,
+
+  /* Hotspot selection */
+  select: 18,
+
+  /* Artifact successfully detected */
+  success: [20, 35, 20],
+
+  /* Enter hotspot exploration */
+  open: 24,
+
+  /* Close / go back */
+  close: 12,
+
+  /* Haptic toggle */
+  toggle: 15,
+
+  /* Rewind */
+  rewind: 14,
+
+  /* Play / pause */
+  play: 10
+};
+
+
+function triggerHaptic(type = "tap") {
+
+  /*
+     Haptics disabled by user
+  */
+  if (!hapticsEnabled) {
+    return;
+  }
+
+
+  /*
+     Device/browser does not support vibration
+  */
+  if (
+    typeof navigator === "undefined" ||
+    typeof navigator.vibrate !== "function"
+  ) {
+    return;
+  }
+
+
+  const pattern =
+    HAPTIC_PATTERNS[type] ||
+    HAPTIC_PATTERNS.tap;
+
+
+  try {
+
+    navigator.vibrate(pattern);
+
+  }
+
+  catch (error) {
+
+    /*
+       Haptics should never break the AR experience.
+    */
+    console.warn(
+      "Haptic feedback unavailable:",
+      error
+    );
+
+  }
+}
 
 /* =====================================================
    AR STATE
@@ -382,9 +503,12 @@ function setupARTarget() {
       );
 
 
-      artifactIsFound = true;
+     artifactIsFound = true;
 
-      hotspotMode = false;
+/* Short confirmation when artifact is recognised */
+triggerHaptic("success");
+
+hotspotMode = false;
 
       selectedHotspot = null;
 
@@ -583,8 +707,13 @@ function setupHotspots() {
     event.stopPropagation();
 
     console.log(
-      "HOTSPOT 1 CLICKED"
-    );
+  "HOTSPOT 1 CLICKED"
+);
+
+triggerHaptic("select");
+
+
+selectHotspot(
 
 
     selectHotspot(
@@ -752,9 +881,12 @@ function enterHotspotMode() {
      artifact detection anyway.
   */
 
-  hotspotMode = true;
+hotspotMode = true;
 
-  selectedHotspot = null;
+/* Confirm entry into artifact exploration */
+triggerHaptic("open");
+
+selectedHotspot = null;
 
 
   /* =================================================
@@ -1028,12 +1160,14 @@ function selectHotspot(
   );
 
 
-  selectedHotspot = number;
+selectedHotspot = number;
+
+triggerHaptic("select");
 
 
-  /* =================================================
-     CHANGE HOTSPOT TO SELECTED
-  ================================================= */
+/* =================================================
+   CHANGE HOTSPOT TO SELECTED
+================================================= */
 
   const selected =
     document.getElementById(
@@ -1164,6 +1298,8 @@ function selectHotspot(
 ===================================================== */
 
 function closeHotspot() {
+
+  triggerHaptic("close");
 
   const hotspotInfo =
     document.getElementById(
@@ -1569,9 +1705,11 @@ function toggleStoryAudio() {
   }
 
 
-  if (audio.paused) {
+if (audio.paused) {
 
-    audio.play()
+  triggerHaptic("play");
+
+  audio.play()
       .then(() => {
 
         console.log(
@@ -1590,11 +1728,13 @@ function toggleStoryAudio() {
 
   }
 
-  else {
+ else {
 
-    audio.pause();
+  triggerHaptic("play");
 
-  }
+  audio.pause();
+
+}
 }
 
 
@@ -1603,6 +1743,8 @@ function toggleStoryAudio() {
 ===================================================== */
 
 function rewindStoryAudio() {
+
+  triggerHaptic("rewind");
 
   const audio =
     document.getElementById(
@@ -1628,6 +1770,8 @@ function rewindStoryAudio() {
 ===================================================== */
 
 function exitAR() {
+
+  triggerHaptic("close");
 
   console.log(
     "EXITING AR"
