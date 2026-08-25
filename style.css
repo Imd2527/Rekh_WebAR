@@ -1,4 +1,12 @@
 /* =====================================================
+   REKH WEBAR — COMPLETE STYLESHEET
+   AR + HOTSPOTS + AUDIO + ACCESSIBILITY
+   + 3D ARTIFACT VIEW
+   + HAND TRACKING UI
+===================================================== */
+
+
+/* =====================================================
    RESET
 ===================================================== */
 
@@ -35,28 +43,13 @@ button {
 ===================================================== */
 
 :root {
-
-  --brown:
-    #2a1305;
-
-  --dark-brown:
-    #1b0b04;
-
-  --cream:
-    #f5eadc;
-
-  --muted:
-    #b9a99a;
-
-  --gold:
-    #d7a62d;
-
-  --gold-light:
-    #f0cf69;
-
-  --brown-light:
-    #5a3517;
-
+  --brown: #2a1305;
+  --dark-brown: #1b0b04;
+  --cream: #f5eadc;
+  --muted: #b9a99a;
+  --gold: #d7a62d;
+  --gold-light: #f0cf69;
+  --brown-light: #5a3517;
 }
 
 
@@ -65,30 +58,22 @@ button {
 ===================================================== */
 
 .screen {
-
   position: fixed;
-
   inset: 0;
 
   width: 100vw;
   height: 100vh;
 
   display: none;
-
   overflow: hidden;
 
-  background:
-    var(--dark-brown);
+  background: var(--dark-brown);
 
   z-index: 1;
-
 }
 
-
 .screen.active {
-
   display: flex;
-
 }
 
 
@@ -97,106 +82,59 @@ button {
 ===================================================== */
 
 #loading {
-
   flex-direction: column;
-
   align-items: center;
-
   justify-content: center;
-
   text-align: center;
-
 }
-
 
 #loading .logo {
-
   width: 100px;
-
   height: 100px;
-
   object-fit: contain;
-
   margin-bottom: 15px;
-
 }
-
 
 #loading h1 {
-
   margin: 0 0 8px;
-
   font-size: 32px;
-
   font-weight: 700;
-
 }
-
 
 #loading p {
-
   margin: 0 0 20px;
-
   color: var(--muted);
-
   font-size: 15px;
-
 }
-
 
 #loading span {
-
   margin-top: 14px;
-
   font-size: 11px;
-
   letter-spacing: 2px;
-
   color: var(--muted);
-
 }
-
 
 .loading-line {
-
   width: 150px;
-
   height: 3px;
-
   border-radius: 10px;
-
   background: var(--brown-light);
-
   overflow: hidden;
-
   position: relative;
-
 }
-
 
 .loading-line::after {
-
   content: "";
-
   position: absolute;
-
   left: -50%;
-
   top: 0;
-
   width: 50%;
-
   height: 100%;
-
   background: var(--cream);
-
   animation: loading 1.5s infinite ease-in-out;
-
 }
 
-
 @keyframes loading {
-
   0% {
     left: -50%;
   }
@@ -204,7 +142,6 @@ button {
   100% {
     left: 100%;
   }
-
 }
 
 
@@ -213,100 +150,56 @@ button {
 ===================================================== */
 
 #welcome {
-
   flex-direction: column;
-
   align-items: center;
-
   justify-content: center;
-
   text-align: center;
-
   padding: 30px;
-
 }
-
 
 #welcome .logo {
-
   width: 90px;
-
   height: 90px;
-
   object-fit: contain;
-
   margin-bottom: 15px;
-
 }
-
 
 #welcome h1 {
-
   margin: 0 0 20px;
-
   font-size: clamp(32px, 7vw, 54px);
-
 }
-
 
 .welcome-card {
-
   max-width: 480px;
-
   margin-bottom: 30px;
-
 }
-
 
 .welcome-card h2 {
-
   font-size: 22px;
-
   line-height: 1.3;
-
   margin: 0 0 12px;
-
 }
-
 
 .welcome-card p {
-
   color: var(--muted);
-
   line-height: 1.6;
-
   margin: 0;
-
 }
-
 
 .small-line {
-
   width: 50px;
-
   height: 2px;
-
   background: var(--gold);
-
   margin: 22px auto 0;
-
 }
 
-
 #welcome > button {
-
   background: var(--cream);
-
   color: var(--dark-brown);
-
   padding: 16px 40px;
-
   border-radius: 40px;
-
   font-size: 17px;
-
   font-weight: 700;
-
 }
 
 
@@ -315,144 +208,79 @@ button {
 ===================================================== */
 
 #howRekh {
-
   flex-direction: column;
-
   align-items: center;
-
   justify-content: center;
-
   text-align: center;
-
   padding: 20px;
-
   gap: 18px;
-
 }
-
 
 .story-carousel {
-
   width: min(88vw, 520px);
-
   display: flex;
-
   flex-direction: column;
-
   align-items: center;
-
 }
-
 
 .story-image {
-
   width: 100%;
-
   aspect-ratio: 1 / 1;
-
   border-radius: 24px;
-
   overflow: hidden;
-
   background: #100803;
-
 }
-
 
 .story-image img {
-
   width: 100%;
-
   height: 100%;
-
   display: block;
-
   object-fit: cover;
-
 }
-
 
 .story-dots {
-
   display: flex;
-
   align-items: center;
-
   justify-content: center;
-
   gap: 10px;
-
   margin-top: 16px;
-
 }
-
 
 .dot {
-
   width: 11px;
-
   height: 11px;
-
   padding: 0;
-
   border-radius: 50%;
-
   background: #8f8175;
-
 }
-
 
 .dot.active {
-
   width: 42px;
-
   border-radius: 20px;
-
   background: var(--cream);
-
 }
-
 
 #howRekh h1 {
-
   margin: 0;
-
   font-size: clamp(30px, 7vw, 48px);
-
 }
-
 
 #howRekh > p {
-
   max-width: 550px;
-
   margin: 0;
-
   color: var(--muted);
-
   font-size: 17px;
-
   line-height: 1.5;
-
 }
 
-
 #howRekh > button {
-
   margin-top: 8px;
-
   padding: 15px 40px;
-
   border-radius: 40px;
-
   background: #5a5046;
-
   color: var(--cream);
-
   font-size: 17px;
-
   font-weight: 700;
-
 }
 
 
@@ -461,40 +289,24 @@ button {
 ===================================================== */
 
 .setup-screen {
-
   align-items: center;
-
   justify-content: center;
-
 }
-
 
 .setup-content {
-
   width: min(90vw, 500px);
-
   text-align: center;
-
 }
-
 
 .setup-content h1 {
-
   margin: 0 0 12px;
-
   font-size: clamp(30px, 7vw, 48px);
-
 }
 
-
 .setup-content > p {
-
   margin: 0 0 35px;
-
   color: var(--muted);
-
   line-height: 1.6;
-
 }
 
 
@@ -503,9 +315,7 @@ button {
 ===================================================== */
 
 .top-back {
-
   position: absolute;
-
   top: 24px;
   left: 24px;
 
@@ -513,15 +323,11 @@ button {
   height: 52px;
 
   border-radius: 50%;
-
   background: var(--brown);
-
   color: var(--cream);
 
   font-size: 28px;
-
   z-index: 20;
-
 }
 
 
@@ -530,56 +336,39 @@ button {
 ===================================================== */
 
 .accessibility-button {
-
   width: 100%;
-
   min-height: 70px;
 
   display: flex;
-
   align-items: center;
-
   gap: 16px;
 
   padding: 12px 18px;
-
   border-radius: 18px;
 
   background: #2b180b;
-
   color: var(--cream);
 
   font-size: 17px;
-
   text-align: left;
-
 }
 
-
 .button-icon {
-
   width: 44px;
   height: 44px;
 
   display: flex;
-
   align-items: center;
   justify-content: center;
 
   border-radius: 50%;
-
   background: var(--brown);
-
 }
 
-
 .button-icon img {
-
   width: 25px;
   height: 25px;
-
   object-fit: contain;
-
 }
 
 
@@ -588,30 +377,21 @@ button {
 ===================================================== */
 
 .setup-continue {
-
   width: 100%;
-
   margin-top: 20px;
 
   padding: 16px;
-
   border-radius: 35px;
 
   background: #5a5046;
-
   color: var(--cream);
 
   font-size: 17px;
-
   font-weight: 700;
-
 }
 
-
 .setup-continue.show {
-
   display: block;
-
 }
 
 
@@ -620,51 +400,35 @@ button {
 ===================================================== */
 
 .accessibility-overlay {
-
   position: fixed;
-
   inset: 0;
 
   z-index: 1000;
 
   display: flex;
-
   align-items: flex-end;
-
   justify-content: center;
 
   background: rgba(0, 0, 0, 0.55);
 
   opacity: 0;
-
   visibility: hidden;
-
   pointer-events: none;
 
   transition:
     opacity .25s ease,
     visibility .25s ease;
-
 }
-
 
 .accessibility-overlay.open {
-
   opacity: 1;
-
   visibility: visible;
-
   pointer-events: auto;
-
 }
 
-
 .accessibility-card {
-
   width: min(100%, 560px);
-
   max-height: 90vh;
-
   overflow-y: auto;
 
   background: #2a1305;
@@ -672,107 +436,68 @@ button {
   border-radius: 28px 28px 0 0;
 
   padding: 14px 22px 28px;
-
 }
 
-
 .drag-handle {
-
   width: 45px;
-
   height: 5px;
 
   border-radius: 10px;
-
   background: #806e5d;
 
   margin: 0 auto 22px;
-
 }
-
 
 .accessibility-header {
-
   display: flex;
-
   justify-content: space-between;
-
   align-items: flex-start;
-
   margin-bottom: 24px;
-
 }
-
 
 .accessibility-title {
-
   display: flex;
-
   align-items: center;
-
   gap: 14px;
-
 }
 
-
 .accessibility-main-icon {
-
   width: 48px;
   height: 48px;
 
   display: flex;
-
   align-items: center;
   justify-content: center;
 
   border-radius: 50%;
-
   background: var(--brown);
-
 }
-
 
 .accessibility-main-icon img {
-
   width: 28px;
   height: 28px;
-
 }
-
 
 .accessibility-title h1 {
-
   margin: 0;
-
   font-size: 22px;
-
 }
-
 
 .accessibility-title p {
-
   margin: 4px 0 0;
-
   color: var(--muted);
-
   font-size: 13px;
-
 }
 
-
 .accessibility-close {
-
   width: 40px;
   height: 40px;
 
   border-radius: 50%;
-
   background: #42240f;
 
   color: var(--cream);
-
   font-size: 25px;
-
 }
 
 
@@ -781,63 +506,42 @@ button {
 ===================================================== */
 
 .accessibility-row {
-
   display: flex;
-
   align-items: center;
-
   gap: 14px;
 
   padding: 17px 0;
 
-  border-bottom: 1px solid rgba(245, 234, 220, .1);
-
+  border-bottom:
+    1px solid rgba(245, 234, 220, .1);
 }
-
 
 .accessibility-row.last {
-
   border-bottom: none;
-
 }
-
 
 .accessibility-icon {
-
   width: 30px;
   height: 30px;
-
   object-fit: contain;
-
 }
-
 
 .accessibility-label {
-
   flex: 1;
-
 }
-
 
 .accessibility-label h2 {
-
   margin: 0;
-
   font-size: 16px;
-
 }
 
-
 .accessibility-label p {
-
   margin: 5px 0 0;
 
   color: var(--muted);
 
   font-size: 12px;
-
   line-height: 1.3;
-
 }
 
 
@@ -846,107 +550,72 @@ button {
 ===================================================== */
 
 .language-selector {
-
   display: flex;
-
   align-items: center;
-
   gap: 7px;
 
   padding: 8px 10px;
-
   border-radius: 10px;
 
   background: #42240f;
-
   color: var(--cream);
-
 }
-
 
 .language-selector img {
-
   width: 14px;
   height: 14px;
-
 }
-
 
 .text-size-selector {
-
   display: flex;
-
   gap: 4px;
-
 }
 
-
 .text-size-selector button {
-
   width: 30px;
   height: 30px;
 
   background: #42240f;
-
   color: var(--cream);
 
   border-radius: 7px;
-
 }
-
 
 .text-size-selector button.selected {
-
   background: var(--cream);
-
   color: var(--dark-brown);
-
 }
 
-
 .toggle {
-
   width: 46px;
   height: 27px;
 
   padding: 3px;
 
   border-radius: 20px;
-
   background: #5a4b40;
 
   position: relative;
-
 }
 
-
 .toggle span {
-
   display: block;
 
   width: 21px;
   height: 21px;
 
   border-radius: 50%;
-
   background: var(--cream);
 
   transition: transform .2s ease;
-
 }
-
 
 .toggle.active {
-
   background: var(--gold);
-
 }
 
-
 .toggle.active span {
-
   transform: translateX(19px);
-
 }
 
 
@@ -955,39 +624,27 @@ button {
 ===================================================== */
 
 .ar-screen {
-
   background: #000;
-
 }
 
 
-/*
-   A-FRAME MUST FILL THE SCREEN
-*/
+/* =====================================================
+   A-FRAME / MINDAR
+===================================================== */
 
 #mindarScene {
-
   position: absolute !important;
 
   inset: 0 !important;
 
   width: 100vw !important;
-
   height: 100vh !important;
 
   z-index: 1 !important;
-
 }
 
-
-/*
-   Hide A-Frame's default VR button
-*/
-
 .a-enter-vr {
-
   display: none !important;
-
 }
 
 
@@ -997,9 +654,7 @@ button {
 
 .ar-screen > button,
 .ar-screen > div {
-
   position: fixed;
-
 }
 
 
@@ -1008,7 +663,6 @@ button {
 ===================================================== */
 
 .ar-back {
-
   top: 22px;
   left: 22px;
 
@@ -1018,13 +672,11 @@ button {
   border-radius: 50%;
 
   background: var(--brown);
-
   color: var(--cream);
 
   font-size: 30px;
 
   z-index: 50;
-
 }
 
 
@@ -1033,7 +685,6 @@ button {
 ===================================================== */
 
 .ar-accessibility {
-
   top: 22px;
   right: 22px;
 
@@ -1047,20 +698,14 @@ button {
   z-index: 50;
 
   display: flex;
-
   align-items: center;
   justify-content: center;
-
 }
 
-
 .ar-accessibility img {
-
   width: 28px;
   height: 28px;
-
   object-fit: contain;
-
 }
 
 
@@ -1069,11 +714,9 @@ button {
 ===================================================== */
 
 .scan-message {
-
   top: 105px;
 
   left: 50%;
-
   transform: translateX(-50%);
 
   padding: 14px 24px;
@@ -1081,7 +724,6 @@ button {
   border-radius: 30px;
 
   background: var(--brown);
-
   color: var(--cream);
 
   font-size: 16px;
@@ -1089,7 +731,6 @@ button {
   white-space: nowrap;
 
   z-index: 40;
-
 }
 
 
@@ -1098,13 +739,10 @@ button {
 ===================================================== */
 
 .scan-frame {
-
   top: 50%;
-
   left: 50%;
 
   width: min(68vw, 340px);
-
   height: min(60vh, 500px);
 
   transform: translate(-50%, -50%);
@@ -1112,70 +750,48 @@ button {
   z-index: 30;
 
   pointer-events: none;
-
 }
 
-
 .corner {
-
   position: absolute;
 
   width: 55px;
-
   height: 55px;
 
   border-color: var(--brown);
-
   border-style: solid;
-
 }
 
-
 .corner.top-left {
-
   top: 0;
   left: 0;
 
   border-width: 7px 0 0 7px;
-
   border-radius: 18px 0 0 0;
-
 }
 
-
 .corner.top-right {
-
   top: 0;
   right: 0;
 
   border-width: 7px 7px 0 0;
-
   border-radius: 0 18px 0 0;
-
 }
 
-
 .corner.bottom-left {
-
   bottom: 0;
   left: 0;
 
   border-width: 0 0 7px 7px;
-
   border-radius: 0 0 0 18px;
-
 }
 
-
 .corner.bottom-right {
-
   bottom: 0;
   right: 0;
 
   border-width: 0 7px 7px 0;
-
   border-radius: 0 0 18px 0;
-
 }
 
 
@@ -1184,9 +800,7 @@ button {
 ===================================================== */
 
 .search-icon {
-
   left: 50%;
-
   top: 50%;
 
   transform: translate(-50%, -50%);
@@ -1200,13 +814,11 @@ button {
   border-radius: 50%;
 
   background: #4a2a00;
-
   color: var(--gold-light);
 
   font-size: 38px;
 
   z-index: 35;
-
 }
 
 
@@ -1215,23 +827,19 @@ button {
 ===================================================== */
 
 .scan-status {
-
   bottom: 75px;
 
   left: 50%;
-
   transform: translateX(-50%);
 
   color: #3a210f;
 
   font-size: 10px;
-
   letter-spacing: 3px;
 
   white-space: nowrap;
 
   z-index: 40;
-
 }
 
 
@@ -1240,9 +848,7 @@ button {
 ===================================================== */
 
 .artifact-found {
-
   position: fixed;
-
   inset: 0;
 
   z-index: 45;
@@ -1250,20 +856,14 @@ button {
   pointer-events: none;
 
   opacity: 0;
-
   visibility: hidden;
 
   transition: opacity .25s ease;
-
 }
 
-
 .artifact-found.visible {
-
   opacity: 1;
-
   visibility: visible;
-
 }
 
 
@@ -1272,11 +872,9 @@ button {
 ===================================================== */
 
 .found-pill {
-
   position: absolute;
 
   top: 105px;
-
   left: 50%;
 
   transform: translateX(-50%);
@@ -1286,13 +884,11 @@ button {
   border-radius: 30px;
 
   background: var(--brown);
-
   color: var(--cream);
 
   font-size: 17px;
 
   white-space: nowrap;
-
 }
 
 
@@ -1301,11 +897,9 @@ button {
 ===================================================== */
 
 .artifact-info {
-
   position: absolute;
 
   left: 32px;
-
   bottom: 55px;
 
   width: min(82vw, 350px);
@@ -1315,42 +909,28 @@ button {
   border-radius: 24px;
 
   background: rgba(42, 19, 5, .96);
-
   color: var(--cream);
-
 }
-
 
 .artifact-info h2 {
-
   margin: 0 0 4px;
-
   font-size: 24px;
-
 }
 
-
 .artifact-info h3 {
-
   margin: 0 0 18px;
 
   font-size: 14px;
-
   font-weight: 400;
 
   color: var(--cream);
-
 }
 
-
 .artifact-info p {
-
   margin: 0;
 
   font-size: 14px;
-
   line-height: 1.5;
-
 }
 
 
@@ -1359,7 +939,6 @@ button {
 ===================================================== */
 
 .explore-artifact-button {
-
   pointer-events: auto;
 
   margin-top: 20px;
@@ -1369,13 +948,10 @@ button {
   border-radius: 25px;
 
   background: var(--cream);
-
   color: var(--dark-brown);
 
   font-weight: 700;
-
   font-size: 14px;
-
 }
 
 
@@ -1384,7 +960,6 @@ button {
 ===================================================== */
 
 .artifact-tap-layer {
-
   inset: 0;
 
   z-index: 20;
@@ -1392,7 +967,6 @@ button {
   display: none;
 
   pointer-events: none;
-
 }
 
 
@@ -1401,7 +975,6 @@ button {
 ===================================================== */
 
 .hotspot-ui {
-
   inset: 0;
 
   z-index: 42;
@@ -1409,31 +982,22 @@ button {
   display: flex;
 
   justify-content: center;
-
   align-items: flex-start;
 
   pointer-events: none;
 
   opacity: 0;
-
   visibility: hidden;
 
   transition: opacity .25s ease;
-
 }
-
 
 .hotspot-ui.visible {
-
   opacity: 1;
-
   visibility: visible;
-
 }
 
-
 .hotspot-hint {
-
   margin-top: 105px;
 
   padding: 14px 26px;
@@ -1441,11 +1005,9 @@ button {
   border-radius: 30px;
 
   background: var(--brown);
-
   color: var(--cream);
 
   font-size: 17px;
-
 }
 
 
@@ -1453,525 +1015,14 @@ button {
    A-FRAME HOTSPOTS
 ===================================================== */
 
-/*
-   IMPORTANT:
-   Do NOT hide the A-Frame hotspots with
-   opacity/visibility here.
-
-   JavaScript controls their A-Frame
-   visible attribute.
-*/
-
 .hotspot {
-
   cursor: pointer;
-
   pointer-events: auto;
-
 }
 
 
 /* =====================================================
    HOTSPOT INFO
-===================================================== */
-
-.hotspot-info {
-
-  position: fixed;
-
-  left: 50%;
-
-  bottom: 30px;
-
-  transform:
-    translate(-50%, 30px);
-
-  width: min(88vw, 390px);
-
-  padding: 24px;
-
-  border-radius: 24px;
-
-  background: rgba(42, 19, 5, .97);
-
-  color: var(--cream);
-
-  z-index: 80;
-
-  opacity: 0;
-
-  visibility: hidden;
-
-  pointer-events: none;
-
-  transition:
-    opacity .25s ease,
-    transform .25s ease;
-
-}
-
-
-.hotspot-info.visible {
-
-  opacity: 1;
-
-  visibility: visible;
-
-  pointer-events: auto;
-
-  transform:
-    translate(-50%, 0);
-
-}
-
-
-.hotspot-close {
-
-  position: absolute;
-
-  top: 12px;
-
-  right: 12px;
-
-  width: 34px;
-  height: 34px;
-
-  border-radius: 50%;
-
-  background: #4a2a00;
-
-  color: var(--cream);
-
-  font-size: 20px;
-
-}
-
-
-.hotspot-number {
-
-  margin-bottom: 8px;
-
-  color: var(--gold-light);
-
-  font-size: 11px;
-
-  letter-spacing: 2px;
-
-}
-
-
-.hotspot-info h2 {
-
-  margin: 0 0 10px;
-
-  font-size: 25px;
-
-}
-
-
-.hotspot-info p {
-
-  margin: 0;
-
-  color: #e4d6c8;
-
-  font-size: 14px;
-
-  line-height: 1.55;
-
-}
-
-
-/* =====================================================
-   HOTSPOT ACTION BUTTONS
-===================================================== */
-
-.hotspot-actions {
-
-  display: flex;
-
-  gap: 8px;
-
-  margin-top: 18px;
-
-}
-
-
-.hotspot-actions button {
-
-  flex: 1;
-
-  padding: 10px 8px;
-
-  border-radius: 20px;
-
-  background: #42240f;
-
-  color: var(--cream);
-
-  font-size: 12px;
-
-}
-
-
-/* =====================================================
-   MOBILE
-===================================================== */
-
-@media (max-width: 600px) {
-
-
-  #howRekh {
-
-    justify-content: center;
-
-    padding-top: 30px;
-
-  }
-
-
-  .story-carousel {
-
-    width: 82vw;
-
-  }
-
-
-  #howRekh h1 {
-
-    font-size: 34px;
-
-  }
-
-
-  #howRekh > p {
-
-    font-size: 16px;
-
-    max-width: 330px;
-
-  }
-
-
-  .top-back {
-
-    top: 18px;
-    left: 18px;
-
-    width: 48px;
-    height: 48px;
-
-  }
-
-
-  .ar-back {
-
-    top: 20px;
-    left: 20px;
-
-    width: 54px;
-    height: 54px;
-
-  }
-
-
-  .ar-accessibility {
-
-    top: 20px;
-    right: 20px;
-
-    width: 54px;
-    height: 54px;
-
-  }
-
-
-  .scan-message {
-
-    top: 105px;
-
-    font-size: 15px;
-
-    padding: 13px 20px;
-
-  }
-
-
-  .scan-frame {
-
-    width: 72vw;
-
-    height: 60vh;
-
-  }
-
-
-  .artifact-info {
-
-    left: 20px;
-
-    bottom: 30px;
-
-    width: calc(100vw - 40px);
-
-  }
-
-
-  .found-pill {
-
-    top: 100px;
-
-    font-size: 16px;
-
-  }
-
-
-  .hotspot-hint {
-
-    margin-top: 105px;
-
-    font-size: 15px;
-
-  }
-
-
-  .hotspot-info {
-
-    bottom: 20px;
-
-    width: calc(100vw - 32px);
-
-  }
-
-}
-
-
-/* =====================================================
-   SMALL PHONES
-===================================================== */
-
-@media (max-height: 700px) {
-
-  .story-carousel {
-
-    width: 65vw;
-
-  }
-
-
-  #howRekh {
-
-    gap: 10px;
-
-  }
-
-
-  #howRekh h1 {
-
-    font-size: 28px;
-
-  }
-
-
-  #howRekh > p {
-
-    font-size: 14px;
-
-  }
-
-
-  .hotspot-hint {
-
-    margin-top: 90px;
-
-  }
-
-}
-
-/* =====================================================
-   CUSTOM HOTSPOT CARD
-===================================================== */
-
-.custom-card {
-  padding: 0;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  background: #4A331C; /* Matching the brown theme */
-  border-radius: 20px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-}
-
-.custom-card .hotspot-close {
-  position: absolute;
-  top: 16px;
-  right: 16px;
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.1);
-  color: #ebd2b4;
-  border: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 20px;
-  cursor: pointer;
-  z-index: 10;
-}
-
-.custom-card .card-header {
-  padding: 24px 24px 16px;
-}
-
-.custom-card .card-title {
-  font-size: 16px;
-  font-weight: 600;
-  letter-spacing: 0.5px;
-  text-transform: uppercase;
-  color: #fff;
-  margin-bottom: 4px;
-}
-
-.custom-card .card-subtitle {
-  font-size: 14px;
-  color: rgba(255, 255, 255, 0.7);
-}
-
-.custom-card .card-media {
-  margin: 0 24px;
-  height: 180px;
-  background: #2D1B0B;
-  border-radius: 12px;
-}
-
-.custom-card .card-audio {
-  padding: 24px;
-}
-
-.custom-card .audio-waveform {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  height: 30px;
-  margin-bottom: 16px;
-}
-
-.custom-card .audio-waveform .bar {
-  width: 4px;
-  border-radius: 2px;
-  transition: height 0.2s;
-}
-
-.custom-card .audio-times {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  font-size: 12px;
-  color: rgba(255, 255, 255, 0.7);
-  margin-bottom: 16px;
-}
-
-.custom-card .scrubber {
-  flex: 1;
-  height: 4px;
-  position: relative;
-  background: rgba(255, 255, 255, 0.2);
-  border-radius: 2px;
-}
-
-.custom-card .scrubber-track {
-  position: absolute;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  background: transparent;
-}
-
-.custom-card .scrubber-fill {
-  position: absolute;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  background: #ebd2b4;
-  border-radius: 2px;
-}
-
-.custom-card .scrubber-thumb {
-  position: absolute;
-  top: 50%;
-  width: 12px;
-  height: 12px;
-  background: #ebd2b4;
-  border-radius: 50%;
-  transform: translate(-50%, -50%);
-  box-shadow: 0 2px 4px rgba(0,0,0,0.3);
-}
-
-.custom-card .audio-controls {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-}
-
-.custom-card .btn-play {
-  width: 56px;
-  height: 56px;
-  border-radius: 50%;
-  background: #ebd2b4;
-  color: #4A331C;
-  border: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-}
-
-.custom-card .btn-rewind {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background: transparent;
-  color: #ebd2b4;
-  border: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-}
-
-.custom-card .audio-status {
-  font-family: monospace;
-  font-size: 12px;
-  color: rgba(255, 255, 255, 0.6);
-  margin-left: auto;
-}
-
-.custom-card .card-captions {
-  background: #39230E;
-  margin: 0 24px 24px;
-  padding: 16px;
-  border-radius: 12px;
-}
-
-.custom-card .captions-title {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 1px;
-  color: rgba(255, 255, 255, 0.7);
-  margin-bottom: 8px;
-}
-
-.custom-card .captions-text {
-  font-size: 15px;
-  line-height: 1.5;
-  color: #fff;
-}
-/* =====================================================
-   STORY / AUDIO CARD
 ===================================================== */
 
 .hotspot-info {
@@ -2010,7 +1061,6 @@ button {
   -webkit-backdrop-filter: blur(12px);
 }
 
-
 .hotspot-info.visible {
   transform: translateY(0);
   opacity: 1;
@@ -2019,7 +1069,7 @@ button {
 
 
 /* =====================================================
-   CLOSE BUTTON
+   HOTSPOT CLOSE BUTTON
 ===================================================== */
 
 .hotspot-close {
@@ -2051,7 +1101,21 @@ button {
 
 
 /* =====================================================
-   TITLE
+   HOTSPOT NUMBER
+===================================================== */
+
+.hotspot-number {
+  margin-bottom: 8px;
+
+  color: var(--gold-light);
+
+  font-size: 11px;
+  letter-spacing: 2px;
+}
+
+
+/* =====================================================
+   STORY HEADING
 ===================================================== */
 
 .story-heading {
@@ -2059,19 +1123,16 @@ button {
   margin-bottom: 13px;
 }
 
-
 .story-heading h2 {
   margin: 0;
 
   font-size: 17px;
-
   font-weight: 500;
 
   letter-spacing: 0.3px;
 
   color: #fff8ee;
 }
-
 
 .story-heading p {
   margin: 7px 0 0;
@@ -2087,29 +1148,32 @@ button {
 ===================================================== */
 
 .story-visual {
-
   width: 100%;
   height: 175px;
 
-  border-radius: 16px;
+  border-radius: 20px;
 
-  background: #3c240b;
+  background: #160500;
 
   margin-bottom: 17px;
 
   overflow: hidden;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-
-/* If you later add an image */
-
-.story-visual img {
+.story-visual img,
+.story-animation {
   width: 100%;
   height: 100%;
 
   object-fit: cover;
 
   display: block;
+
+  border-radius: 20px;
 }
 
 
@@ -2118,13 +1182,10 @@ button {
 ===================================================== */
 
 .audio-waveform {
-
   height: 47px;
 
   display: flex;
-
   align-items: center;
-
   justify-content: space-between;
 
   gap: 4px;
@@ -2134,11 +1195,8 @@ button {
   box-sizing: border-box;
 }
 
-
 .audio-waveform span {
-
   width: 5px;
-
   min-height: 7px;
 
   background: rgba(255,255,255,0.32);
@@ -2147,9 +1205,6 @@ button {
 
   display: block;
 }
-
-
-/* different heights */
 
 .audio-waveform span:nth-child(1)  { height: 25px; }
 .audio-waveform span:nth-child(2)  { height: 38px; }
@@ -2182,9 +1237,7 @@ button {
 ===================================================== */
 
 .audio-progress-row {
-
   display: flex;
-
   align-items: center;
 
   gap: 8px;
@@ -2192,9 +1245,7 @@ button {
   margin-top: 1px;
 }
 
-
 .audio-progress-row span {
-
   font-size: 11px;
 
   color: rgba(255,255,255,0.55);
@@ -2202,9 +1253,7 @@ button {
   white-space: nowrap;
 }
 
-
 #audioProgress {
-
   flex: 1;
 
   height: 4px;
@@ -2219,9 +1268,7 @@ button {
   cursor: pointer;
 }
 
-
 #audioProgress::-webkit-slider-thumb {
-
   appearance: none;
   -webkit-appearance: none;
 
@@ -2235,9 +1282,7 @@ button {
   cursor: pointer;
 }
 
-
 #audioProgress::-moz-range-thumb {
-
   width: 13px;
   height: 13px;
 
@@ -2256,9 +1301,7 @@ button {
 ===================================================== */
 
 .audio-controls {
-
   display: flex;
-
   align-items: center;
 
   height: 67px;
@@ -2266,9 +1309,7 @@ button {
   position: relative;
 }
 
-
 .play-pause-button {
-
   width: 56px;
   height: 56px;
 
@@ -2285,15 +1326,11 @@ button {
   cursor: pointer;
 
   display: flex;
-
   align-items: center;
-
   justify-content: center;
 }
 
-
 .rewind-button {
-
   margin-left: 20px;
 
   border: none;
@@ -2307,9 +1344,7 @@ button {
   cursor: pointer;
 }
 
-
 .playing-label {
-
   margin-left: auto;
 
   font-size: 12px;
@@ -2323,7 +1358,6 @@ button {
 ===================================================== */
 
 .captions-box {
-
   margin-top: 5px;
 
   padding: 17px 17px 20px;
@@ -2337,11 +1371,8 @@ button {
   overflow-y: auto;
 }
 
-
 .captions-heading {
-
   display: flex;
-
   align-items: center;
 
   gap: 8px;
@@ -2349,9 +1380,7 @@ button {
   margin-bottom: 12px;
 }
 
-
 .captions-heading img {
-
   width: 14px;
   height: 14px;
 
@@ -2360,9 +1389,7 @@ button {
   opacity: 0.7;
 }
 
-
 .captions-heading span {
-
   font-size: 11px;
 
   letter-spacing: 1px;
@@ -2370,9 +1397,7 @@ button {
   color: rgba(255,255,255,0.65);
 }
 
-
 #hotspotDescription {
-
   margin: 0;
 
   font-size: 16px;
@@ -2381,24 +1406,948 @@ button {
 
   color: rgba(255,255,255,0.92);
 }
+
+
 /* =====================================================
-   HOTSPOT STORY ANIMATION
+   CUSTOM HOTSPOT CARD
 ===================================================== */
 
-.story-visual {
-  width: 100%;
+.custom-card {
+  padding: 0;
   overflow: hidden;
+
+  display: flex;
+  flex-direction: column;
+
+  background: #4A331C;
+
   border-radius: 20px;
-  background: #160500;
+
+  box-shadow:
+    0 10px 30px rgba(0,0,0,0.5);
+}
+
+.custom-card .hotspot-close {
+  position: absolute;
+
+  top: 16px;
+  right: 16px;
+
+  width: 32px;
+  height: 32px;
+
+  border-radius: 50%;
+
+  background: rgba(255, 255, 255, 0.1);
+
+  color: #ebd2b4;
+
+  border: none;
+
   display: flex;
   align-items: center;
   justify-content: center;
+
+  font-size: 20px;
+
+  cursor: pointer;
+
+  z-index: 10;
 }
 
-.story-animation {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+.custom-card .card-header {
+  padding: 24px 24px 16px;
+}
+
+.custom-card .card-title {
+  font-size: 16px;
+  font-weight: 600;
+
+  letter-spacing: 0.5px;
+
+  text-transform: uppercase;
+
+  color: #fff;
+
+  margin-bottom: 4px;
+}
+
+.custom-card .card-subtitle {
+  font-size: 14px;
+
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.custom-card .card-media {
+  margin: 0 24px;
+
+  height: 180px;
+
+  background: #2D1B0B;
+
+  border-radius: 12px;
+}
+
+.custom-card .card-audio {
+  padding: 24px;
+}
+
+.custom-card .audio-waveform {
+  display: flex;
+  align-items: center;
+
+  gap: 4px;
+
+  height: 30px;
+
+  margin-bottom: 16px;
+}
+
+.custom-card .audio-waveform .bar {
+  width: 4px;
+
+  border-radius: 2px;
+
+  transition: height 0.2s;
+}
+
+.custom-card .audio-times {
+  display: flex;
+  align-items: center;
+
+  gap: 12px;
+
+  font-size: 12px;
+
+  color: rgba(255, 255, 255, 0.7);
+
+  margin-bottom: 16px;
+}
+
+.custom-card .scrubber {
+  flex: 1;
+
+  height: 4px;
+
+  position: relative;
+
+  background: rgba(255, 255, 255, 0.2);
+
+  border-radius: 2px;
+}
+
+.custom-card .scrubber-track {
+  position: absolute;
+
+  left: 0;
+  top: 0;
+  bottom: 0;
+
+  background: transparent;
+}
+
+.custom-card .scrubber-fill {
+  position: absolute;
+
+  left: 0;
+  top: 0;
+  bottom: 0;
+
+  background: #ebd2b4;
+
+  border-radius: 2px;
+}
+
+.custom-card .scrubber-thumb {
+  position: absolute;
+
+  top: 50%;
+
+  width: 12px;
+  height: 12px;
+
+  background: #ebd2b4;
+
+  border-radius: 50%;
+
+  transform: translate(-50%, -50%);
+
+  box-shadow:
+    0 2px 4px rgba(0,0,0,0.3);
+}
+
+.custom-card .audio-controls {
+  display: flex;
+  align-items: center;
+
+  gap: 16px;
+}
+
+.custom-card .btn-play {
+  width: 56px;
+  height: 56px;
+
+  border-radius: 50%;
+
+  background: #ebd2b4;
+
+  color: #4A331C;
+
+  border: none;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+}
+
+.custom-card .btn-rewind {
+  width: 40px;
+  height: 40px;
+
+  border-radius: 50%;
+
+  background: transparent;
+
+  color: #ebd2b4;
+
+  border: none;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+}
+
+.custom-card .audio-status {
+  font-family: monospace;
+
+  font-size: 12px;
+
+  color: rgba(255, 255, 255, 0.6);
+
+  margin-left: auto;
+}
+
+.custom-card .card-captions {
+  background: #39230E;
+
+  margin: 0 24px 24px;
+
+  padding: 16px;
+
+  border-radius: 12px;
+}
+
+.custom-card .captions-title {
+  display: flex;
+  align-items: center;
+
+  gap: 6px;
+
+  font-size: 11px;
+  font-weight: 600;
+
+  letter-spacing: 1px;
+
+  color: rgba(255, 255, 255, 0.7);
+
+  margin-bottom: 8px;
+}
+
+.custom-card .captions-text {
+  font-size: 15px;
+
+  line-height: 1.5;
+
+  color: #fff;
+}
+
+
+/* =====================================================
+   3D ARTIFACT VIEW
+===================================================== */
+
+/*
+   This layer sits above the AR camera.
+
+   The actual <a-entity id="artifact3D">
+   is rendered by A-Frame.
+
+   The CSS here controls only the UI around it.
+*/
+
+.artifact-3d-ui,
+#artifact3DUI {
+  position: fixed;
+
+  inset: 0;
+
+  z-index: 200;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  justify-content: center;
+
+  pointer-events: none;
+
+  opacity: 0;
+
+  visibility: hidden;
+
+  transition:
+    opacity .3s ease,
+    visibility .3s ease;
+
+  background:
+    radial-gradient(
+      circle at center,
+      rgba(42,19,5,0.05),
+      rgba(0,0,0,0.35)
+    );
+}
+
+.artifact-3d-ui.visible,
+#artifact3DUI.visible {
+  opacity: 1;
+
+  visibility: visible;
+
+  pointer-events: auto;
+}
+
+
+/* =====================================================
+   3D MODEL AREA
+===================================================== */
+
+#artifact3D {
+  pointer-events: none;
+}
+
+
+/* =====================================================
+   3D TOP BAR
+===================================================== */
+
+.artifact-3d-header {
+  position: absolute;
+
+  top: 20px;
+  left: 20px;
+  right: 20px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  pointer-events: none;
+
+  z-index: 10;
+}
+
+.artifact-3d-title {
+  padding: 11px 18px;
+
+  border-radius: 25px;
+
+  background:
+    rgba(42,19,5,0.92);
+
+  color: var(--cream);
+
+  font-size: 15px;
+
+  letter-spacing: 0.2px;
+
+  box-shadow:
+    0 6px 20px rgba(0,0,0,0.25);
+}
+
+
+/* =====================================================
+   3D CLOSE BUTTON
+===================================================== */
+
+.artifact-3d-close {
+  width: 50px;
+  height: 50px;
+
+  border-radius: 50%;
+
+  background:
+    rgba(42,19,5,0.94);
+
+  color: var(--cream);
+
+  font-size: 27px;
+
+  line-height: 1;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  pointer-events: auto;
+
+  box-shadow:
+    0 6px 20px rgba(0,0,0,0.3);
+
+  transition:
+    transform .15s ease,
+    background .15s ease;
+}
+
+.artifact-3d-close:active {
+  transform: scale(.92);
+}
+
+.artifact-3d-close:hover {
+  background: #42240f;
+}
+
+
+/* =====================================================
+   3D INSTRUCTION
+===================================================== */
+
+.artifact-3d-instruction {
+  position: absolute;
+
+  bottom: 45px;
+
+  left: 50%;
+
+  transform: translateX(-50%);
+
+  width: max-content;
+
+  max-width: calc(100vw - 40px);
+
+  padding: 13px 22px;
+
+  border-radius: 30px;
+
+  background:
+    rgba(42,19,5,0.92);
+
+  color: var(--cream);
+
+  font-size: 14px;
+
+  text-align: center;
+
+  white-space: nowrap;
+
+  box-shadow:
+    0 6px 25px rgba(0,0,0,0.25);
+
+  pointer-events: none;
+
+  z-index: 20;
+}
+
+
+/* =====================================================
+   HAND ICON / HAND INDICATOR
+===================================================== */
+
+.hand-tracking-indicator {
+  position: absolute;
+
+  bottom: 105px;
+
+  left: 50%;
+
+  transform: translateX(-50%);
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 9px;
+
+  padding: 9px 15px;
+
+  border-radius: 25px;
+
+  background:
+    rgba(42,19,5,0.78);
+
+  color:
+    rgba(245,234,220,0.82);
+
+  font-size: 12px;
+
+  pointer-events: none;
+
+  z-index: 20;
+
+  opacity: .9;
+}
+
+.hand-tracking-indicator::before {
+  content: "✋";
+
+  font-size: 17px;
+}
+
+
+/* =====================================================
+   3D LOADING
+===================================================== */
+
+.artifact-3d-loading,
+#artifact3DLoading {
+  position: absolute;
+
+  left: 50%;
+  top: 50%;
+
+  transform: translate(-50%, -50%);
+
+  z-index: 100;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 14px;
+
+  min-width: 190px;
+
+  padding: 20px 25px;
+
   border-radius: 20px;
+
+  background:
+    rgba(42,19,5,0.94);
+
+  color: var(--cream);
+
+  font-size: 14px;
+
+  text-align: center;
+
+  opacity: 0;
+
+  visibility: hidden;
+
+  pointer-events: none;
+
+  transition:
+    opacity .2s ease,
+    visibility .2s ease;
+}
+
+.artifact-3d-loading.visible,
+#artifact3DLoading.visible {
+  opacity: 1;
+
+  visibility: visible;
+}
+
+
+/* =====================================================
+   3D LOADING SPINNER
+===================================================== */
+
+.artifact-3d-loading::before,
+#artifact3DLoading::before {
+  content: "";
+
+  width: 32px;
+  height: 32px;
+
+  border-radius: 50%;
+
+  border:
+    3px solid rgba(245,234,220,.2);
+
+  border-top-color:
+    var(--cream);
+
+  animation:
+    artifactSpinner .8s linear infinite;
+}
+
+@keyframes artifactSpinner {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+
+/* =====================================================
+   3D MODEL SHADOW / FLOOR
+===================================================== */
+
+.artifact-3d-floor {
+  position: absolute;
+
+  left: 50%;
+  top: 64%;
+
+  transform:
+    translate(-50%, -50%);
+
+  width: 180px;
+  height: 45px;
+
+  border-radius: 50%;
+
+  background:
+    radial-gradient(
+      ellipse,
+      rgba(0,0,0,.45),
+      rgba(0,0,0,0)
+    );
+
+  filter: blur(7px);
+
+  pointer-events: none;
+}
+
+
+/* =====================================================
+   VIEW 3D BUTTON
+===================================================== */
+
+.view-3d-button,
+#view3DButton {
+  position: fixed;
+
+  left: 50%;
+
+  bottom: 25px;
+
+  transform: translateX(-50%);
+
+  z-index: 95;
+
+  display: none;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 9px;
+
+  padding: 14px 24px;
+
+  min-height: 48px;
+
+  border-radius: 30px;
+
+  background:
+    var(--cream);
+
+  color:
+    var(--dark-brown);
+
+  font-size: 14px;
+
+  font-weight: 700;
+
+  white-space: nowrap;
+
+  box-shadow:
+    0 8px 25px rgba(0,0,0,.25);
+
+  opacity: 0;
+
+  pointer-events: none;
+
+  transition:
+    opacity .25s ease,
+    transform .15s ease;
+}
+
+.view-3d-button.visible,
+#view3DButton.visible {
+  display: flex;
+
+  opacity: 1;
+
+  pointer-events: auto;
+}
+
+.view-3d-button:active,
+#view3DButton:active {
+  transform:
+    translateX(-50%)
+    scale(.95);
+}
+
+.view-3d-button::before,
+#view3DButton::before {
+  content: "◈";
+
+  font-size: 17px;
+}
+
+
+/* =====================================================
+   3D CAMERA / HAND TRACKING STATUS
+===================================================== */
+
+.hand-status {
+  position: absolute;
+
+  top: 90px;
+
+  left: 50%;
+
+  transform: translateX(-50%);
+
+  padding: 9px 16px;
+
+  border-radius: 25px;
+
+  background:
+    rgba(42,19,5,.85);
+
+  color:
+    rgba(245,234,220,.85);
+
+  font-size: 12px;
+
+  white-space: nowrap;
+
+  pointer-events: none;
+
+  z-index: 30;
+
+  opacity: 0;
+
+  transition: opacity .25s ease;
+}
+
+.hand-status.visible {
+  opacity: 1;
+}
+
+
+/* =====================================================
+   HIDE HAND TRACKING VIDEO
+===================================================== */
+
+#handTrackingVideo {
+  position: fixed !important;
+
+  left: -9999px !important;
+  top: -9999px !important;
+
+  width: 1px !important;
+  height: 1px !important;
+
+  opacity: 0 !important;
+
+  pointer-events: none !important;
+}
+
+
+/* =====================================================
+   3D A-FRAME CANVAS
+===================================================== */
+
+#mindarScene canvas {
+  touch-action: none;
+}
+
+
+/* =====================================================
+   PREVENT UI FROM BLOCKING 3D MODEL
+===================================================== */
+
+.artifact-3d-ui .artifact-3d-model-area {
+  position: absolute;
+
+  inset: 0;
+
+  pointer-events: none;
+}
+
+
+/* =====================================================
+   MOBILE 3D
+===================================================== */
+
+@media (max-width: 600px) {
+
+  .artifact-3d-header {
+    top: 18px;
+    left: 18px;
+    right: 18px;
+  }
+
+  .artifact-3d-title {
+    padding: 10px 15px;
+    font-size: 14px;
+  }
+
+  .artifact-3d-close {
+    width: 48px;
+    height: 48px;
+    font-size: 25px;
+  }
+
+  .artifact-3d-instruction {
+    bottom: 30px;
+
+    max-width: calc(100vw - 30px);
+
+    padding:
+      12px 18px;
+
+    font-size: 13px;
+
+    white-space: normal;
+  }
+
+  .hand-tracking-indicator {
+    bottom: 88px;
+
+    font-size: 11px;
+
+    padding:
+      8px 13px;
+  }
+
+  .view-3d-button,
+  #view3DButton {
+    bottom: 20px;
+
+    width:
+      calc(100vw - 40px);
+
+    max-width: 350px;
+
+    padding:
+      14px 20px;
+  }
+
+  .hand-status {
+    top: 85px;
+
+    font-size: 11px;
+  }
+
+}
+
+
+/* =====================================================
+   SMALL PHONES
+===================================================== */
+
+@media (max-height: 700px) {
+
+  .story-carousel {
+    width: 65vw;
+  }
+
+  #howRekh {
+    gap: 10px;
+  }
+
+  #howRekh h1 {
+    font-size: 28px;
+  }
+
+  #howRekh > p {
+    font-size: 14px;
+  }
+
+  .hotspot-hint {
+    margin-top: 90px;
+  }
+
+  .hotspot-info {
+    height: 540px;
+  }
+
+  .story-visual {
+    height: 145px;
+  }
+
+  .artifact-3d-instruction {
+    bottom: 22px;
+  }
+
+}
+
+
+/* =====================================================
+   ACCESSIBILITY / REDUCED MOTION
+===================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+
+    scroll-behavior: auto !important;
+
+    transition-duration: .01ms !important;
+  }
+
+}
+
+
+/* =====================================================
+   SAFE AREA SUPPORT
+   Useful on iPhones with notches/home indicators
+===================================================== */
+
+@supports (padding: env(safe-area-inset-top)) {
+
+  .ar-back {
+    top:
+      calc(20px + env(safe-area-inset-top));
+  }
+
+  .ar-accessibility {
+    top:
+      calc(20px + env(safe-area-inset-top));
+  }
+
+  .artifact-3d-header {
+    top:
+      calc(18px + env(safe-area-inset-top));
+  }
+
+  .artifact-3d-instruction {
+    bottom:
+      calc(25px + env(safe-area-inset-bottom));
+  }
+
+  .view-3d-button,
+  #view3DButton {
+    bottom:
+      calc(20px + env(safe-area-inset-bottom));
+  }
+
+  .hotspot-info {
+    bottom:
+      calc(7px + env(safe-area-inset-bottom));
+  }
+
 }
