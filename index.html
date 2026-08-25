@@ -115,6 +115,7 @@
 
 
   <button
+    type="button"
     onclick="showScreen('howRekh')"
   >
     Get Started
@@ -149,23 +150,31 @@
     <div class="story-dots">
 
       <button
+        type="button"
         class="dot active"
         onclick="showStory(0)"
+        aria-label="Story 1"
       ></button>
 
       <button
+        type="button"
         class="dot"
         onclick="showStory(1)"
+        aria-label="Story 2"
       ></button>
 
       <button
+        type="button"
         class="dot"
         onclick="showStory(2)"
+        aria-label="Story 3"
       ></button>
 
       <button
+        type="button"
         class="dot"
         onclick="showStory(3)"
+        aria-label="Story 4"
       ></button>
 
     </div>
@@ -184,6 +193,7 @@
 
 
   <button
+    type="button"
     onclick="showScreen('setup')"
   >
     Continue
@@ -203,9 +213,10 @@
 >
 
 
-  <!-- BACK BUTTON -->
+  <!-- BACK -->
 
   <button
+    type="button"
     class="top-back"
     onclick="showScreen('howRekh')"
     aria-label="Back"
@@ -226,11 +237,10 @@
     </p>
 
 
-    <!-- =================================================
-         ACCESSIBILITY BUTTON
-    ================================================== -->
+    <!-- ACCESSIBILITY -->
 
     <button
+      type="button"
       id="accessibilityButton"
       class="accessibility-button"
       onclick="openAccessibility()"
@@ -245,7 +255,6 @@
 
       </span>
 
-
       <span>
         Accessibility
       </span>
@@ -253,11 +262,10 @@
     </button>
 
 
-    <!-- =================================================
-         CONTINUE
-    ================================================== -->
+    <!-- CONTINUE -->
 
     <button
+      type="button"
       id="setupContinue"
       class="setup-continue"
       onclick="continueSetup()"
@@ -280,11 +288,8 @@
   class="accessibility-overlay"
 >
 
-
   <div class="accessibility-card">
 
-
-    <!-- HANDLE -->
 
     <div class="drag-handle"></div>
 
@@ -294,7 +299,6 @@
     <div class="accessibility-header">
 
       <div class="accessibility-title">
-
 
         <div class="accessibility-main-icon">
 
@@ -322,6 +326,7 @@
 
 
       <button
+        type="button"
         class="accessibility-close"
         onclick="closeAccessibility()"
         aria-label="Close accessibility"
@@ -333,9 +338,7 @@
 
 
 
-    <!-- =================================================
-         LANGUAGE
-    ================================================== -->
+    <!-- LANGUAGE -->
 
     <div class="accessibility-row">
 
@@ -344,7 +347,6 @@
         src="assets/images/LanguageTranslateIcon.png"
         alt=""
       >
-
 
       <div class="accessibility-label">
 
@@ -360,6 +362,7 @@
 
 
       <button
+        type="button"
         class="language-selector"
       >
 
@@ -376,9 +379,7 @@
 
 
 
-    <!-- =================================================
-         TEXT SIZE
-    ================================================== -->
+    <!-- TEXT SIZE -->
 
     <div class="accessibility-row">
 
@@ -387,7 +388,6 @@
         src="assets/images/TextSizeIcon.png"
         alt=""
       >
-
 
       <div class="accessibility-label">
 
@@ -404,15 +404,22 @@
 
       <div class="text-size-selector">
 
-        <button>
+        <button
+          type="button"
+        >
           A
         </button>
 
-        <button class="selected">
+        <button
+          type="button"
+          class="selected"
+        >
           A
         </button>
 
-        <button>
+        <button
+          type="button"
+        >
           A
         </button>
 
@@ -422,9 +429,7 @@
 
 
 
-    <!-- =================================================
-         AUDIO
-    ================================================== -->
+    <!-- AUDIO -->
 
     <div class="accessibility-row">
 
@@ -433,7 +438,6 @@
         src="assets/images/AudioIcon.png"
         alt=""
       >
-
 
       <div class="accessibility-label">
 
@@ -449,6 +453,7 @@
 
 
       <button
+        type="button"
         class="toggle active"
         onclick="toggleSetting(this)"
       >
@@ -461,9 +466,7 @@
 
 
 
-    <!-- =================================================
-         CAPTIONS
-    ================================================== -->
+    <!-- CAPTIONS -->
 
     <div class="accessibility-row">
 
@@ -472,7 +475,6 @@
         src="assets/images/CaptionsIcon.png"
         alt=""
       >
-
 
       <div class="accessibility-label">
 
@@ -488,6 +490,7 @@
 
 
       <button
+        type="button"
         class="toggle active"
         onclick="toggleSetting(this)"
       >
@@ -500,9 +503,7 @@
 
 
 
-    <!-- =================================================
-         HIGH CONTRAST
-    ================================================== -->
+    <!-- HIGH CONTRAST -->
 
     <div class="accessibility-row">
 
@@ -511,7 +512,6 @@
         src="assets/images/HighContrastIcon.png"
         alt=""
       >
-
 
       <div class="accessibility-label">
 
@@ -527,6 +527,7 @@
 
 
       <button
+        type="button"
         class="toggle"
         onclick="toggleSetting(this)"
       >
@@ -539,9 +540,7 @@
 
 
 
-    <!-- =================================================
-         HAPTIC FEEDBACK
-    ================================================== -->
+    <!-- HAPTICS -->
 
     <div class="accessibility-row last">
 
@@ -550,7 +549,6 @@
         src="assets/images/HapticsIcon.png"
         alt=""
       >
-
 
       <div class="accessibility-label">
 
@@ -566,6 +564,7 @@
 
 
       <button
+        type="button"
         class="toggle active"
         onclick="toggleSetting(this)"
       >
@@ -595,9 +594,16 @@
 
   <!-- ===================================================
        MINDAR SCENE
+
+       IMPORTANT:
+       No 3D model.
+       No hand tracking.
+       No WebXR.
+       No VR mode.
   ==================================================== -->
 
   <a-scene
+
     id="mindarScene"
 
     mindar-image="
@@ -630,10 +636,23 @@
     ================================================== -->
 
     <a-camera
+
+      id="arCamera"
+
       position="0 0 0"
+
       look-controls="enabled: false"
-      cursor="rayOrigin: mouse"
-      raycaster="objects: .hotspot"
+
+      cursor="
+        rayOrigin: mouse;
+        fuse: false;
+      "
+
+      raycaster="
+        objects: .hotspot;
+        far: 1000;
+      "
+
     ></a-camera>
 
 
@@ -649,11 +668,13 @@
 
 
       <!-- =================================================
-           HOTSPOT 1 — CROWN
+           HOTSPOT 1 — CROWN / FACE
       ================================================== -->
 
       <a-image
+
         id="hotspot1"
+
         class="hotspot"
 
         position="0 0.37 0.08"
@@ -671,6 +692,7 @@
           alphaTest: 0.01;
           side: double;
         "
+
       ></a-image>
 
 
@@ -680,7 +702,9 @@
       ================================================== -->
 
       <a-image
+
         id="hotspot2"
+
         class="hotspot"
 
         position="0.25 0.02 0.08"
@@ -698,6 +722,7 @@
           alphaTest: 0.01;
           side: double;
         "
+
       ></a-image>
 
 
@@ -707,7 +732,9 @@
       ================================================== -->
 
       <a-image
+
         id="hotspot3"
+
         class="hotspot"
 
         position="0.34 0.34 0.08"
@@ -725,21 +752,22 @@
           alphaTest: 0.01;
           side: double;
         "
+
       ></a-image>
 
 
     </a-entity>
-
 
   </a-scene>
 
 
 
   <!-- ===================================================
-       TOP LEFT — BACK
+       AR BACK BUTTON
   ==================================================== -->
 
   <button
+    type="button"
     class="ar-back"
     onclick="exitAR()"
     aria-label="Back"
@@ -750,10 +778,11 @@
 
 
   <!-- ===================================================
-       TOP RIGHT — ACCESSIBILITY
+       AR ACCESSIBILITY
   ==================================================== -->
 
   <button
+    type="button"
     class="ar-accessibility"
     onclick="openAccessibility()"
     aria-label="Accessibility"
@@ -791,8 +820,11 @@
   >
 
     <span class="corner top-left"></span>
+
     <span class="corner top-right"></span>
+
     <span class="corner bottom-left"></span>
+
     <span class="corner bottom-right"></span>
 
   </div>
@@ -826,7 +858,7 @@
 
 
   <!-- ===================================================
-       ARTIFACT FOUND STATE
+       ARTIFACT FOUND
   ==================================================== -->
 
   <div
@@ -835,15 +867,10 @@
   >
 
 
-    <!-- TOP PILL -->
-
     <div class="found-pill">
       Artifact found
     </div>
 
-
-
-    <!-- INFO CARD -->
 
     <div class="artifact-info">
 
@@ -864,12 +891,8 @@
       </p>
 
 
-
-      <!-- =================================================
-           EXPLORE BUTTON
-      ================================================== -->
-
       <button
+        type="button"
         id="exploreArtifactButton"
         class="explore-artifact-button"
         onclick="enterHotspotMode()"
@@ -886,8 +909,8 @@
   <!-- ===================================================
        INVISIBLE TAP LAYER
 
-       Kept for compatibility with the previous code.
-       It is NOT used to trigger hotspot mode.
+       Kept only for compatibility.
+       It does not trigger hotspot mode.
   ==================================================== -->
 
   <div
@@ -906,7 +929,9 @@
     class="hotspot-ui"
   >
 
-    <div class="hotspot-hint">
+    <div
+      class="hotspot-hint"
+    >
       Tap a hotspot to explore
     </div>
 
@@ -915,7 +940,7 @@
 
 
   <!-- ===================================================
-       HOTSPOT STORY / AUDIO CARD
+       HOTSPOT STORY CARD
   ==================================================== -->
 
   <div
@@ -924,11 +949,10 @@
   >
 
 
-    <!-- =================================================
-         CLOSE BUTTON
-    ================================================== -->
+    <!-- CLOSE -->
 
     <button
+      type="button"
       class="hotspot-close"
       onclick="closeHotspot()"
       aria-label="Close"
@@ -938,9 +962,7 @@
 
 
 
-    <!-- =================================================
-         STORY TITLE
-    ================================================== -->
+    <!-- STORY HEADING -->
 
     <div class="story-heading">
 
@@ -957,18 +979,19 @@
 
 
     <!-- =================================================
-         VISUAL / ANIMATION
+         STORY VISUAL / ANIMATION
     ================================================== -->
 
     <div
-      class="story-visual"
       id="storyVisual"
+      class="story-visual"
     >
 
       <img
-        src="assets/images/Artifact_GIF.gif"
-        alt="Animation showing the crown and face of Shri Vishnu"
+        id="storyAnimation"
         class="story-animation"
+        src="assets/images/Artifact_GIF.gif"
+        alt="Animation showing the artifact detail"
       >
 
     </div>
@@ -980,13 +1003,10 @@
     ================================================== -->
 
     <div
-      class="audio-waveform"
       id="audioWaveform"
+      class="audio-waveform"
     >
 
-      <span></span>
-      <span></span>
-      <span></span>
       <span></span>
       <span></span>
       <span></span>
@@ -1018,7 +1038,9 @@
          AUDIO PROGRESS
     ================================================== -->
 
-    <div class="audio-progress-row">
+    <div
+      class="audio-progress-row"
+    >
 
       <span id="audioCurrentTime">
         00:00
@@ -1031,6 +1053,8 @@
         min="0"
         max="100"
         value="0"
+        step="0.1"
+        aria-label="Audio progress"
       >
 
 
@@ -1046,25 +1070,24 @@
          AUDIO CONTROLS
     ================================================== -->
 
-    <div class="audio-controls">
+    <div
+      class="audio-controls"
+    >
 
-
-      <!-- PLAY / PAUSE -->
 
       <button
+        type="button"
         id="playPauseButton"
         class="play-pause-button"
         onclick="toggleStoryAudio()"
-        aria-label="Play or pause"
+        aria-label="Play or pause story"
       >
         ▶
       </button>
 
 
-
-      <!-- REWIND -->
-
       <button
+        type="button"
         class="rewind-button"
         onclick="rewindStoryAudio()"
         aria-label="Replay 10 seconds"
@@ -1073,9 +1096,12 @@
       </button>
 
 
-      <span class="playing-label">
+      <span
+        class="playing-label"
+      >
         Playing story
       </span>
+
 
     </div>
 
@@ -1085,10 +1111,13 @@
          CAPTIONS
     ================================================== -->
 
-    <div class="captions-box">
+    <div
+      class="captions-box"
+    >
 
-
-      <div class="captions-heading">
+      <div
+        class="captions-heading"
+      >
 
         <img
           src="assets/images/CaptionsIcon.png"
@@ -1103,10 +1132,11 @@
 
 
       <p id="hotspotDescription">
-        The calm face and elaborate crown give Vishnu
-        a composed, authoritative presence. In sacred
-        sculpture, such details communicate the deity's
-        divine and royal character.
+        The calm face and elaborate crown
+        give Vishnu a composed, authoritative
+        presence. In sacred sculpture, such
+        details communicate the deity's divine
+        and royal character.
       </p>
 
     </div>
