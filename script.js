@@ -1798,72 +1798,44 @@ function rewindStoryAudio() {
     );
 
 }
-
-
 /* =====================================================
    3D ARTIFACT VIEW
-===================================================== */
-
-
-/* =====================================================
-   3D STATE
-===================================================== */
+   ===================================================== */
 
 let artifact3DVisible = false;
-
 let artifact3DLoaded = false;
 
 let handTrackingActive = false;
+let handTrackingStarting = false;
 
 let handVideo = null;
-
 let handsProcessor = null;
 
-/*
-   IMPORTANT:
-   MindAR already owns the phone camera.
-
-   We use MindAR's existing video element for
-   MediaPipe hand tracking.
-
-   We DO NOT call getUserMedia() again.
-*/
-
 let handTrackingFramePending = false;
-
 let handTrackingAnimationFrame = null;
 
 let lastHandX = null;
-
 let currentModelRotation = 0;
-
-let handTrackingStarting = false;
-
-let arWasRunningBefore3D = false;
 
 
 /* =====================================================
-   GET 3D MODEL ELEMENT
-===================================================== */
+   GET 3D MODEL
+   ===================================================== */
 
 function getArtifact3D() {
 
-  return document.getElementById(
-    "artifact3D"
-  );
+  return document.getElementById("artifact3D");
 
 }
 
 
 /* =====================================================
-   SHOW 3D MODEL
-===================================================== */
+   SHOW 3D ARTIFACT
+   ===================================================== */
 
 async function showArtifact3D() {
 
-  console.log(
-    "OPENING 3D ARTIFACT VIEW"
-  );
+  console.log("OPENING 3D ARTIFACT VIEW");
 
   triggerHaptic("open");
 
@@ -1871,110 +1843,90 @@ async function showArtifact3D() {
 
   hide3DButton();
 
-
-  const ui =
-    document.getElementById(
-      "artifact3DUI"
-    );
-
-  const loading =
-    document.getElementById(
-      "artifact3DLoading"
-    );
-
-  const model =
-    getArtifact3D();
-
-
-  /* =================================================
-     SHOW 3D UI
-  ================================================= */
-
-  if (ui) {
-
-    ui.classList.add("visible");
-
-  }
-
-
-  if (loading) {
-
-    loading.classList.add("visible");
-
-  }
-
-
-  /* =================================================
-     HIDE STORY
-  ================================================= */
+  /* -----------------------------------------------
+     HIDE STORY UI
+     ----------------------------------------------- */
 
   const hotspotInfo =
-    document.getElementById(
-      "hotspotInfo"
-    );
+    document.getElementById("hotspotInfo");
 
   if (hotspotInfo) {
-
-    hotspotInfo.classList.remove(
-      "visible"
-    );
-
+    hotspotInfo.classList.remove("visible");
   }
 
-
-  /* =================================================
+  /* -----------------------------------------------
      HIDE HOTSPOTS
-  ================================================= */
+     ----------------------------------------------- */
 
   hideHotspots();
 
+  /* -----------------------------------------------
+     SHOW 3D UI
+     ----------------------------------------------- */
 
-  /* =================================================
-     RESET MODEL ROTATION
-  ================================================= */
+  const ui =
+    document.getElementById("artifact3DUI");
+
+  if (ui) {
+    ui.classList.add("visible");
+    ui.style.display = "flex";
+  }
+
+  const loading =
+    document.getElementById("artifact3DLoading");
+
+  if (loading) {
+    loading.classList.add("visible");
+  }
+
+  /* -----------------------------------------------
+     RESET ROTATION
+     ----------------------------------------------- */
 
   currentModelRotation = 0;
-
   lastHandX = null;
 
-  if (model) {
+  const model = getArtifact3D();
 
-    model.setAttribute(
-      "visible",
-      "true"
-    );
+  if (model) {
 
     model.setAttribute(
       "rotation",
       "0 0 0"
     );
 
+    model.setAttribute(
+      "visible",
+      "true"
+    );
+
   }
 
+  /* -----------------------------------------------
+     IMPORTANT
 
-  /* =================================================
-     IMPORTANT CAMERA CHANGE
+     STOP MINDAR BEFORE ENTERING 3D MODE.
 
-     DO NOT STOP MINDAR.
+     This prevents the AR camera system from
+     competing with the 3D interaction system.
+     ----------------------------------------------- */
 
-     MindAR is already using the phone camera.
-     Hand tracking will use that same camera video.
+  stopMindAR();
 
-     The old version stopped MindAR here and then
-     requested another camera stream with getUserMedia().
-     That caused:
+  /*
+     Give the browser a moment to release the
+     MindAR camera cleanly.
+  */
 
-     NotReadableError:
-     Could not start video source
-  ================================================= */
+  await wait(250);
 
-  arWasRunningBefore3D =
-    arStarted;
+  /* -----------------------------------------------
+     START HAND TRACKING
 
-
-  /* =================================================
-     START HAND TRACKING USING EXISTING CAMERA
-  ================================================= */
+     Hand tracking is optional. If it cannot
+     initialise, the 3D model still works with
+     touch dragging.
+     ----------------------------------------------- */
 
   await startHandTracking();
 
@@ -1982,33 +1934,28 @@ async function showArtifact3D() {
 
 
 /* =====================================================
-   CLOSE 3D VIEW
-===================================================== */
+   CLOSE 3D ARTIFACT
+   ===================================================== */
 
 async function closeArtifact3D() {
 
-  console.log(
-    "CLOSING 3D ARTIFACT VIEW"
-  );
+  console.log("CLOSING 3D ARTIFACT VIEW");
 
   triggerHaptic("close");
 
   artifact3DVisible = false;
 
-
-  /* =================================================
+  /* -----------------------------------------------
      STOP HAND TRACKING
-  ================================================= */
+     ----------------------------------------------- */
 
   stopHandTracking();
 
+  /* -----------------------------------------------
+     HIDE MODEL
+     ----------------------------------------------- */
 
-  /* =================================================
-     HIDE 3D MODEL
-  ================================================= */
-
-  const model =
-    getArtifact3D();
+  const model = getArtifact3D();
 
   if (model) {
 
@@ -2019,118 +1966,90 @@ async function closeArtifact3D() {
 
   }
 
-
-  /* =================================================
+  /* -----------------------------------------------
      HIDE 3D UI
-  ================================================= */
+     ----------------------------------------------- */
 
   const ui =
-    document.getElementById(
-      "artifact3DUI"
-    );
+    document.getElementById("artifact3DUI");
 
   if (ui) {
 
-    ui.classList.remove(
-      "visible"
-    );
+    ui.classList.remove("visible");
+    ui.style.display = "none";
 
   }
-
 
   const loading =
-    document.getElementById(
-      "artifact3DLoading"
-    );
+    document.getElementById("artifact3DLoading");
 
   if (loading) {
-
-    loading.classList.remove(
-      "visible"
-    );
-
+    loading.classList.remove("visible");
   }
 
-
-  /* =================================================
-     RESET HAND TRACKING
-  ================================================= */
-
-  lastHandX = null;
+  /* -----------------------------------------------
+     RESET ROTATION
+     ----------------------------------------------- */
 
   currentModelRotation = 0;
+  lastHandX = null;
 
-
-  /* =================================================
-     MINDAR WAS NEVER STOPPED
-
-     The same camera remains active throughout
-     3D mode, so there is nothing to restart.
-  ================================================= */
-
-  arWasRunningBefore3D = false;
-
-
-  /*
-     Return to hotspot mode.
-  */
+  /* -----------------------------------------------
+     RETURN TO AR
+     ----------------------------------------------- */
 
   hotspotMode = true;
 
   showOneHotspot();
 
-
   const hotspotUI =
-    document.getElementById(
-      "hotspotUI"
-    );
+    document.getElementById("hotspotUI");
 
   if (hotspotUI) {
 
-    hotspotUI.classList.add(
-      "visible"
-    );
+    hotspotUI.classList.add("visible");
 
-    hotspotUI.style.display =
-      "block";
+    hotspotUI.style.display = "block";
 
-    hotspotUI.style.pointerEvents =
-      "auto";
+    hotspotUI.style.pointerEvents = "auto";
 
   }
 
+  /*
+     Restart MindAR.
 
-  show3DButton();
+     Wait slightly so the browser has time to
+     finish releasing the previous camera state.
+  */
+
+  await wait(250);
+
+  arStarted = false;
+  arReady = false;
+
+  startAR();
 
 }
 
 
 /* =====================================================
    STOP MINDAR
-===================================================== */
+   ===================================================== */
 
 function stopMindAR() {
 
   const scene =
-    document.getElementById(
-      "mindarScene"
-    );
+    document.getElementById("mindarScene");
 
   if (!scene) {
-
     return;
-
   }
 
   const mindar =
-    scene.systems[
-      "mindar-image-system"
-    ];
+    scene.systems["mindar-image-system"];
 
   if (!mindar) {
-
     return;
-
   }
 
   try {
@@ -2138,11 +2057,10 @@ function stopMindAR() {
     mindar.stop();
 
     arStarted = false;
-
     arReady = false;
 
     console.log(
-      "MindAR stopped."
+      "MindAR stopped successfully."
     );
 
   }
@@ -2150,7 +2068,7 @@ function stopMindAR() {
   catch (error) {
 
     console.warn(
-      "Could not stop MindAR:",
+      "MindAR stop warning:",
       error
     );
 
@@ -2161,7 +2079,7 @@ function stopMindAR() {
 
 /* =====================================================
    WAIT HELPER
-===================================================== */
+   ===================================================== */
 
 function wait(milliseconds) {
 
@@ -2181,99 +2099,78 @@ function wait(milliseconds) {
 
 /* =====================================================
    START HAND TRACKING
-===================================================== */
+   ===================================================== */
 
 async function startHandTracking() {
 
   if (handTrackingActive) {
-
     return;
-
   }
-
 
   if (handTrackingStarting) {
-
     return;
-
   }
-
 
   handTrackingStarting = true;
 
   console.log(
-    "STARTING HAND TRACKING USING EXISTING MINDAR CAMERA..."
+    "STARTING HAND TRACKING..."
   );
 
-
-  /* =================================================
+  /* -----------------------------------------------
      CHECK MEDIAPIPE
-  ================================================= */
+     ----------------------------------------------- */
 
-  if (
-    typeof Hands === "undefined"
-  ) {
+  if (typeof Hands === "undefined") {
 
-    console.error(
-      "MediaPipe Hands library not loaded."
+    console.warn(
+      "MediaPipe Hands is not available."
     );
 
     handTrackingStarting = false;
 
     hide3DLoading();
 
-    alert(
-      "Hand tracking could not load. Please refresh the page and try again."
-    );
-
     return;
 
   }
 
-
   try {
 
-    /* =================================================
-       FIND MINDAR'S EXISTING VIDEO
-
-       MindAR creates the camera video itself.
-
-       Depending on the MindAR version, the video
-       may have the .mindar-video class or may simply
-       be a video element inside the scene.
+    /*
+       Find an already-existing video.
 
        IMPORTANT:
-       We deliberately DO NOT call getUserMedia().
-    ================================================= */
+       We NEVER call getUserMedia here.
+    */
 
     handVideo =
-      findMindARVideo();
+      findExistingVideo();
 
+    /*
+       If there is no usable camera video,
+       simply leave hand tracking disabled.
+
+       The 3D model will still work with touch.
+    */
 
     if (!handVideo) {
 
       console.warn(
-        "MindAR video not found yet. Waiting for camera video..."
+        "No existing camera video available. Hand tracking disabled."
       );
 
-      handVideo =
-        await waitForMindARVideo(3000);
+      handTrackingStarting = false;
+
+      hide3DLoading();
+
+      return;
 
     }
 
-
-    if (!handVideo) {
-
-      throw new Error(
-        "Could not find the existing MindAR camera video."
-      );
-
-    }
-
-
-    /* =================================================
-       MAKE SURE THE EXISTING VIDEO IS RUNNING
-    ================================================= */
+    /* -----------------------------------------------
+       MAKE SURE VIDEO IS USABLE
+       ----------------------------------------------- */
 
     handVideo.setAttribute(
       "playsinline",
@@ -2284,30 +2181,25 @@ async function startHandTracking() {
 
     handVideo.muted = true;
 
+    /*
+       Do NOT call getUserMedia.
+       Do NOT create a MediaPipe Camera object.
+    */
 
-    if (handVideo.paused) {
+    if (
+      handVideo.readyState < 2
+    ) {
 
-      try {
-
-        await handVideo.play();
-
-      }
-
-      catch (playError) {
-
-        console.warn(
-          "Existing MindAR video could not be played:",
-          playError
-        );
-
-      }
+      await waitForVideoReady(
+        handVideo,
+        2500
+      );
 
     }
 
-
-    /* =================================================
-       INITIALISE MEDIAPIPE HANDS
-    ================================================= */
+    /* -----------------------------------------------
+       CREATE MEDIAPIPE HANDS
+       ----------------------------------------------- */
 
     handsProcessor =
       new Hands({
@@ -2342,15 +2234,9 @@ async function startHandTracking() {
     );
 
 
-    /* =================================================
-       START PROCESSING EXISTING MINDAR VIDEO
-
-       We use requestAnimationFrame instead of the
-       MediaPipe Camera helper because the Camera helper
-       would try to manage its own camera/video lifecycle.
-
-       MindAR remains the only owner of the camera.
-    ================================================= */
+    /* -----------------------------------------------
+       ACTIVATE
+       ----------------------------------------------- */
 
     handTrackingActive = true;
 
@@ -2359,7 +2245,7 @@ async function startHandTracking() {
     handTrackingFramePending = false;
 
     console.log(
-      "HAND TRACKING ACTIVE — USING MINDAR CAMERA"
+      "HAND TRACKING READY"
     );
 
     hide3DLoading();
@@ -2370,10 +2256,19 @@ async function startHandTracking() {
 
   catch (error) {
 
-    console.error(
-      "HAND TRACKING ERROR:",
+    console.warn(
+      "Hand tracking could not start:",
       error
     );
+
+    /*
+       IMPORTANT:
+
+       Do NOT show the old camera error alert.
+
+       Hand tracking is an enhancement.
+       The 3D artifact should remain usable.
+    */
 
     handTrackingStarting = false;
 
@@ -2385,83 +2280,42 @@ async function startHandTracking() {
 
     stopHandTracking();
 
-    alert(
-      "Hand tracking could not start. Please make sure the AR camera is running and try again."
-    );
-
   }
 
 }
 
 
 /* =====================================================
-   FIND MINDAR CAMERA VIDEO
-===================================================== */
+   FIND EXISTING VIDEO
+   ===================================================== */
 
-function findMindARVideo() {
+function findExistingVideo() {
 
-  const scene =
-    document.getElementById(
-      "mindarScene"
-    );
-
-
-  /* =================================================
-     FIRST TRY STANDARD MINDAR VIDEO CLASS
-  ================================================= */
+  /*
+     First try MindAR video.
+  */
 
   let video =
     document.querySelector(
       "video.mindar-video"
     );
 
-
-  if (video) {
+  if (
+    video &&
+    (
+      video.srcObject ||
+      video.readyState >= 2
+    )
+  ) {
 
     return video;
 
   }
 
 
-  /* =================================================
-     SEARCH INSIDE MINDAR SCENE
-  ================================================= */
-
-  if (scene) {
-
-    video =
-      scene.querySelector(
-        "video.mindar-video"
-      );
-
-    if (video) {
-
-      return video;
-
-    }
-
-
-    video =
-      scene.querySelector(
-        "video"
-      );
-
-    if (video) {
-
-      return video;
-
-    }
-
-  }
-
-
-  /* =================================================
-     FINAL FALLBACK
-
-     Look for an already active video.
-
-     This still does NOT request a new camera.
-  ================================================= */
+  /*
+     Try any active video on the page.
+  */
 
   const videos =
     document.querySelectorAll(
@@ -2499,11 +2353,12 @@ function findMindARVideo() {
 
 
 /* =====================================================
-   WAIT FOR MINDAR VIDEO
-===================================================== */
+   WAIT FOR VIDEO
+   ===================================================== */
 
-function waitForMindARVideo(
-  timeout = 3000
+function waitForVideoReady(
+  video,
+  timeout = 2500
 ) {
 
   return new Promise(
@@ -2513,15 +2368,14 @@ function waitForMindARVideo(
         Date.now();
 
 
-      const checkVideo = () => {
+      function check() {
 
-        const video =
-          findMindARVideo();
+        if (
+          video &&
+          video.readyState >= 2
+        ) {
 
-
-        if (video) {
-
-          resolve(video);
+          resolve(true);
 
           return;
 
@@ -2529,11 +2383,12 @@ function waitForMindARVideo(
 
 
         if (
-          Date.now() - startTime >=
+          Date.now() -
+          startTime >=
           timeout
         ) {
 
-          resolve(null);
+          resolve(false);
 
           return;
 
@@ -2541,13 +2396,13 @@ function waitForMindARVideo(
 
 
         requestAnimationFrame(
-          checkVideo
+          check
         );
 
-      };
+      }
 
 
-      checkVideo();
+      check();
 
     }
   );
@@ -2557,7 +2412,7 @@ function waitForMindARVideo(
 
 /* =====================================================
    HAND TRACKING LOOP
-===================================================== */
+   ===================================================== */
 
 function runHandTrackingLoop() {
 
@@ -2582,17 +2437,16 @@ function runHandTrackingLoop() {
 
 
   if (!handVideo) {
-
     return;
-
   }
 
 
-  /* Video must have enough data to be processed. */
+  /*
+     Video must have enough data.
+  */
 
   if (
-    handVideo.readyState <
-    2
+    handVideo.readyState < 2
   ) {
 
     return;
@@ -2600,8 +2454,9 @@ function runHandTrackingLoop() {
   }
 
 
-  /* Do not send another frame while MediaPipe is
-     still processing the previous frame. */
+  /*
+     Only send one frame at a time.
+  */
 
   if (
     handTrackingFramePending
@@ -2620,6 +2475,7 @@ function runHandTrackingLoop() {
     .send({
       image: handVideo
     })
+
     .catch(
       error => {
 
@@ -2630,6 +2486,7 @@ function runHandTrackingLoop() {
 
       }
     )
+
     .finally(
       () => {
 
@@ -2643,10 +2500,12 @@ function runHandTrackingLoop() {
 
 
 /* =====================================================
-   HANDLE HAND TRACKING RESULTS
-===================================================== */
+   HANDLE HAND RESULTS
+   ===================================================== */
 
-function handleHandResults(results) {
+function handleHandResults(
+  results
+) {
 
   if (
     !artifact3DVisible
@@ -2655,6 +2514,7 @@ function handleHandResults(results) {
     return;
 
   }
+
 
   if (
     !results ||
@@ -2672,6 +2532,7 @@ function handleHandResults(results) {
   const landmarks =
     results.multiHandLandmarks[0];
 
+
   if (
     !landmarks ||
     landmarks.length < 21
@@ -2682,23 +2543,19 @@ function handleHandResults(results) {
   }
 
 
-  /* =================================================
-     USE PALM CENTRE
+  /*
+     Palm centre.
 
-     Using multiple points makes rotation more stable
-     than using one fingertip.
-  ================================================= */
+     We use several landmarks rather than
+     one fingertip for smoother movement.
+  */
 
   const palmPoints = [
 
     landmarks[0],
-
     landmarks[5],
-
     landmarks[9],
-
     landmarks[13],
-
     landmarks[17]
 
   ];
@@ -2720,34 +2577,42 @@ function handleHandResults(results) {
     palmPoints.length;
 
 
-  /* =================================================
-     FIRST FRAME
-  ================================================= */
+  /*
+     First frame.
+  */
 
-  if (lastHandX === null) {
+  if (
+    lastHandX === null
+  ) {
 
-    lastHandX = palmX;
+    lastHandX =
+      palmX;
 
     return;
 
   }
 
 
-  /* =================================================
-     CALCULATE HAND MOVEMENT
-  ================================================= */
+  /*
+     Calculate horizontal movement.
+  */
 
   const movement =
-    palmX - lastHandX;
+    palmX -
+    lastHandX;
 
 
-  lastHandX = palmX;
+  lastHandX =
+    palmX;
 
 
-  /* Ignore tiny hand movements. */
+  /*
+     Ignore tiny movements.
+  */
 
   if (
-    Math.abs(movement) < 0.004
+    Math.abs(movement) <
+    0.004
   ) {
 
     return;
@@ -2755,49 +2620,52 @@ function handleHandResults(results) {
   }
 
 
-  /* =================================================
-     ROTATE MODEL
+  /*
+     Rotate model.
 
-     MediaPipe x:
-     0 = left
-     1 = right
+     Move hand right =
+     rotate model right.
+  */
 
-     Moving hand right rotates model right.
-  ================================================= */
+  const sensitivity =
+    320;
 
-  const sensitivity = 320;
 
   currentModelRotation +=
-    movement * sensitivity;
+    movement *
+    sensitivity;
 
 
-  /* =================================================
-     LIMIT ROTATION VALUE
-  ================================================= */
+  /*
+     Keep number manageable.
+  */
 
   if (
-    currentModelRotation > 360 ||
-    currentModelRotation < -360
+    currentModelRotation >
+    360 ||
+    currentModelRotation <
+    -360
   ) {
 
     currentModelRotation =
-      currentModelRotation % 360;
+      currentModelRotation %
+      360;
 
   }
 
 
-  /* =================================================
-     APPLY ROTATION
-  ================================================= */
+  /*
+     Apply rotation.
+  */
 
   const model =
     getArtifact3D();
 
+
   if (!model) {
-
     return;
-
   }
+
 
   model.setAttribute(
     "rotation",
@@ -2813,7 +2681,7 @@ function handleHandResults(results) {
 
 /* =====================================================
    STOP HAND TRACKING
-===================================================== */
+   ===================================================== */
 
 function stopHandTracking() {
 
@@ -2835,15 +2703,12 @@ function stopHandTracking() {
     null;
 
 
-  /* =================================================
-     STOP HAND-TRACKING ANIMATION LOOP
+  /*
+     Stop animation loop.
 
      IMPORTANT:
-     We do NOT stop the video tracks.
-
-     The video belongs to MindAR and is still needed
-     by the AR experience.
-  ================================================= */
+     We do NOT stop camera tracks.
+  */
 
   if (
     handTrackingAnimationFrame !== null
@@ -2859,9 +2724,9 @@ function stopHandTracking() {
   }
 
 
-  /* =================================================
-     CLOSE MEDIAPIPE
-  ================================================= */
+  /*
+     Close MediaPipe.
+  */
 
   if (handsProcessor) {
 
@@ -2874,7 +2739,7 @@ function stopHandTracking() {
     catch (error) {
 
       console.warn(
-        "Hands processor close error:",
+        "Hands processor close warning:",
         error
       );
 
@@ -2886,19 +2751,15 @@ function stopHandTracking() {
   }
 
 
-  /* =================================================
-     IMPORTANT
-
-     DO NOT:
+  /*
+     Do NOT:
 
        handVideo.pause()
-
        handVideo.srcObject = null
-
        handVideo.srcObject.getTracks().stop()
 
-     because this video belongs to MindAR.
-  ================================================= */
+     because the video may belong to MindAR.
+  */
 
   handVideo =
     null;
@@ -2908,7 +2769,7 @@ function stopHandTracking() {
 
 /* =====================================================
    HIDE 3D LOADING
-===================================================== */
+   ===================================================== */
 
 function hide3DLoading() {
 
@@ -2930,12 +2791,13 @@ function hide3DLoading() {
 
 /* =====================================================
    3D MODEL LOADED
-===================================================== */
+   ===================================================== */
 
 function setup3DModel() {
 
   const model =
     getArtifact3D();
+
 
   if (!model) {
 
@@ -2987,42 +2849,26 @@ function setup3DModel() {
 
 
 /* =====================================================
-   OPTIONAL TOUCH FALLBACK
-===================================================== */
+   TOUCH FALLBACK
+   ===================================================== */
 
-/*
-   If hand tracking is unavailable, the user can still
-   rotate the artifact by dragging on it.
+let touchRotationActive =
+  false;
 
-   This does NOT replace hand tracking.
-*/
-
-let touchRotationActive = false;
-
-let touchStartX = 0;
+let touchStartX =
+  0;
 
 
 function setup3DTouchFallback() {
-
-  const model =
-    getArtifact3D();
-
-  if (!model) {
-
-    return;
-
-  }
-
 
   const scene =
     document.getElementById(
       "mindarScene"
     );
 
+
   if (!scene) {
-
     return;
-
   }
 
 
@@ -3031,10 +2877,9 @@ function setup3DTouchFallback() {
       "canvas"
     );
 
+
   if (!canvas) {
-
     return;
-
   }
 
 
@@ -3042,11 +2887,14 @@ function setup3DTouchFallback() {
     "touchstart",
     event => {
 
-      if (!artifact3DVisible) {
+      if (
+        !artifact3DVisible
+      ) {
 
         return;
 
       }
+
 
       if (
         !event.touches ||
@@ -3057,11 +2905,14 @@ function setup3DTouchFallback() {
 
       }
 
+
       touchRotationActive =
         true;
 
+
       touchStartX =
-        event.touches[0].clientX;
+        event.touches[0]
+          .clientX;
 
     },
     {
@@ -3083,6 +2934,7 @@ function setup3DTouchFallback() {
 
       }
 
+
       if (
         !event.touches ||
         !event.touches.length
@@ -3092,18 +2944,33 @@ function setup3DTouchFallback() {
 
       }
 
+
       const currentX =
-        event.touches[0].clientX;
+        event.touches[0]
+          .clientX;
+
 
       const movement =
-        currentX - touchStartX;
+        currentX -
+        touchStartX;
+
 
       touchStartX =
         currentX;
 
 
       currentModelRotation +=
-        movement * 0.8;
+        movement *
+        0.8;
+
+
+      const model =
+        getArtifact3D();
+
+
+      if (!model) {
+        return;
+      }
 
 
       model.setAttribute(
@@ -3140,7 +3007,7 @@ function setup3DTouchFallback() {
 
 /* =====================================================
    EXIT AR
-===================================================== */
+   ===================================================== */
 
 function exitAR() {
 
@@ -3151,79 +3018,43 @@ function exitAR() {
   );
 
 
-  /* =================================================
-     CLOSE 3D MODE IF ACTIVE
-  ================================================= */
+  /*
+     Stop hand tracking.
+  */
 
-  if (artifact3DVisible) {
-
-    stopHandTracking();
-
-    artifact3DVisible =
-      false;
-
-  }
+  stopHandTracking();
 
 
-  /* =================================================
-     STOP AUDIO
-  ================================================= */
+  /*
+     Stop audio.
+  */
 
   const audio =
     document.getElementById(
       "storyAudio"
     );
 
+
   if (audio) {
 
     audio.pause();
 
-    audio.currentTime = 0;
+    audio.currentTime =
+      0;
 
   }
 
 
-  /* =================================================
-     STOP MINDAR
-  ================================================= */
+  /*
+     Stop MindAR.
+  */
 
-  const scene =
-    document.getElementById(
-      "mindarScene"
-    );
-
-  if (scene) {
-
-    const mindar =
-      scene.systems[
-        "mindar-image-system"
-      ];
-
-    if (mindar) {
-
-      try {
-
-        mindar.stop();
-
-      }
-
-      catch (error) {
-
-        console.log(
-          "MindAR stop:",
-          error
-        );
-
-      }
-
-    }
-
-  }
+  stopMindAR();
 
 
-  /* =================================================
-     RESET AR STATE
-  ================================================= */
+  /*
+     Reset state.
+  */
 
   arStarted =
     false;
@@ -3240,13 +3071,17 @@ function exitAR() {
   selectedHotspot =
     null;
 
+  artifact3DVisible =
+    false;
 
-  /* =================================================
-     HIDE 3D
-  ================================================= */
+
+  /*
+     Hide model.
+  */
 
   const model =
     getArtifact3D();
+
 
   if (model) {
 
@@ -3258,16 +3093,24 @@ function exitAR() {
   }
 
 
+  /*
+     Hide 3D UI.
+  */
+
   const ui =
     document.getElementById(
       "artifact3DUI"
     );
+
 
   if (ui) {
 
     ui.classList.remove(
       "visible"
     );
+
+    ui.style.display =
+      "none";
 
   }
 
@@ -3277,9 +3120,9 @@ function exitAR() {
   hideHotspots();
 
 
-  /* =================================================
-     RETURN TO SETUP
-  ================================================= */
+  /*
+     Return to setup.
+  */
 
   showScreen(
     "setup"
@@ -3290,7 +3133,7 @@ function exitAR() {
 
 /* =====================================================
    INITIALISE
-===================================================== */
+   ===================================================== */
 
 document.addEventListener(
   "DOMContentLoaded",
@@ -3301,39 +3144,40 @@ document.addEventListener(
     );
 
 
-    /* =================================================
+    /* -----------------------------------------------
        HOTSPOTS
-    ================================================= */
+       ----------------------------------------------- */
 
     setupHotspots();
 
     setupHotspotUI();
 
 
-    /* =================================================
+    /* -----------------------------------------------
        AUDIO
-    ================================================= */
+       ----------------------------------------------- */
 
     setupStoryAudio();
 
 
-    /* =================================================
+    /* -----------------------------------------------
        3D MODEL
-    ================================================= */
+       ----------------------------------------------- */
 
     setup3DModel();
 
     setup3DTouchFallback();
 
 
-    /* =================================================
+    /* -----------------------------------------------
        HAPTIC BUTTONS
-    ================================================= */
+       ----------------------------------------------- */
 
     const exploreButton =
       document.getElementById(
         "exploreArtifactButton"
       );
+
 
     if (exploreButton) {
 
@@ -3350,6 +3194,7 @@ document.addEventListener(
         "#hotspotInfo .hotspot-close"
       );
 
+
     if (closeButton) {
 
       addHapticToButton(
@@ -3364,6 +3209,7 @@ document.addEventListener(
       document.getElementById(
         "playPauseButton"
       );
+
 
     if (playButton) {
 
@@ -3380,6 +3226,7 @@ document.addEventListener(
         "rewindButton"
       );
 
+
     if (rewindButton) {
 
       addHapticToButton(
@@ -3390,14 +3237,11 @@ document.addEventListener(
     }
 
 
-    /* =================================================
-       3D BUTTON HAPTIC
-    ================================================= */
-
     const view3DButton =
       document.getElementById(
         "view3DButton"
       );
+
 
     if (view3DButton) {
 
@@ -3409,14 +3253,11 @@ document.addEventListener(
     }
 
 
-    /* =================================================
-       3D CLOSE BUTTON HAPTIC
-    ================================================= */
-
     const close3DButton =
       document.querySelector(
         ".artifact-3d-close"
       );
+
 
     if (close3DButton) {
 
@@ -3434,3 +3275,4 @@ document.addEventListener(
 
   }
 );
+
